@@ -204,55 +204,63 @@ const sections = [
 
 export const CourseContent = () => {
   return (
-    <Box>
-      <Box sx={{ marginLeft: "auto" }}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            padding: "0 16px",
-            backgroundColor: "#fff",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-            color: "black",
-            height: 36,
-          }}
-        >
-          <Typography component="span">Course Content</Typography>
-        </Box>
-        {sections.map((section) => (
-          <Accordion key={section.title}>
-            <AccordionSummary
-              expandIcon={<ArrowDropDownIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-            >
-              <Typography component="span">{section.title}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Box sx={{ textAlign: "left" }}>
-                {section.lessons.map((lesson, idx) => (
-                  <Box
-                    display={"flex"}
-                    key={lesson.title}
-                    flexWrap={"nowrap"}
-                    alignItems={"center"}
-                  >
-                    <Checkbox />
-                    <Box
-                      key={lesson.title}
-                      display={"flex"}
-                      alignContent={"center"}
-                    >
-                      <Typography marginRight={1}>{idx + 1}.</Typography>
-                      <Typography>{lesson.description}</Typography>
-                    </Box>
-                  </Box>
-                ))}
-              </Box>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+    <Box
+      sx={{
+        height: "100%",
+        maxHeight: 480,
+        backgroundColor: "#fff",
+        overflow: "auto",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          padding: "0 16px",
+          backgroundColor: "#fff",
+          borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+          color: "black",
+          height: 36,
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+        }}
+      >
+        <Typography component="span">Course Content</Typography>
       </Box>
+      {sections.map((section) => (
+        <Accordion key={section.title}>
+          <AccordionSummary
+            expandIcon={<ArrowDropDownIcon />}
+            aria-controls="panel1-content"
+            id="panel1-header"
+          >
+            <Typography component="span">{section.title}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Box sx={{ textAlign: "left" }}>
+              {section.lessons.map((lesson, idx) => (
+                <Box
+                  display={"flex"}
+                  key={lesson.title}
+                  flexWrap={"nowrap"}
+                  alignItems={"center"}
+                >
+                  <Checkbox />
+                  <Box
+                    key={lesson.title}
+                    display={"flex"}
+                    alignContent={"center"}
+                  >
+                    <Typography marginRight={1}>{idx + 1}.</Typography>
+                    <Typography>{lesson.description}</Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </AccordionDetails>
+        </Accordion>
+      ))}
     </Box>
   );
 };
