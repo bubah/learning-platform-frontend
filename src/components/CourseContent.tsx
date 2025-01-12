@@ -231,10 +231,19 @@ export const CourseContent = () => {
             <AccordionDetails>
               <Box sx={{ textAlign: "left" }}>
                 {section.lessons.map((lesson, idx) => (
-                  <Box display={"flex"} key={lesson.title} flexWrap={"nowrap"} alignItems={"center"}>
+                  <Box
+                    display={"flex"}
+                    key={lesson.title}
+                    flexWrap={"nowrap"}
+                    alignItems={"center"}
+                  >
                     <Checkbox />
-                    <Box key={lesson.title} display={"flex"} alignContent={"center"}>
-                      <Typography marginRight={2}>{idx + 1}</Typography>
+                    <Box
+                      key={lesson.title}
+                      display={"flex"}
+                      alignContent={"center"}
+                    >
+                      <Typography marginRight={1}>{idx + 1}.</Typography>
                       <Typography>{lesson.description}</Typography>
                     </Box>
                   </Box>
