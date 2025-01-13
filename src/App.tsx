@@ -1,22 +1,13 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import { NavBar } from "./components/NavBar";
 import {
-  AccordionProps,
-  AccordionSummary,
   Box,
-  Grid,
-  styled,
-  Typography,
+  Grid
 } from "@mui/material";
+import "./App.css";
 import { CourseContent } from "./components/CourseContent";
+import { NavBar } from "./components/NavBar";
 import VideoPlayer from "./components/VideoPlayer";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <NavBar />
@@ -31,10 +22,11 @@ function App() {
         }}
       >
         <Grid container>
-          <Grid item md={12} lg={9}>
-            <VideoPlayer src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4" />
+          <Grid item xs={12} lg={9}>
+            <VideoPlayer src="http://localhost:8000/output.m3u8
+" />
           </Grid>
-          <Grid item md={12} lg={3}>
+          <Grid item xs={12} lg={3}>
             <CourseContent />
           </Grid>
         </Grid>
