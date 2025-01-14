@@ -36,17 +36,9 @@ const VideoPlayer = ({ src }: { src: string }) => {
     // };
   }, [src]);
 
-  console.log("vidoe node", videoNode.current);
   return (
       <video
-        ref={(r) => {
-            if(!r) {
-                return
-            }
-            if(videoNode && !videoNode.current) {
-                videoNode.current = r
-            }
-        }}
+        ref={videoNode}
         className="video-js vjs-default-skin"
         controls
         style={{ width: '100%', backgroundColor: 'white', minHeight: 400, maxHeight: 480 }}

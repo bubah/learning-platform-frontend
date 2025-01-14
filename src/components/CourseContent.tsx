@@ -200,6 +200,110 @@ const sections = [
       },
     ],
   },
+  {
+    title: "Introduction to GCP",
+    description: "Learn the basics of GCP",
+    lessons: [
+      {
+        title: "Lesson 1",
+        description: "Introduction to GCP",
+      },
+      {
+        title: "Lesson 2",
+        description: "Compute Engine",
+      },
+      {
+        title: "Lesson 3",
+        description: "Cloud Storage",
+      },
+    ],
+  },
+  {
+    title: "Introduction to Azure",
+    description: "Learn the basics of Azure",
+    lessons: [
+      {
+        title: "Lesson 1",
+        description: "Introduction to Azure",
+      },
+      {
+        title: "Lesson 2",
+        description: "Virtual Machines",
+      },
+      {
+        title: "Lesson 3",
+        description: "Blob Storage",
+      },
+    ],
+  },
+  {
+    title: "Introduction to CI/CD",
+    description: "Learn the basics of CI/CD",
+    lessons: [
+      {
+        title: "Lesson 1",
+        description: "Introduction to CI/CD",
+      },
+      {
+        title: "Lesson 2",
+        description: "Jenkins",
+      },
+      {
+        title: "Lesson 3",
+        description: "GitHub Actions",
+      },
+    ],
+  },
+  {
+    title: "Introduction to Testing",
+    description: "Learn the basics of Testing",
+    lessons: [
+      {
+        title: "Lesson 1",
+        description: "Introduction to Testing",
+      },
+      {
+        title: "Lesson 2",
+        description: "Unit Testing",
+      },
+      {
+        title: "Lesson 3",
+        description: "Integration Testing",
+      },
+    ],
+  },
+  {
+    title: "Introduction to Security",
+    description: "Learn the basics of Security",
+    lessons: [
+      {
+        title: "Lesson 1",
+        description: "Introduction to Security",
+      },
+      {
+        title: "Lesson 2",
+        description: "OWASP Top 10",
+      },
+      {
+        title: "Lesson 3",
+        description: "CORS",
+      },
+    ],
+  },
+  {
+    title: "Introduction to Microservices",
+    description: "Learn the basics of Microservices",
+    lessons: [
+      {
+        title: "Lesson 1",
+        description: "Introduction to Microservices",
+      },
+      {
+        title: "Lesson 2",
+        description: "Service Discovery",
+      },
+    ],
+  },
 ];
 
 export const CourseContent = () => {
@@ -210,6 +314,7 @@ export const CourseContent = () => {
         maxHeight: 480,
         backgroundColor: "#fff",
         overflow: "auto",
+        width: "100%",
       }}
     >
       <Box
