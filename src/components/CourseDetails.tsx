@@ -11,7 +11,7 @@ export const CourseDetails = ({ isMobileView }: { isMobileView: boolean}) => {
     setActiveTab(newValue);
   };
   return (
-    <Card sx={{ marginTop: 2, padding: 2 }}>
+    <Card sx={{ marginTop: 2, padding: 2, minHeight: 480 }}>
       <Box sx={{ width: "100%" }}>
         <Tabs
           value={activeTab}
@@ -28,7 +28,6 @@ export const CourseDetails = ({ isMobileView }: { isMobileView: boolean}) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: 200,
             backgroundColor: "#fff",
             width: "100%"
           }}
