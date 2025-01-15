@@ -2,10 +2,11 @@ import { Box, Tabs, Tab } from "@mui/material";
 import Card from "@mui/material/Card/Card";
 import { useState } from "react";
 import { CourseContent } from "./CourseContent";
+import { Section } from "../mock-data/course";
 
 const tabs = ["OVERVIEW", "NOTES", "Q/A"];
 
-export const CourseDetails = ({ isMobileView }: { isMobileView: boolean}) => {
+export const CourseDetails = ({ isMobileView, sections }: { isMobileView: boolean, sections: Section[]}) => {
   const [activeTab, setActiveTab] = useState(0);
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
@@ -32,7 +33,7 @@ export const CourseDetails = ({ isMobileView }: { isMobileView: boolean}) => {
             width: "100%"
           }}
         >
-          <CourseContent />
+          <CourseContent sections={sections}/>
         </Box>}
         {activeTab === (isMobileView ? 1 : 0) && <Box
           sx={{
