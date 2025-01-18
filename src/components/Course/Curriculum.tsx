@@ -1,15 +1,14 @@
 import {
   Box,
+  Button,
   Card,
+  CardActions,
+  CardContent,
   TextField,
   Typography,
-  Button,
-  CardContent,
-  CardActions,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { Course, Lecture, mockCourse, Section } from "../../mock-data/course";
-import { on } from "video.js/dist/types/utils/events";
+import { mockCourse, Section } from "../../mock-data/course";
 
 const emptyLecture = [
   {
