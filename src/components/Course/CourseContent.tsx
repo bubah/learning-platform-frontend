@@ -10,7 +10,7 @@ import {
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import { useEffect, useState } from "react";
-import { mockCourse, Section } from "../../mock-data/course";
+import { Lecture, mockCourse, Section } from "../../mock-data/course";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -29,7 +29,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export const CourseContent = ({ sections }: { sections: Section[] }) => {
+export const CourseContent = ({ lectures }: { lectures: Lecture[] }) => {
   return (
     <Box
       sx={{
@@ -56,18 +56,18 @@ export const CourseContent = ({ sections }: { sections: Section[] }) => {
       >
         <Typography component="span">Course Content</Typography>
       </Box>
-      {sections.map((section) => (
-        <Accordion key={section.title}>
+      {lectures.map((lecture) => (
+        <Accordion key={lecture.title}>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
             aria-controls="panel1-content"
             id="panel1-header"
           >
-            <Typography component="span">{section.title}</Typography>
+            <Typography component="span">{lecture.title}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Box sx={{ textAlign: "left" }}>
-              {section.lessons.map((lesson, idx) => (
+              {lecture.sections.map((lesson, idx) => (
                 <Box
                   display={"flex"}
                   key={lesson.title}

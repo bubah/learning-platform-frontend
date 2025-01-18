@@ -48,7 +48,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to TypeScript",
       description: "Learn the basics of TypeScript",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to TypeScript",
@@ -70,7 +70,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to GraphQL",
       description: "Learn the basics of GraphQL",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to GraphQL",
@@ -92,7 +92,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to Node.js",
       description: "Learn the basics of Node.js",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to Node.js",
@@ -114,7 +114,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to MongoDB",
       description: "Learn the basics of MongoDB",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to MongoDB",
@@ -136,7 +136,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to Docker",
       description: "Learn the basics of Docker",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to Docker",
@@ -158,7 +158,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to Kubernetes",
       description: "Learn the basics of Kubernetes",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to Kubernetes",
@@ -180,7 +180,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to AWS",
       description: "Learn the basics of AWS",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to AWS",
@@ -198,7 +198,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to GCP",
       description: "Learn the basics of GCP",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to GCP",
@@ -216,7 +216,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to Azure",
       description: "Learn the basics of Azure",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to Azure",
@@ -234,7 +234,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to CI/CD",
       description: "Learn the basics of CI/CD",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to CI/CD",
@@ -252,7 +252,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to Testing",
       description: "Learn the basics of Testing",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to Testing",
@@ -270,7 +270,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to Security",
       description: "Learn the basics of Security",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to Security",
@@ -288,7 +288,7 @@ export const mockCourse: Course = {
     {
       title: "Introduction to Microservices",
       description: "Learn the basics of Microservices",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to Microservices",
