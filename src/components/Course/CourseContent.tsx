@@ -1,16 +1,16 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {
-    AccordionProps,
-    AccordionSummary,
-    Box,
-    Checkbox,
-    styled,
-    Typography,
+  AccordionProps,
+  AccordionSummary,
+  Box,
+  Checkbox,
+  styled,
+  Typography,
 } from "@mui/material";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import { useEffect, useState } from "react";
-import { mockCourse, Section } from "../mock-data/course";
+import { mockCourse, Section } from "../../mock-data/course";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -29,7 +29,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export const CourseContent = ({sections} : { sections: Section[]}) => {
+export const CourseContent = ({ sections }: { sections: Section[] }) => {
   return (
     <Box
       sx={{

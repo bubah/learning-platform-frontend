@@ -1,7 +1,11 @@
 import { Box, Typography, CircularProgress } from "@mui/material";
-import { Course } from "../mock-data/course";
+import { Course } from "../../mock-data/course";
 
-export const CourseHeaderInfo = ({ course }: { course: Course | undefined }) => {
+export const CourseHeaderInfo = ({
+  course,
+}: {
+  course: Course | undefined;
+}) => {
   const learningProgress = 50;
   return (
     <Box display={"flex"} sx={{ backgroundColor: "black" }}>

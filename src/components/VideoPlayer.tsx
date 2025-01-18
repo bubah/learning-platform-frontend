@@ -41,7 +41,7 @@ const VideoPlayer = ({ src }: { src: string }) => {
         ref={videoNode}
         className="video-js vjs-default-skin"
         controls
-        style={{ width: '100%', backgroundColor: 'white', minHeight: 400, maxHeight: 480 }}
+        style={{ width: '100%', backgroundColor: 'black', minHeight: 400, maxHeight: 480 }}
       />
   );
 };

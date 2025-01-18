@@ -1,26 +1,32 @@
 export type Course = {
     title: string;
+    lectures: Lecture[];
+}
+
+export type Lecture = {
+    title: string;
+    description: string;
     sections: Section[];
 }
 
 export type Section = {
+    id?: string;
+    lectureId?: string;
     title: string;
     description: string;
-    lessons: Lesson[];
-}
-
-type Lesson = {
-    title: string;
-    description: string;
+    content?: {
+      path?: string;
+      type?: string;
+    }
 }
 
 export const mockCourse: Course = {
   title: "Full Stack Developer",
-  sections: [
+  lectures: [
     {
       title: "Introduction to React",
       description: "Learn the basics of React",
-      lessons: [
+      sections: [
         {
           title: "Lesson 1",
           description: "Introduction to JSX",

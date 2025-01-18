@@ -2,9 +2,9 @@ import { Box, createTheme, Grid, useMediaQuery } from "@mui/material";
 import { CourseContent } from "./CourseContent";
 import { CourseDetails } from "./CourseDetails";
 import { CourseHeaderInfo } from "./CourseHeaderInfo";
-import VideoPlayer from "./VideoPlayer";
+import VideoPlayer from "../VideoPlayer";
 import { useEffect, useState } from "react";
-import { Course, mockCourse } from "../mock-data/course";
+import { Course, mockCourse } from "../../mock-data/course";
 const theme = createTheme();
 
 export const CourseContainer = () => {
@@ -28,7 +28,7 @@ export const CourseContainer = () => {
     >
       <Grid container>
         <Grid item xs={12}>
-          <CourseHeaderInfo course={course}/>
+          <CourseHeaderInfo course={course} />
         </Grid>
         <Grid item xs={12} lg={9}>
           <VideoPlayer
@@ -37,10 +37,13 @@ export const CourseContainer = () => {
           />
         </Grid>
         <Grid item xs={12} lg={3} sx={{ position: "sticky", top: 0 }}>
-          {!isMdOrLower && <CourseContent sections={course?.sections ?? []} />}
+          {!isMdOrLower && <CourseContent sections={course?.lectures ?? []} />}
         </Grid>
         <Grid item xs={12} lg={12}>
-          <CourseDetails isMobileView={isMdOrLower} sections={course?.sections ?? []} />
+          <CourseDetails
+            isMobileView={isMdOrLower}
+            sections={course?.lectures ?? []}
+          />
         </Grid>
       </Grid>
     </Box>
