@@ -1,7 +1,7 @@
 import { Box, Tabs, Tab } from "@mui/material";
 import Card from "@mui/material/Card/Card";
 import { useState } from "react";
-import { CourseContent } from "./CourseContent";
+import { LessonsList } from "./LessonsList";
 import { Lecture, Section } from "../../mock-data/course";
 
 const tabs = ["OVERVIEW", "NOTES", "Q/A"];
@@ -40,7 +40,7 @@ export const CourseDetails = ({
               width: "100%",
             }}
           >
-            <CourseContent lectures={lectures} />
+            <LessonsList lectures={lectures} />
           </Box>
         )}
         {activeTab === (isMobileView ? 1 : 0) && (

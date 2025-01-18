@@ -1,10 +1,10 @@
 import { Box, createTheme, Grid, useMediaQuery } from "@mui/material";
-import { CourseContent } from "./CourseContent";
-import { CourseDetails } from "./CourseDetails";
-import { CourseHeaderInfo } from "./CourseHeaderInfo";
-import VideoPlayer from "../VideoPlayer";
 import { useEffect, useState } from "react";
 import { Course, mockCourse } from "../../mock-data/course";
+import VideoPlayer from "../VideoPlayer";
+import { LessonsList } from "./LessonsList";
+import { CourseDetails } from "./CourseDetails";
+import { CourseHeaderInfo } from "./CourseHeaderInfo";
 const theme = createTheme();
 
 export const CoursePage = () => {
@@ -31,12 +31,10 @@ export const CoursePage = () => {
           <CourseHeaderInfo course={course} />
         </Grid>
         <Grid item xs={12} lg={9}>
-          <VideoPlayer
-            src="http://localhost:8000/output.m3u8"
-          />
+          <VideoPlayer src="http://localhost:8000/output.m3u8" />
         </Grid>
         <Grid item xs={12} lg={3} sx={{ position: "sticky", top: 0 }}>
-          {!isMdOrLower && <CourseContent lectures={course?.lectures ?? []} />}
+          {!isMdOrLower && <LessonsList lectures={course?.lectures ?? []} />}
         </Grid>
         <Grid item xs={12} lg={12}>
           <CourseDetails

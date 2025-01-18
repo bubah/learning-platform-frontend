@@ -29,7 +29,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export const CourseContent = ({ lectures }: { lectures: Lecture[] }) => {
+export const LessonsList = ({ lectures }: { lectures: Lecture[] }) => {
   return (
     <Box
       sx={{
