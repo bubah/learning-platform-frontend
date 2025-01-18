@@ -1,118 +1,45 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { mockCourse, Section } from "../../mock-data/course";
-
-const emptyLecture = [
-  {
-    title: "",
-    description: "",
-    sections: [
-      {
-        title: "",
-        description: "",
-        video: "",
-      },
-    ],
-  },
-];
-
-type Lectures = {
-  [key: number]: {
-    title: string;
-    description: string;
-    sections: {
-      [key: number]: Section;
-    };
-  };
-};
+import { Lecture, mockCourse } from "../../mock-data/course";
+import { LectureProvider } from "./LectureProvider";
+import { SectionComponent } from "./SectionComponent";
 
 export const Curriculum = () => {
-  const [lectures, setLectures] = useState<Lectures>({});
+  const [lectures, setLectures] = useState<Lecture[]>([]);
 
   useEffect(() => {
-    const updatedLectures: Lectures = {};
-    mockCourse.lectures.forEach((lecture, index) => {
-      updatedLectures[index] = {
-        title: lecture.title,
-        description: lecture.description,
-        sections: {},
-      };
-      lecture.sections.forEach((section, sectionIndex) => {
-        updatedLectures[index].sections[sectionIndex] = section;
-      });
-    });
-
-    setLectures(updatedLectures);
+    setLectures(mockCourse.lectures);
   }, []);
 
-  const handleSectionChange = useCallback((index: number, field: string, value: string) => {
-    setLectures((prevLectures) => ({
-      ...prevLectures,
-      [index]: {
-        ...prevLectures[index],
-        [field]: value,
-      },
-    }));
-  }, []);
-
-  const handleSave = (lectureIndex: number | string, sectionIndex: number | string) => {
-    if (
-      lectures[lectureIndex as number] &&
-      lectures[lectureIndex as number].sections[sectionIndex as number]
-    ) {
-      console.log(
-        "section exists",
-        lectures[lectureIndex as number].sections[sectionIndex as number]
-      );
-    }
-  };
-
-  function handleAddLecture(): void {
-    const newLectures = { ...lectures };
-    newLectures[Object.keys(lectures).length] = {
-      title: "",
-      description: "",
-      sections: {
-        0: {
+  const handleAddLecture = useCallback((): void => {
+    setLectures((prevState) => {
+      return [
+        ...prevState,
+        {
           title: "",
-          description: ""        },
-      },
-    };
-    setLectures(newLectures);
-  }
+          description: "",
+          sections: [{ title: "", description: "" }],
+        },
+      ];
+    });
+  }, [lectures]);
 
-  function handleAddSection(lectureIndex: number | string): void {
-    const newLectures = { ...lectures };
-    const sections = newLectures[lectureIndex as number].sections;
-    const newSectionIndex = Object.keys(sections).length;
-    sections[newSectionIndex] = {
-      title: "",
-      description: "",
-    };
-    setLectures(newLectures);
-  }
-
-  const handleChange = (
-    lectureIndex: number,
-    sectionIndex: number,
-    field: string,
-    value: string
-  ) => {
-    const newLectures = { ...lectures };
-    newLectures[lectureIndex].sections[sectionIndex] = {
-      ...newLectures[lectureIndex].sections[sectionIndex],
-      [field]: value,
-    };
-    setLectures(newLectures);
-  };
+  const handleAddSection = useCallback(
+    (lectureIndex: number): void => {
+      setLectures((prevState) => {
+        return prevState.map((lecture, index) => {
+          if (index === lectureIndex) {
+            return {
+              ...lecture,
+              sections: [...lecture.sections, { title: "", description: "" }],
+            };
+          }
+          return lecture;
+        });
+      });
+    },
+    [lectures]
+  );
 
   console.log("lectures", lectures);
 
@@ -131,66 +58,26 @@ export const Curriculum = () => {
       <Typography alignSelf="flex-start" color="black">
         Lectures:
       </Typography>
-      {Object.entries(lectures).map(([index, lecture]) => (
-        <Card
-          key={index}
-          variant="outlined"
-          sx={{ padding: "1rem", textAlign: "left", marginBottom: 5 }}
+      {lectures.map((lecture, index) => (
+        <LectureProvider
+          key={`${index}-${lecture.title}`}
+          title={lecture.title}
+          description={lecture.description}
         >
-          {lecture?.title}
-          <Typography>Sections:</Typography>
-          {Object.entries(lecture.sections).map(([sectionIndex, section]) => (
-            <Box key={sectionIndex}>
-              <Card
-                sx={{
-                  padding: "1rem",
-                  textAlign: "left",
-                  backgroundColor: "#f2f2f2",
-                  marginBottom: 2,
-                }}
-              >
-                <CardContent>
-                  <TextField
-                    label="Title"
-                    value={section.title}
-                    onChange={(e) => handleChange(Number(index), Number(sectionIndex), "title", e.target.value)}
-                    sx={{ display: "block", marginBottom: 2 }}
-                  ></TextField>
-                  <TextField
-                    label="Description"
-                    value={section.description}
-                    onChange={(e) => handleChange(Number(index), Number(sectionIndex), "description", e.target.value)}
-                    sx={{ display: "block", marginBottom: 2 }}
-                  ></TextField>
-                  <TextField
-                    type="file"
-                    sx={{ display: "block", marginBottom: 2 }}
-                    slotProps={{
-                      htmlInput: {
-                        accept: "video/*",
-                      },
-                    }}
-                  />
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    onClick={() => handleSave(index, sectionIndex)}
-                  >
-                    save
-                  </Button>
-                </CardActions>
-              </Card>
-            </Box>
+          {lecture.sections.map((section, sectionIndex) => (
+            <SectionComponent
+              key={`${index}-${sectionIndex}`}
+              title={section.title}
+              description={section.description}
+            />
           ))}
           <Box sx={{ textAlign: "center", marginTop: 2 }}>
             <Button onClick={() => handleAddSection(index)}>Add Section</Button>
           </Box>
-        </Card>
+        </LectureProvider>
       ))}
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
-        <Button onClick={handleAddLecture}>Add Lecture</Button>
+        <Button onClick={() => handleAddLecture()}>Add Lecture</Button>
       </Box>
     </Box>
   );
