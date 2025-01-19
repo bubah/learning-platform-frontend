@@ -1,47 +1,67 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { Lecture, mockCourse } from "../../mock-data/course";
+import { Course, mockCourse } from "../../mock-data/course";
 import { LectureProvider } from "./LectureProvider";
 import { SectionComponent } from "./SectionComponent";
 
 export const Curriculum = () => {
-  const [lectures, setLectures] = useState<Lecture[]>([]);
+  const [course, setCourse] = useState<Course | undefined>(undefined);
 
   useEffect(() => {
-    setLectures(mockCourse.lectures);
+    // Fetch course data from the server
+    setCourse(mockCourse);
   }, []);
 
   const handleAddLecture = useCallback((): void => {
-    setLectures((prevState) => {
-      return [
+    setCourse((prevState) => {
+      if (!prevState) return prevState;
+      return {
         ...prevState,
-        {
-          title: "",
-          description: "",
-          sections: [{ title: "", description: "" }],
-        },
-      ];
+        lectures: [
+          ...prevState.lectures,
+          {
+            title: "",
+            description: "",
+            sections: [{ title: "", description: "" }],
+          },
+        ],
+      };
     });
-  }, [lectures]);
+  }, [course]);
 
   const handleAddSection = useCallback(
     (lectureIndex: number): void => {
-      setLectures((prevState) => {
-        return prevState.map((lecture, index) => {
-          if (index === lectureIndex) {
-            return {
-              ...lecture,
-              sections: [...lecture.sections, { title: "", description: "" }],
-            };
-          }
-          return lecture;
-        });
-      });
+      setCourse((prevState) => {
+        if (!prevState) return prevState;
+        return {
+          ...prevState,
+          lectures: prevState.lectures.map((lecture, index) => {
+            if (index === lectureIndex) {
+              return {
+                ...lecture,
+                sections: [...lecture.sections, { title: "", description: "" }],
+              };
+            }
+            return lecture;
+          }),
+        };
+      })
+      // setLectures((prevState) => {
+      //   return prevState.map((lecture, index) => {
+      //     if (index === lectureIndex) {
+      //       return {
+      //         ...lecture,
+      //         sections: [...lecture.sections, { title: "", description: "" }],
+      //       };
+      //     }
+      //     return lecture;
+      //   });
+      // });
     },
-    [lectures]
+    [course]
   );
 
-  console.log("lectures", lectures);
+  console.log("lectures", course);
 
   return (
     <Box
@@ -58,17 +78,20 @@ export const Curriculum = () => {
       <Typography alignSelf="flex-start" color="black">
         Lectures:
       </Typography>
-      {lectures.map((lecture, index) => (
+      {course?.lectures.map((lecture, index) => (
         <LectureProvider
-          key={`${index}-${lecture.title}`}
+          courseId={"course.id"}
+          key={index}
           title={lecture.title}
           description={lecture.description}
         >
           {lecture.sections.map((section, sectionIndex) => (
             <SectionComponent
-              key={`${index}-${sectionIndex}`}
+              key={index}
               title={section.title}
               description={section.description}
+              courseId={"course.id"}
+              lectureId={"lecture.id"}
             />
           ))}
           <Box sx={{ textAlign: "center", marginTop: 2 }}>

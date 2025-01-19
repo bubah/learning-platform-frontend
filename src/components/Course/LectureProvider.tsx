@@ -14,12 +14,14 @@ export const useLecture = () => {
 
 export const LectureProvider = memo(({
     children,
-    title,
+    courseId,
     description,
+    title,
 }: {
     children: React.ReactNode;
-    title: string;
+    courseId: string;
     description: string;
+    title: string;
 }) => {
     const [lectureState, setLectureState] = useState<{ title: string, description: string}>({title, description});
 
@@ -30,6 +32,7 @@ export const LectureProvider = memo(({
                 sx={{ padding: "1rem", textAlign: "left", marginBottom: 5 }}
             >
                 {lectureState?.title}
+                {lectureState?.description}
                 <Typography>Sections:</Typography>
                 {children}
             </Card>
