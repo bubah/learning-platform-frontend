@@ -4,16 +4,22 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Card,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Course, mockCourse } from "../../mock-data/course";
+import { Course, Lecture, mockCourse } from "../../mock-data/course";
 import { LectureProvider } from "./LectureProvider";
 import { SectionComponent } from "./SectionComponent";
 
 export const Curriculum = () => {
   const [course, setCourse] = useState<Course | undefined>(undefined);
+  const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);
+  const [newlyAddedLecture, setNewlyAddedLecture] = useState<
+    Lecture | undefined
+  >(undefined);
 
   useEffect(() => {
     // Fetch course data from the server
@@ -72,25 +78,23 @@ export const Curriculum = () => {
   const saveLecture = useCallback(() => {
     // Call the API to save the lecture
     // POST /courses/{course_id}/lectures
+    setDisplayAddLecture(false);
+    console.log("Before saving lecture...", newlyAddedLecture);
+    // TODO: Remove Next line and call the API to save the lecture
     setCourse((prevState) => {
       if (!prevState) return prevState;
       return {
         ...prevState,
         lectures: [
           ...prevState.lectures,
-          {
-            title: "",
-            description: "",
-            sections: [{ title: "", description: "" }],
-          },
+          newlyAddedLecture!,
         ],
       };
     });
+    setNewlyAddedLecture(undefined);
     console.log("Saving lecture...");
     // console.log(`/courses/${course?.id}/lectures`, course);
-  }, []);
-
-  console.log("lectures", course);
+  }, [newlyAddedLecture]);
 
   return (
     <Box
@@ -143,8 +147,26 @@ export const Curriculum = () => {
         </Accordion>
       ))}
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
-        <Button onClick={() => handleAddLecture()}>Add Lecture</Button>
+        <Button onClick={() => setDisplayAddLecture(true)}>Add Lecture</Button>
       </Box>
+
+      {displayAddLecture && (
+        <Card sx={{ textAlign: "center", marginTop: 2, padding: 2 }}>
+          <TextField
+            fullWidth
+            label="Add Lecture title"
+            value={newlyAddedLecture?.title}
+            onChange={(e) => {
+              console.log("Newly added lecture title: ", newlyAddedLecture, e.target.value);
+              setNewlyAddedLecture((prevState) => {
+                if (!prevState) return { title: e.target.value, description: "", sections: [] };  
+                return { ...prevState, title: e.target.value };
+              });
+            }}
+          />
+          <Button onClick={() => saveLecture()}>Save</Button>
+        </Card>
+      )}
     </Box>
   );
 };
