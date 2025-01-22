@@ -1,5 +1,13 @@
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Typography,
+} from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Course, mockCourse } from "../../mock-data/course";
 import { LectureProvider } from "./LectureProvider";
 import { SectionComponent } from "./SectionComponent";
@@ -45,7 +53,7 @@ export const Curriculum = () => {
             return lecture;
           }),
         };
-      })
+      });
       // setLectures((prevState) => {
       //   return prevState.map((lecture, index) => {
       //     if (index === lectureIndex) {
@@ -61,12 +69,32 @@ export const Curriculum = () => {
     [course]
   );
 
+  const saveLecture = useCallback(() => {
+    // Call the API to save the lecture
+    // POST /courses/{course_id}/lectures
+    setCourse((prevState) => {
+      if (!prevState) return prevState;
+      return {
+        ...prevState,
+        lectures: [
+          ...prevState.lectures,
+          {
+            title: "",
+            description: "",
+            sections: [{ title: "", description: "" }],
+          },
+        ],
+      };
+    });
+    console.log("Saving lecture...");
+    // console.log(`/courses/${course?.id}/lectures`, course);
+  }, []);
+
   console.log("lectures", course);
 
   return (
     <Box
       sx={{
-        width: "50%",
         justifyContent: "center",
         margin: "auto",
         padding: "2rem",
@@ -79,25 +107,40 @@ export const Curriculum = () => {
         Lectures:
       </Typography>
       {course?.lectures.map((lecture, index) => (
-        <LectureProvider
-          courseId={"course.id"}
-          key={index}
-          title={lecture.title}
-          description={lecture.description}
-        >
-          {lecture.sections.map((section, sectionIndex) => (
-            <SectionComponent
-              key={index}
-              title={section.title}
-              description={section.description}
+        <Accordion key={`lecture-${index}`}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1-content"
+            id="panel1-header"
+          >
+            <Typography component="span">{lecture.title || "---"}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <LectureProvider
               courseId={"course.id"}
-              lectureId={"lecture.id"}
-            />
-          ))}
-          <Box sx={{ textAlign: "center", marginTop: 2 }}>
-            <Button onClick={() => handleAddSection(index)}>Add Section</Button>
-          </Box>
-        </LectureProvider>
+              key={`lecture-${index}`}
+              title={lecture.title}
+              description={lecture.description}
+            >
+              {lecture.sections.map((section, sectionIndex) => (
+                <SectionComponent
+                  key={`section-${sectionIndex}`}
+                  title={section.title}
+                  description={section.description}
+                  lectureId={"lecture.id"}
+                />
+              ))}
+              <Box sx={{ textAlign: "center", marginTop: 2 }}>
+                <Button onClick={() => handleAddSection(index)}>
+                  Add Section
+                </Button>
+              </Box>
+              <Box sx={{ textAlign: "center", marginTop: 2 }}>
+                <Button onClick={() => saveLecture()}>Save Lecture</Button>
+              </Box>
+            </LectureProvider>
+          </AccordionDetails>
+        </Accordion>
       ))}
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
         <Button onClick={() => handleAddLecture()}>Add Lecture</Button>

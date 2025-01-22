@@ -40,7 +40,7 @@ export const EditCourse = () => {
     console.log(learners);
   };
   return (
-    <Box sx={{ width: "50%", justifyContent: "center", margin: "auto", padding: "2rem" }}>
+    <Box sx={{ justifyContent: "center", margin: "auto", padding: "2rem", display: "flex", flexDirection: "column" }}>
       <Typography color="black">Edit Course</Typography>
 
       <Card variant="outlined" sx={{ padding: "1rem", textAlign: "left" }}>
@@ -84,23 +84,23 @@ export const EditCourse = () => {
             </Typography>
             {Array.from({ length: prerequisiteCounts }).map((_, index) => (
               <TextField
-              key={index}
-              fullWidth
-              label={`Prerequisite ${index + 1}`}
-              value={prerequisites[index] || ""}
-              slotProps={{
-                input: {
-                  inputProps: {
-                    maxLength: 150, // Pass maxLength to inputProps here
+                key={index}
+                fullWidth
+                label={`Prerequisite ${index + 1}`}
+                value={prerequisites[index] || ""}
+                slotProps={{
+                  input: {
+                    inputProps: {
+                      maxLength: 150, // Pass maxLength to inputProps here
+                    },
                   },
-                },
-              }}
-              onChange={(e) => {
-                const newPrerequisites = [...prerequisites];
-                newPrerequisites[index] = e.target.value;
-                setPrerequisites(newPrerequisites);
-              }}
-              sx={{ marginBottom: "1rem" }}
+                }}
+                onChange={(e) => {
+                  const newPrerequisites = [...prerequisites];
+                  newPrerequisites[index] = e.target.value;
+                  setPrerequisites(newPrerequisites);
+                }}
+                sx={{ marginBottom: "1rem" }}
               />
             ))}
             <Typography
@@ -143,7 +143,9 @@ export const EditCourse = () => {
             </Typography>
           </Grid>
         </Grid>
-        <Button variant="contained" onClick={handleSave}>Save</Button>
+        <Button variant="contained" onClick={handleSave}>
+          Save
+        </Button>
       </Card>
     </Box>
   );
