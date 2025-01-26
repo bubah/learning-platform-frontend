@@ -59,7 +59,7 @@ export const SectionComponent = memo(
 
             <TextField
               type="file"
-              sx={{ display: "block", marginBottom: 2 }}
+              sx={{ display: "block", marginBottom: 2, marginTop: 2 }}
               slotProps={{
                 htmlInput: {
                   accept: "video/*",

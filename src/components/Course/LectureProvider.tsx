@@ -60,29 +60,19 @@ export const LectureProvider = memo(
         >
           <Box display={"flex"} justifyContent={"space-between"}>
             <Box flexGrow={1}>
-                <UpdateAttributeFeild
-                  attributeValue={lectureState.title}
-                  inEditing={isAddingTitle}
-                  handleUpdate={updateTitle}
-                  label="Title"
-                />
-               
-              {lectureState.description || isAddingDescription ? (
-                <UpdateAttributeFeild
-                  attributeValue={lectureState.description}
-                  inEditing={isAddingDescription}
-                  handleUpdate={updateDescription}
-                  label="Description"
-                />
-              ) : (
-                <Button
-                  variant="outlined"
-                  sx={{ display: "block" }}
-                  onClick={() => setIsAddingDescription(true)}
-                >
-                  add description
-                </Button>
-              )}
+              <UpdateAttributeFeild
+                attributeValue={lectureState.title}
+                inEditing={isAddingTitle}
+                handleUpdate={updateTitle}
+                label="Title"
+              />
+
+              <UpdateAttributeFeild
+                attributeValue={lectureState.description}
+                inEditing={isAddingDescription}
+                handleUpdate={updateDescription}
+                label="Description"
+              />
             </Box>
           </Box>
           {children}

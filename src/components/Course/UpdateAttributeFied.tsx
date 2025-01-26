@@ -96,7 +96,7 @@ const UpdateAttributeFeild = ({
       ) : (
         <Button
           variant="outlined"
-          sx={{ display: "block" }}
+          sx={{ display: "block", marginTop: 2 }}
           onClick={() => setIsEditing(true)}
         >
           add {label}

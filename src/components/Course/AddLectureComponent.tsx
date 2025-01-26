@@ -30,13 +30,15 @@ export const AddLectureComponent = ({ onCancel }: { onCancel: () => void }) => {
           justifyContent: "center",
           gap: 2,
           width: 200,
-          margin: "0 auto",
+          marginTop: 2,
+          marginLeft: "auto",
+          marginRight: "auto",
         }}
       >
-        <Button onClick={saveLecture} variant="contained">
+        <Button onClick={saveLecture} variant="contained" fullWidth>
           Save
         </Button>
-        <Button onClick={onCancel} variant="outlined">
+        <Button onClick={onCancel} variant="outlined" fullWidth>
           Cancel
         </Button>
       </Box>
