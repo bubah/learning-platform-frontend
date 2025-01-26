@@ -48,7 +48,7 @@ export default function CourseManagementScreen() {
       >
         <Tab label="Edit Course" />
         <Tab label="Second tabsge" />
-        <Tab label="Third tab" />
+        <Tab label="Course Overview" />
       </Tabs>
       <Box sx={{ flexGrow: 1 }}>
         <TabPanel value={value} index={0}>

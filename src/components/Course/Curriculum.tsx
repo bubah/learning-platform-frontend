@@ -1,16 +1,15 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Box,
   Button,
-  Card,
-  TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Course, Lecture, mockCourse } from "../../mock-data/course";
+import { AddLectureComponent } from "./AddLectureComponent";
 import { LectureProvider } from "./LectureProvider";
 import { SectionComponent } from "./SectionComponent";
 
@@ -25,23 +24,6 @@ export const Curriculum = () => {
     // Fetch course data from the server
     setCourse(mockCourse);
   }, []);
-
-  const handleAddLecture = useCallback((): void => {
-    setCourse((prevState) => {
-      if (!prevState) return prevState;
-      return {
-        ...prevState,
-        lectures: [
-          ...prevState.lectures,
-          {
-            title: "",
-            description: "",
-            sections: [{ title: "", description: "" }],
-          },
-        ],
-      };
-    });
-  }, [course]);
 
   const handleAddSection = useCallback(
     (lectureIndex: number): void => {
@@ -75,7 +57,7 @@ export const Curriculum = () => {
     [course]
   );
 
-  const saveLecture = useCallback(() => {
+  const saveLecture = () => {
     // Call the API to save the lecture
     // POST /courses/{course_id}/lectures
     setDisplayAddLecture(false);
@@ -85,16 +67,13 @@ export const Curriculum = () => {
       if (!prevState) return prevState;
       return {
         ...prevState,
-        lectures: [
-          ...prevState.lectures,
-          newlyAddedLecture!,
-        ],
+        lectures: [...prevState.lectures, newlyAddedLecture!],
       };
     });
     setNewlyAddedLecture(undefined);
     console.log("Saving lecture...");
     // console.log(`/courses/${course?.id}/lectures`, course);
-  }, [newlyAddedLecture]);
+  };
 
   return (
     <Box
@@ -134,8 +113,11 @@ export const Curriculum = () => {
                   lectureId={"lecture.id"}
                 />
               ))}
-              <Box sx={{ textAlign: "center", marginTop: 2 }}>
-                <Button onClick={() => handleAddSection(index)}>
+              <Box sx={{ marginTop: 2 }}>
+                <Button
+                  variant="outlined"
+                  onClick={() => handleAddSection(index)}
+                >
                   Add Section
                 </Button>
               </Box>
@@ -150,23 +132,7 @@ export const Curriculum = () => {
         <Button onClick={() => setDisplayAddLecture(true)}>Add Lecture</Button>
       </Box>
 
-      {displayAddLecture && (
-        <Card sx={{ textAlign: "center", marginTop: 2, padding: 2 }}>
-          <TextField
-            fullWidth
-            label="Add Lecture title"
-            value={newlyAddedLecture?.title}
-            onChange={(e) => {
-              console.log("Newly added lecture title: ", newlyAddedLecture, e.target.value);
-              setNewlyAddedLecture((prevState) => {
-                if (!prevState) return { title: e.target.value, description: "", sections: [] };  
-                return { ...prevState, title: e.target.value };
-              });
-            }}
-          />
-          <Button onClick={() => saveLecture()}>Save</Button>
-        </Card>
-      )}
+      {displayAddLecture && <AddLectureComponent onCancel={() => setDisplayAddLecture(false)} />}
     </Box>
   );
 };

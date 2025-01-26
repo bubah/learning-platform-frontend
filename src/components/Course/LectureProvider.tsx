@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Delete } from "@mui/icons-material";
+import UpdateAttributeFeild from "./UpdateAttributeFied";
 
 const LectureContext = createContext({});
 
@@ -40,6 +41,16 @@ export const LectureProvider = memo(
       description: string;
     }>({ title, description });
     const [enableEdit, setEnableEdit] = useState(false);
+    const [isAddingTitle, setIsAddingTitle] = useState(false);
+    const [isAddingDescription, setIsAddingDescription] = useState(false);
+
+    const updateTitle = (value: string) => {
+      console.log("Updating title to: ", value);
+    };
+
+    const updateDescription = (value: string) => {
+      console.log("Updating description to: ", value);
+    };
 
     return (
       <LectureContext.Provider value={{}}>
@@ -49,40 +60,29 @@ export const LectureProvider = memo(
         >
           <Box display={"flex"} justifyContent={"space-between"}>
             <Box flexGrow={1}>
-              <TextField
-                fullWidth
-                disabled={!enableEdit}
-                label="Title"
-                value={lectureState.title}
-                onChange={(e) =>
-                  setLectureState((prevState) => ({
-                    ...prevState,
-                    title: e.target.value,
-                  }))
-                }
-                sx={{ display: "block", marginBottom: 2 }}
-              />
-              <TextField
-                disabled={!enableEdit}
-                fullWidth
-                label="Description"
-                value={lectureState.description}
-                onChange={(e) =>
-                  setLectureState((prevState) => ({
-                    ...prevState,
-                    description: e.target.value,
-                  }))
-                }
-                sx={{ display: "block", marginBottom: 2 }}
-              />
-            </Box>
-            <Box display="flex" flexDirection={"column"}>
-              <IconButton onClick={() => setEnableEdit(!enableEdit)}>
-                <EditIcon>Edit</EditIcon>
-              </IconButton>
-              <IconButton>
-                <Delete>Delete</Delete>
-              </IconButton>
+                <UpdateAttributeFeild
+                  attributeValue={lectureState.title}
+                  inEditing={isAddingTitle}
+                  handleUpdate={updateTitle}
+                  label="Title"
+                />
+               
+              {lectureState.description || isAddingDescription ? (
+                <UpdateAttributeFeild
+                  attributeValue={lectureState.description}
+                  inEditing={isAddingDescription}
+                  handleUpdate={updateDescription}
+                  label="Description"
+                />
+              ) : (
+                <Button
+                  variant="outlined"
+                  sx={{ display: "block" }}
+                  onClick={() => setIsAddingDescription(true)}
+                >
+                  add description
+                </Button>
+              )}
             </Box>
           </Box>
           {children}

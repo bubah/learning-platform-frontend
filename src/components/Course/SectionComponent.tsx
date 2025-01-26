@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 
 import { memo } from "react";
+import UpdateAttributeFeild from "./UpdateAttributeFied";
 
 export const SectionComponent = memo(
   ({
@@ -24,22 +25,11 @@ export const SectionComponent = memo(
       title: string;
       description: string;
     }>({ title, description });
+    const [isAddingTitle, setIsAddingTitle] = useState(false);
+    const [isAddingDescription, setIsAddingDescription] = useState(false);
 
-    const handleChange = (field: string, value: string) => {
-      setSectionState((prevState) => ({
-        ...prevState,
-        [field]: value,
-      }));
-    };
-
-    const handleSave = () => {
-      // Call the API to save the section
-      // POST /lectures/{lecture_id}/sections
-      const body = {
-        ...sectionState,
-      };
-      console.log("Saving section...");
-      console.log(`/lectures/${lectureId}/sections`, body);
+    const handleSaveV2 = (value: string) => {
+      console.log("Printing value", value);
     };
 
     return (
@@ -53,18 +43,20 @@ export const SectionComponent = memo(
           }}
         >
           <CardContent>
-            <TextField
+            <UpdateAttributeFeild
+              attributeValue={sectionState.title}
+              inEditing={isAddingTitle}
               label="Title"
-              value={sectionState.title}
-              onChange={(e) => handleChange("title", e.target.value)}
-              sx={{ display: "block", marginBottom: 2 }}
-            ></TextField>
-            <TextField
+              handleUpdate={handleSaveV2}
+            />
+
+            <UpdateAttributeFeild
+              attributeValue={sectionState.description}
+              inEditing={isAddingDescription}
               label="Description"
-              value={sectionState.description}
-              onChange={(e) => handleChange("description", e.target.value)}
-              sx={{ display: "block", marginBottom: 2 }}
-            ></TextField>
+              handleUpdate={handleSaveV2}
+            />
+
             <TextField
               type="file"
               sx={{ display: "block", marginBottom: 2 }}
@@ -76,8 +68,8 @@ export const SectionComponent = memo(
             />
           </CardContent>
           <CardActions>
-            <Button size="small" variant="outlined" onClick={handleSave}>
-              save
+            <Button size="small" variant="outlined" onClick={() => {}}>
+              cancel
             </Button>
           </CardActions>
         </Card>
