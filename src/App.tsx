@@ -1,15 +1,15 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { CourseList } from "./components/Course/CourseListPage";
 import { CoursePage } from "./components/Course/CoursePage";
-import CourseManagementScreen from "./components/Course/MangeCoursesPage";
 function App() {
   return (
-    <div style={{ minWidth: "650px" }}>
-      {/* <NavBar /> */}
-      {/* <CoursePage /> */}
-      {/* <CourseManagementScreen /> */}
-      <CourseList/>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/courses" element={<CourseList />} />
+        <Route path="/courses/id" element={<CoursePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
