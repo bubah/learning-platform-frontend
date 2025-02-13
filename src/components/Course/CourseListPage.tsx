@@ -7,7 +7,7 @@ export const CourseList = () => {
 
   useEffect(() => {
     setCourses([mockCourse, mockCourse]);
-  });
+  }, []);
   return (
     <Box sx={{ margin: 10 }}>
       {corses.map((course) => (
