@@ -7,11 +7,11 @@ export const CourseList = () => {
 
   useEffect(() => {
     setCourses([mockCourse, mockCourse]);
-  });
+  }, []);
   return (
     <Box sx={{ margin: 10 }}>
-      {corses.map((course) => (
-        <Card variant="outlined" sx={{ marginBottom: 5, display: "flex" }}>
+      {corses.map((course, index) => (
+        <Card key={index} variant="outlined" sx={{ marginBottom: 5, display: "flex" }}>
           <Box>
             <CardMedia
               component="img"
