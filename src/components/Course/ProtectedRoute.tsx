@@ -1,12 +1,14 @@
-import { LoginCredentials } from "../../types/types";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "./AuthenticationProvider";
 
 interface ProtectedRouteProps {
-  user: LoginCredentials | null;
   children: React.ReactNode;
 }
 
-export function ProtectedRoute({ user, children }: ProtectedRouteProps) {
+
+
+export function ProtectedRoute({children }: ProtectedRouteProps) {
+  const {user} = useAuth();
   if (!user) return <Navigate to="/login" replace />;
 
   return children;

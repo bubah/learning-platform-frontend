@@ -1,7 +1,6 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { LoginCredentials } from "../../types/types";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  FormEvent, useState } from "react";
+import { useAuth } from "./AuthenticationProvider";
 
 const credentials = [
   {
@@ -16,28 +15,26 @@ const credentials = [
   },
 ];
 
-export const LoginForm = ({
-  onLogin,
-}: {
-  onLogin: (User: LoginCredentials) => void;
-}) => {
+export const LoginForm = () => {
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+
+  const {login} = useAuth();
+
+
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    console.log("Clicked!");
+
     const user = credentials.find(
       (u) => u.username == username && u.password == password
     );
 
-    if (user) {
-      onLogin(user);
-      navigate("/curriculum");
 
-      console.log("Login credentials accepted!");
+    if (user) {
+      login(user);
     } else {
       setError("User not authenticated!");
     }

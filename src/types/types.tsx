@@ -3,3 +3,9 @@ export type LoginCredentials = {
   password: string;
   role: string;
 };
+
+export type AuthContextType = {
+  user:LoginCredentials | null;
+  login: (user:LoginCredentials) => void;
+  logout: () => void;
+}
