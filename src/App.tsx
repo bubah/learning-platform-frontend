@@ -23,7 +23,6 @@ function App() {
           path="/login"
           element={<LoginForm />}
         />
-        {/* <Route path="/" element={<HomePage />} /> */}
 
         {/* Protected Routes (assuming `ProtectedRoute` is properly implemented) */}
         <Route
