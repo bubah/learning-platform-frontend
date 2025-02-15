@@ -24,7 +24,6 @@ function App() {
           element={<LoginForm />}
         />
 
-        {/* Protected Routes (assuming `ProtectedRoute` is properly implemented) */}
         <Route
           path="/curriculum"
           element={
