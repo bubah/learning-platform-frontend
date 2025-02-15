@@ -32,7 +32,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} /> */}
       </Routes>
       </AuthenticationProvider>
     </BrowserRouter>
