@@ -32,7 +32,6 @@ export const LoginForm = () => {
       (u) => u.username == username && u.password == password
     );
 
-
     if (user) {
       login(user);
     } else {

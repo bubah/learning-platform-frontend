@@ -19,13 +19,14 @@ export const AuthenticationProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [user, setUser] = useState<LoginCredentials | null>(null);
+  const [user, setUser] = useState<LoginCredentials | null>(JSON.parse(localStorage.getItem("authenticatedUser") || ""));
   const navigate = useNavigate();
 
   const login = (user: LoginCredentials) => {
     setUser(user);
     if (user) {
       navigate("/");
+      localStorage.setItem("authenticatedUser", JSON.stringify(user));
     } else {
       navigate("/login");
     }
@@ -34,6 +35,7 @@ export const AuthenticationProvider = ({
   const logout = () => {
     setUser(null);
     navigate("/login");
+    localStorage.removeItem("authenticatedUser");
   };
 
   return (
