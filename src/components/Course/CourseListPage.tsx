@@ -11,7 +11,7 @@ export const CourseList = () => {
   return (
     <Box sx={{ margin: 10 }}>
       {corses.map((course, index) => (
-        <Card key = {index} variant="outlined" sx={{ marginBottom: 5, display: "flex" }}>
+        <Card key={index} variant="outlined" sx={{ marginBottom: 5, display: "flex" }}>
           <Box>
             <CardMedia
               component="img"
