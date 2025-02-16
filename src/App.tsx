@@ -21,9 +21,9 @@ function App() {
           element={<LoginForm />}
         />
         <Route
-          path="/curriculum"
+          path="/curriculum/:id"
           element={
-            <ProtectedRoute >
+            <ProtectedRoute>
               <Curriculum />
             </ProtectedRoute>
           }

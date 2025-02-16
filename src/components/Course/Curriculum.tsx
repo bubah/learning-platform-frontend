@@ -8,10 +8,13 @@ import {
   Typography
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { Course, Lecture, mockCourse } from "../../mock-data/course";
+import { Course, Lecture} from "../../mock-data/course";
 import { AddLectureComponent } from "./AddLectureComponent";
 import { LectureProvider } from "./LectureProvider";
 import { SectionComponent } from "./SectionComponent";
+import axios from 'axios';
+import { useParams } from "react-router-dom";
+
 
 export const Curriculum = () => {
   const [course, setCourse] = useState<Course | undefined>(undefined);
@@ -19,10 +22,14 @@ export const Curriculum = () => {
   const [newlyAddedLecture, setNewlyAddedLecture] = useState<
     Lecture | undefined
   >(undefined);
+  const {id}  = useParams();
 
   useEffect(() => {
-    // Fetch course data from the server
-    setCourse(mockCourse);
+    axios.get(`http://localhost:8080/courses/${id}`).then((res) =>{
+    const {data} = res;
+    console.log(data);
+    setCourse(data);  
+})
   }, []);
 
   const handleAddSection = useCallback(
@@ -35,7 +42,7 @@ export const Curriculum = () => {
             if (index === lectureIndex) {
               return {
                 ...lecture,
-                sections: [...lecture.sections, { title: "", description: "" }],
+                sections: [...lecture.sections, { id:'',title: "", description: "" }],
               };
             }
             return lecture;
@@ -90,23 +97,16 @@ export const Curriculum = () => {
         Lectures:
       </Typography>
       {course?.lectures.map((lecture, index) => (
-        <Accordion key={`lecture-${index}`}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-          >
-            <Typography component="span">{lecture.title || "---"}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
             <LectureProvider
-              courseId={"course.id"}
+              lecture={lecture}
+              // id={lecture.id}
               key={`lecture-${index}`}
-              title={lecture.title}
-              description={lecture.description}
+              // title={lecture.title}
+              // description={lecture.description}
             >
               {lecture.sections.map((section, sectionIndex) => (
                 <SectionComponent
+                  id={section.id}
                   key={`section-${sectionIndex}`}
                   title={section.title}
                   description={section.description}
@@ -125,8 +125,7 @@ export const Curriculum = () => {
                 <Button onClick={() => saveLecture()}>Save Lecture</Button>
               </Box>
             </LectureProvider>
-          </AccordionDetails>
-        </Accordion>
+      
       ))}
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
         <Button onClick={() => setDisplayAddLecture(true)}>Add Lecture</Button>

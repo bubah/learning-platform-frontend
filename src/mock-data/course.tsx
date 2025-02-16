@@ -1,16 +1,19 @@
 export type Course = {
-    title: string;
-    lectures: Lecture[];
+  id:string,
+  description:string,  
+  title: string;
+  lectures: Lecture[];
 }
 
 export type Lecture = {
+    id:string, 
     title: string;
     description: string;
     sections: Section[];
 }
 
 export type Section = {
-    id?: string;
+    id: string;
     lectureId?: string;
     title: string;
     description: string;

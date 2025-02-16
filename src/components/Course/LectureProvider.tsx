@@ -1,18 +1,16 @@
-import { createContext, useState } from "react";
-import { memo } from "react";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
-  Button,
   Card,
-  Icon,
-  IconButton,
-  Paper,
-  TextField,
   Typography,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import { Delete } from "@mui/icons-material";
+import axios from "axios";
+import { createContext, memo, useState } from "react";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
+import { Lecture } from "../../mock-data/course";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const LectureContext = createContext({});
 
@@ -27,56 +25,83 @@ export const useLecture = () => {
 export const LectureProvider = memo(
   ({
     children,
-    courseId,
-    description,
-    title,
+    // description,
+    // title,
+    // id,
+    lecture,
   }: {
     children: React.ReactNode;
-    courseId: string;
-    description: string;
-    title: string;
+    // description: string;
+    // title: string;
+    // id:string
+    lecture: Lecture;
   }) => {
-    const [lectureState, setLectureState] = useState<{
-      title: string;
-      description: string;
-    }>({ title, description });
+    const [lectureTitle, setLectureTitle] = useState<string>(lecture.title);
+    const [lectureDescription, setLectureDescription] =
+      useState<string>(lecture.description);
+
     const [enableEdit, setEnableEdit] = useState(false);
     const [isAddingTitle, setIsAddingTitle] = useState(false);
     const [isAddingDescription, setIsAddingDescription] = useState(false);
 
     const updateTitle = (value: string) => {
       console.log("Updating title to: ", value);
+      const requestBody = { title: value };
+      axios
+        .put(`http://localhost:8080/lectures/${lecture.id}`, requestBody)
+        .then((res) => {
+          const { data } = res;
+          setLectureTitle(data.title);
+        });
     };
 
     const updateDescription = (value: string) => {
       console.log("Updating description to: ", value);
+      const requestBody = { description: value };
+      axios
+        .put(`http://localhost:8080/lectures/${lecture.id}`, requestBody)
+        .then((res) => {
+          const { data } = res;
+          setLectureDescription(data.description);
+        });
     };
 
     return (
       <LectureContext.Provider value={{}}>
-        <Card
-          variant="outlined"
-          sx={{ padding: "1rem", textAlign: "left", marginBottom: 5 }}
-        >
-          <Box display={"flex"} justifyContent={"space-between"}>
-            <Box flexGrow={1}>
-              <UpdateAttributeFeild
-                attributeValue={lectureState.title}
-                inEditing={isAddingTitle}
-                handleUpdate={updateTitle}
-                label="Title"
-              />
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1-content"
+            id="panel1-header"
+          >
+            <Typography component="span">{lectureTitle || "---"}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Card
+              variant="outlined"
+              sx={{ padding: "1rem", textAlign: "left", marginBottom: 5 }}
+            >
+              <Box display={"flex"} justifyContent={"space-between"}>
+                <Box flexGrow={1}>
+                  <UpdateAttributeFeild
+                    attributeValue={lectureTitle}
+                    inEditing={isAddingTitle}
+                    handleUpdate={updateTitle}
+                    label="Title"
+                  />
 
-              <UpdateAttributeFeild
-                attributeValue={lectureState.description}
-                inEditing={isAddingDescription}
-                handleUpdate={updateDescription}
-                label="Description"
-              />
-            </Box>
-          </Box>
-          {children}
-        </Card>
+                  <UpdateAttributeFeild
+                    attributeValue={lectureDescription}
+                    inEditing={isAddingDescription}
+                    handleUpdate={updateDescription}
+                    label="Description"
+                  />
+                </Box>
+              </Box>
+              {children}
+            </Card>
+          </AccordionDetails>
+        </Accordion>
       </LectureContext.Provider>
     );
   }

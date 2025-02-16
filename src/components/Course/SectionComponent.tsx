@@ -16,10 +16,12 @@ export const SectionComponent = memo(
     description,
     lectureId,
     title,
+    id,
   }: {
     description: string;
     lectureId: string;
     title: string;
+    id:string
   }) => {
     const [sectionState, setSectionState] = useState<{
       title: string;
