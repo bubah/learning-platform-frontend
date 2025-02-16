@@ -8,10 +8,13 @@ import {
   Typography
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { Course, Lecture, mockCourse } from "../../mock-data/course";
+import { Course, Lecture} from "../../mock-data/course";
 import { AddLectureComponent } from "./AddLectureComponent";
 import { LectureProvider } from "./LectureProvider";
 import { SectionComponent } from "./SectionComponent";
+import axios from 'axios';
+import { useParams } from "react-router-dom";
+
 
 export const Curriculum = () => {
   const [course, setCourse] = useState<Course | undefined>(undefined);
@@ -19,10 +22,14 @@ export const Curriculum = () => {
   const [newlyAddedLecture, setNewlyAddedLecture] = useState<
     Lecture | undefined
   >(undefined);
+  const {id}  = useParams();
 
   useEffect(() => {
-    // Fetch course data from the server
-    setCourse(mockCourse);
+    axios.get(`http://localhost:8080/courses/${id}`).then((res) =>{
+    const {data} = res;
+    console.log(data);
+    setCourse(data);  
+})
   }, []);
 
   const handleAddSection = useCallback(

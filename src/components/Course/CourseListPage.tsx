@@ -1,17 +1,35 @@
 import { useEffect, useState } from "react";
-import { Course, mockCourse } from "../../mock-data/course";
+import { Course } from "../../mock-data/course";
 import { Box, Card, CardMedia, Typography } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const CourseList = () => {
-  const [corses, setCourses] = useState<Course[] | []>([]);
+  const [courses, setCourses] = useState<Course[] | []>([]);
+  const navigate = useNavigate();
 
+const handleCourseClick = (course:Course) => {
+  const id = course.id;
+  navigate(`/curriculum/${id}`)
+}
+  
+  
+  
   useEffect(() => {
-    setCourses([mockCourse, mockCourse]);
+    // setCourses([mockCourse, mockCourse]);
+    axios.get(`http://localhost:8080/courses`).then((res) => {
+      const {data} = res;
+      setCourses(data);
+    })
   }, []);
+
+
   return (
     <Box sx={{ margin: 10 }}>
-      {corses.map((course, index) => (
-        <Card key={index} variant="outlined" sx={{ marginBottom: 5, display: "flex" }}>
+      {courses.map((course, index) => (
+        <Card 
+        onClick={() => handleCourseClick(course)}
+        key={index} variant="outlined" sx={{ marginBottom: 5, display: "flex", cursor:"pointer" }}>
           <Box>
             <CardMedia
               component="img"
