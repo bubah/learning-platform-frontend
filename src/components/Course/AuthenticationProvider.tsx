@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContextType, LoginCredentials } from "../../types/types";
 
@@ -15,7 +15,7 @@ const credentials = [
   },
 ];
 
-function checkLoginStatus(): LoginCredentials | null {
+function getLoginStatus(): LoginCredentials | null {
   const userCreds: LoginCredentials | null = JSON.parse(
     localStorage.getItem("authenticatedUser") || "{}"
   );
@@ -30,6 +30,7 @@ function checkLoginStatus(): LoginCredentials | null {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  authLoading: false,
   login: (user: LoginCredentials) => {},
   logout: () => {},
 });
@@ -47,8 +48,15 @@ export const AuthenticationProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [user, setUser] = useState<LoginCredentials | null>(checkLoginStatus());
+  const [user, setUser] = useState<LoginCredentials | null>(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = getLoginStatus();
+    setUser(user);
+    setLoading(false);
+  }, []);
 
   const login = (user: LoginCredentials) => {
     if (!user) {
@@ -68,7 +76,7 @@ export const AuthenticationProvider = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, authLoading: loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
