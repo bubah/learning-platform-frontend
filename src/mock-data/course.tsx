@@ -6,13 +6,14 @@ export type Course = {
 }
 
 export type Lecture = {
+    id:string, 
     title: string;
     description: string;
     sections: Section[];
 }
 
 export type Section = {
-    id?: string;
+    id: string;
     lectureId?: string;
     title: string;
     description: string;

@@ -42,7 +42,7 @@ export const Curriculum = () => {
             if (index === lectureIndex) {
               return {
                 ...lecture,
-                sections: [...lecture.sections, { title: "", description: "" }],
+                sections: [...lecture.sections, { id:'',title: "", description: "" }],
               };
             }
             return lecture;
@@ -97,23 +97,16 @@ export const Curriculum = () => {
         Lectures:
       </Typography>
       {course?.lectures.map((lecture, index) => (
-        <Accordion key={`lecture-${index}`}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-          >
-            <Typography component="span">{lecture.title || "---"}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
             <LectureProvider
-              courseId={"course.id"}
+              lecture={lecture}
+              // id={lecture.id}
               key={`lecture-${index}`}
-              title={lecture.title}
-              description={lecture.description}
+              // title={lecture.title}
+              // description={lecture.description}
             >
               {lecture.sections.map((section, sectionIndex) => (
                 <SectionComponent
+                  id={section.id}
                   key={`section-${sectionIndex}`}
                   title={section.title}
                   description={section.description}
@@ -132,8 +125,7 @@ export const Curriculum = () => {
                 <Button onClick={() => saveLecture()}>Save Lecture</Button>
               </Box>
             </LectureProvider>
-          </AccordionDetails>
-        </Accordion>
+      
       ))}
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
         <Button onClick={() => setDisplayAddLecture(true)}>Add Lecture</Button>
