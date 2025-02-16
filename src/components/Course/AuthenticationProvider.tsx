@@ -16,11 +16,23 @@ const credentials = [
 ];
 
 function checkLoginStatus(): LoginCredentials | null {
-  const userCreds: LoginCredentials | null = JSON.parse(localStorage.getItem("authenticatedUser") || "{}")
-  return credentials.find(crendential => crendential.username === userCreds?.username && crendential.password === userCreds?.password) || null
-};
+  const userCreds: LoginCredentials | null = JSON.parse(
+    localStorage.getItem("authenticatedUser") || "{}"
+  );
+  return (
+    credentials.find(
+      (crendential) =>
+        crendential.username === userCreds?.username &&
+        crendential.password === userCreds?.password
+    ) || null
+  );
+}
 
-const AuthContext = createContext<AuthContextType>({user:null,login:() => {},logout:() => {}});
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  login: (user: LoginCredentials) => {},
+  logout: () => {},
+});
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -39,11 +51,11 @@ export const AuthenticationProvider = ({
   const navigate = useNavigate();
 
   const login = (user: LoginCredentials) => {
-    if(!user) {
+    if (!user) {
       navigate("/login");
-      return
+      return;
     }
-    
+
     setUser(user);
     localStorage.setItem("authenticatedUser", JSON.stringify(user));
     navigate("/");
