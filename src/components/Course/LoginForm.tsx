@@ -1,42 +1,17 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import {  FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useAuth } from "./AuthenticationProvider";
 
-const credentials = [
-  {
-    username: "hrazak",
-    password: "123",
-    role: "student",
-  },
-  {
-    username: "bubahc",
-    password: "123",
-    role: "teacher",
-  },
-];
-
 export const LoginForm = () => {
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const {login} = useAuth();
-
-
+  const { login } = useAuth();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-
-    const user = credentials.find(
-      (u) => u.username == username && u.password == password
-    );
-
-    if (user) {
-      login(user);
-    } else {
-      setError("User not authenticated!");
-    }
+    login({ username, password });
   }
 
   return (

@@ -1,10 +1,26 @@
 import { createContext, useContext, useState } from "react";
-import { AuthContextType, LoginCredentials } from "../../types/types";
 import { useNavigate } from "react-router-dom";
+import { AuthContextType, LoginCredentials } from "../../types/types";
 
+const credentials = [
+  {
+    username: "hrazak",
+    password: "123",
+    role: "student",
+  },
+  {
+    username: "bubahc",
+    password: "123",
+    role: "teacher",
+  },
+];
+
+function checkLoginStatus(): LoginCredentials | null {
+  const userCreds: LoginCredentials | null = JSON.parse(localStorage.getItem("authenticatedUser") || "{}")
+  return credentials.find(crendential => crendential.username === userCreds?.username && crendential.password === userCreds?.password) || null
+};
 
 const AuthContext = createContext<AuthContextType>({user:null,login:() => {},logout:() => {}});
-
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -19,23 +35,24 @@ export const AuthenticationProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [user, setUser] = useState<LoginCredentials | null>(JSON.parse(localStorage.getItem("authenticatedUser") || ""));
+  const [user, setUser] = useState<LoginCredentials | null>(checkLoginStatus());
   const navigate = useNavigate();
 
   const login = (user: LoginCredentials) => {
-    setUser(user);
-    if (user) {
-      navigate("/");
-      localStorage.setItem("authenticatedUser", JSON.stringify(user));
-    } else {
+    if(!user) {
       navigate("/login");
+      return
     }
+    
+    setUser(user);
+    localStorage.setItem("authenticatedUser", JSON.stringify(user));
+    navigate("/");
   };
 
   const logout = () => {
     setUser(null);
-    navigate("/login");
     localStorage.removeItem("authenticatedUser");
+    navigate("/login");
   };
 
   return (

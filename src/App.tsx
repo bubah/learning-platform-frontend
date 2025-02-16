@@ -9,21 +9,17 @@ import { ProtectedRoute } from "./components/Course/ProtectedRoute";
 import { AuthenticationProvider } from "./components/Course/AuthenticationProvider";
 
 function App() {
-  
   return (
     <BrowserRouter>
     <AuthenticationProvider>
-      {/* we will pass down user to nav bar and conditionally render based on role. */}
       <NavBar />
       <Routes>
-        {/* Public Routes */}
         <Route path="/" element={<CourseList />} />
         <Route path="/courses/:id" element={<CoursePage />} />
         <Route
           path="/login"
           element={<LoginForm />}
         />
-
         <Route
           path="/curriculum"
           element={
