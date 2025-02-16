@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContextType, LoginCredentials } from "../../types/types";
 
 const credentials = [
@@ -51,6 +51,7 @@ export const AuthenticationProvider = ({
   const [user, setUser] = useState<LoginCredentials | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const user = getLoginStatus();
@@ -66,7 +67,8 @@ export const AuthenticationProvider = ({
 
     setUser(user);
     localStorage.setItem("authenticatedUser", JSON.stringify(user));
-    navigate("/");
+    const redirectUrl = location.state?.from?.pathname || "/";
+    navigate(redirectUrl);
   };
 
   const logout = () => {

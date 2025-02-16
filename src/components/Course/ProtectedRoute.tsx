@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthenticationProvider";
 import { CircularProgress } from "@mui/material";
 
@@ -8,6 +8,7 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, authLoading } = useAuth();
+  const location = useLocation();
   if (authLoading)
     return (
       <CircularProgress
@@ -19,5 +20,9 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
         }}
       />
     );
-  return user ? children : <Navigate to="/login" replace />;
+  return user ? (
+    children
+  ) : (
+    <Navigate to="/login" replace state={{ from: location }} />
+  );
 }
