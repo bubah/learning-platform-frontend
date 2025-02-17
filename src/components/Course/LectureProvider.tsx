@@ -60,7 +60,7 @@ export const LectureProvider = memo(
       const requestBody = { description: value };
       axios
         .put(`http://localhost:8080/lectures/${lecture.id}`, requestBody)
-        .then((res) => {
+        .then((res: any) => {
           const { data } = res;
           setLectureDescription(data.description);
         });
