@@ -22,6 +22,8 @@ const UpdateAttributeFeild = ({
     
   };
 
+  console.log(newValue);
+
   return (
     <Box
       sx={{
