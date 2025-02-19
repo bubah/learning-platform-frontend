@@ -4,6 +4,7 @@ import {
   AccordionSummary,
   Box,
   Card,
+  IconButton,
   Typography,
 } from "@mui/material";
 import axios from "axios";
@@ -11,6 +12,9 @@ import { createContext, memo, useState } from "react";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
 import { Lecture } from "../../mock-data/course";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { SectionComponent } from "./SectionComponent";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { useSortable } from "@dnd-kit/sortable";
 
 const LectureContext = createContext({});
 
@@ -36,9 +40,11 @@ export const LectureProvider = memo(
     // id:string
     lecture: Lecture;
   }) => {
+    const { attributes, listeners } = useSortable({ id: lecture.id });
     const [lectureTitle, setLectureTitle] = useState<string>(lecture.title);
-    const [lectureDescription, setLectureDescription] =
-      useState<string>(lecture.description);
+    const [lectureDescription, setLectureDescription] = useState<string>(
+      lecture.description
+    );
 
     const [enableEdit, setEnableEdit] = useState(false);
     const [isAddingTitle, setIsAddingTitle] = useState(false);
@@ -74,7 +80,22 @@ export const LectureProvider = memo(
             aria-controls="panel1-content"
             id="panel1-header"
           >
-            <Typography component="span">{lectureTitle || "---"}</Typography>
+            <Box
+          sx={{
+            display: "flex",
+            alignItems: "center", // ✅ Vertically center items
+            justifyContent: "flex-start", // ✅ Align items to the start (left)
+            width: "100%",
+            gap: 1, // ✅ Adds space between the icon and text
+          }}
+            >
+              <Box display="flex" alignItems="center">
+                <IconButton {...attributes} {...listeners}>
+                  <DragIndicatorIcon />
+                </IconButton>
+              </Box>
+              <Typography component="span">{lectureTitle || "---"}</Typography>
+            </Box>
           </AccordionSummary>
           <AccordionDetails>
             <Card
@@ -98,6 +119,7 @@ export const LectureProvider = memo(
                   />
                 </Box>
               </Box>
+
               {children}
             </Card>
           </AccordionDetails>

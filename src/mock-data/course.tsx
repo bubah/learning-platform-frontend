@@ -1,27 +1,43 @@
+export type ReorderResourceDTO = {
+  lectures?: LectureDTO[];
+  sections?: SectionDTO[];
+};
+export type LectureDTO = {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+};
+export type SectionDTO = {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+};
 export type Course = {
-  id:string,
-  description:string,  
+  id: string;
+  description: string;
   title: string;
   lectures: Lecture[];
-}
+};
 
 export type Lecture = {
-    id:string, 
-    title: string;
-    description: string;
-    sections: Section[];
-}
+  id: string;
+  title: string;
+  description: string;
+  sections: Section[];
+};
 
 export type Section = {
-    id: string;
-    lectureId?: string;
-    title: string;
-    description: string;
-    content?: {
-      path?: string;
-      type?: string;
-    }
-}
+  id: string;
+  lectureId?: string;
+  title: string;
+  description: string;
+  content?: {
+    path?: string;
+    type?: string;
+  };
+};
 
 export const mockCourse: Course = {
   title: "Full Stack Developer",

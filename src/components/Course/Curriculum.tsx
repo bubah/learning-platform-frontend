@@ -14,6 +14,7 @@ import { LectureProvider } from "./LectureProvider";
 import { SectionComponent } from "./SectionComponent";
 import axios from 'axios';
 import { useParams } from "react-router-dom";
+import { DragAndDropList } from "./DragAndDropList";
 
 
 export const Curriculum = () => {
@@ -31,6 +32,8 @@ export const Curriculum = () => {
     setCourse(data);  
 })
   }, []);
+
+
 
   const handleAddSection = useCallback(
     (lectureIndex: number): void => {
@@ -96,37 +99,10 @@ export const Curriculum = () => {
       <Typography alignSelf="flex-start" color="black">
         Lectures:
       </Typography>
-      {course?.lectures.map((lecture, index) => (
-            <LectureProvider
-              lecture={lecture}
-              // id={lecture.id}
-              key={`lecture-${index}`}
-              // title={lecture.title}
-              // description={lecture.description}
-            >
-              {lecture.sections.map((section, sectionIndex) => (
-                <SectionComponent
-                  id={section.id}
-                  key={`section-${sectionIndex}`}
-                  title={section.title}
-                  description={section.description}
-                  lectureId={"lecture.id"}
-                />
-              ))}
-              <Box sx={{ marginTop: 2 }}>
-                <Button
-                  variant="outlined"
-                  onClick={() => handleAddSection(index)}
-                >
-                  Add Section
-                </Button>
-              </Box>
-              <Box sx={{ textAlign: "center", marginTop: 2 }}>
-                <Button onClick={() => saveLecture()}>Save Lecture</Button>
-              </Box>
-            </LectureProvider>
+    {course && 
+    <DragAndDropList id = {course?.id} courseLectures = {course?.lectures || []}/>
+  }
       
-      ))}
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
         <Button onClick={() => setDisplayAddLecture(true)}>Add Lecture</Button>
       </Box>
