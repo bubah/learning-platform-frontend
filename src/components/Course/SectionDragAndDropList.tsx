@@ -1,45 +1,45 @@
 import { useState } from "react";
-import { Section } from "../../mock-data/course";
-import { closestCenter, DndContext } from "@dnd-kit/core";
-import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { Box, Button } from "@mui/material";
+import { ReorderResourceDTO, Section } from "../../mock-data/course";
+import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
+import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SectionComponent } from "./SectionComponent";
 import { CSS } from "@dnd-kit/utilities";
+import axios from "axios";
 
-export const SectionDragAndDropList = ({lectureSections}:{lectureSections:Section[]}) => {
+export const SectionDragAndDropList = ({lectureSections,lectureId}:{lectureSections:Section[], lectureId:number}) => {
 
     const [sections, setSections] = useState<Section[] | []>(lectureSections);
 
-    const handleDragEnd = (event: any) => {
-        const prevLectureOrder = lectures;
+    const handleDragEnd = (event: DragEndEvent) => {
+        const prevSectionOrder = sections;
         const { active, over } = event;
     
-        // if(!over || active.id === over.id) return; 
+        if(!over || active.id === over.id) return; 
     
-        // const oldIndex = lectures.findIndex((l) => l.id === active.id)
-        // const newIndex = lectures.findIndex((l) => l.id === over.id)
-        // const newArray = arrayMove(lectures,oldIndex,newIndex);
+        const oldIndex = sections.findIndex((s) => s.id === active.id)
+        const newIndex = sections.findIndex((s) => s.id === over.id)
+        const newArray = arrayMove(sections,oldIndex,newIndex);
         
-        // setLectures(newArray)
+        setSections(newArray)
     
     
-        // const requestBody:ReorderResourceDTO= {lectures:newArray.map((l,i) => {
+        const requestBody:ReorderResourceDTO= {sections:newArray.map((s,i) => {
             
-        //     return{
-        //         title:l.title,
-        //         description:l.description,
-        //         id:l.id,
-        //         order:i
-        //     }
-        // })}
+            return{
+                title:s.title,
+                description:s.description,
+                id:s.id,
+                order:i
+            }
+        })}
     
-        // axios.post(`http://localhost:8080/lecture-reorder/${id}`,requestBody).then((res) => {
-        //     const {data} = res;
-        //     console.log(data);
-        // }).catch((error) => {
-        //     console.log(error);
-        //     setLectures(prevLectureOrder);
-        // })
+        axios.post(`http://localhost:8080/section-reorder/${lectureId}`,requestBody).then((res) => {
+            const {data} = res;
+            console.log(data);
+        }).catch((error) => {
+            console.log(error);
+            setSections(prevSectionOrder);
+        })
       };
 
       return(
@@ -60,7 +60,7 @@ export const SectionDragAndDropList = ({lectureSections}:{lectureSections:Sectio
 
 
 const SortabelSection = ({section}:{section:Section}) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: section.id });
+    const { setNodeRef, transform, transition } = useSortable({ id: section.id });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -74,31 +74,9 @@ const SortabelSection = ({section}:{section:Section}) => {
 
 
       return(
-        <div ref={setNodeRef} style={style} >
-      <SectionComponent
-       id={section.id}
-    //    key={`section-${sectionIndex}`}
-       title={section.title}
-       description={section.description}
-    //    lectureId={lecture.id}
-       section={section}>
-        {/* ✅ Sections now render inside AccordionDetails again */}
-        {/* {lecture.sections.map((section, sectionIndex) => (
-          <SectionComponent
-            id={section.id}
-            key={`section-${sectionIndex}`}
-            title={section.title}
-            description={section.description}
-            lectureId={lecture.id}
-          />
-        ))} */}
-        <Box sx={{ marginTop: 2 }}>
-          <Button variant="outlined">Add Section</Button>
-        </Box>
-        <Box sx={{ textAlign: "center", marginTop: 2 }}>
-          <Button>Save Lecture</Button>
-        </Box>
-      </SectionComponent>
+        <div ref={setNodeRef} style={style}>
+      <SectionComponent section={section}/>
+
     </div>
   );
     

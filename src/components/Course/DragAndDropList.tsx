@@ -101,7 +101,7 @@ const SortableLecture = ({ lecture }: { lecture: Lecture }) => {
             lectureId={lecture.id}
           />
         ))} */}
-        <SectionDragAndDropList lectureSections={lecture.sections || []} />
+        <SectionDragAndDropList lectureId = {lecture.id} lectureSections={lecture.sections || []} />
         <Box sx={{ marginTop: 2 }}>
           <Button variant="outlined">Add Section</Button>
         </Box>
