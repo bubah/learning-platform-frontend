@@ -34,7 +34,7 @@ const UpdateAttributeFeild = ({
           {!isEditing ? (
             <Box
               sx={{
-                height: 50,
+                height: 10,
                 display: "flex",
                 justifyContent: "space-between",
                 textAlign: "center",
