@@ -1,0 +1,31 @@
+import { AxiosResponse } from "axios";
+
+export type GetContractResponse = AxiosResponse<CourseDTO, any>
+
+export type ReorderResourceDTO = {
+  lectures?: LectureDTO[];
+  sections?: SectionDTO[];
+};
+
+export type LectureDTO = {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  sections?: SectionDTO[];
+};
+
+export type SectionDTO = {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+};
+
+export type CourseDTO = {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  lectures: LectureDTO[];
+};

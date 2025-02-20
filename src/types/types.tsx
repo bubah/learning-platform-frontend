@@ -5,8 +5,33 @@ export type LoginCredentials = {
 };
 
 export type AuthContextType = {
-  user:LoginCredentials | null;
+  user: LoginCredentials | null;
   authLoading: boolean;
-  login: (user:LoginCredentials) => void;
+  login: (user: LoginCredentials) => void;
   logout: () => void;
-}
+};
+
+export type Course = {
+  id: string;
+  description: string;
+  title: string;
+  lectures: Lecture[];
+};
+
+export type Lecture = {
+  id: string;
+  title: string;
+  description: string;
+  sections: Section[];
+};
+
+export type Section = {
+  id: string;
+  lectureId?: string;
+  title: string;
+  description: string;
+  content?: {
+    path?: string;
+    type?: string;
+  };
+};
