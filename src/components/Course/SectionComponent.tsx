@@ -4,47 +4,51 @@ import {
   Card,
   CardActions,
   CardContent,
+  IconButton,
   TextField,
 } from "@mui/material";
 import { useState } from "react";
 
 import { memo } from "react";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
+import { Section } from "../../mock-data/course";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { useSortable } from "@dnd-kit/sortable";
 
-export const SectionComponent = memo(
-  ({
-    description,
-    lectureId,
-    title,
-    id,
-  }: {
-    description: string;
-    lectureId: string;
+export const SectionComponent = memo(({ section }: { section: Section }) => {
+  const { title, description, id } = section;
+  const { attributes, listeners } = useSortable({ id: id });
+
+  const [sectionState, setSectionState] = useState<{
     title: string;
-    id:string
-  }) => {
-    const [sectionState, setSectionState] = useState<{
-      title: string;
-      description: string;
-    }>({ title, description });
-    const [isAddingTitle, setIsAddingTitle] = useState(false);
-    const [isAddingDescription, setIsAddingDescription] = useState(false);
+    description: string;
+  }>({ title, description });
+  const [isAddingTitle, setIsAddingTitle] = useState(false);
+  const [isAddingDescription, setIsAddingDescription] = useState(false);
 
-    const handleSaveV2 = (value: string) => {
-      console.log("Printing value", value);
-    };
+  const handleSaveV2 = (value: string) => {
+    console.log("Printing value", value);
+  };
 
-    return (
-      <Box>
-        <Card
-          sx={{
-            padding: "1rem",
-            textAlign: "left",
-            backgroundColor: "#f2f2f2",
-            marginBottom: 2,
-          }}
-        >
-          <CardContent>
+  return (
+    <Box>
+      <Card
+        sx={{
+          padding: "1rem",
+          textAlign: "left",
+          backgroundColor: "#f2f2f2",
+          marginBottom: 2,
+        }}
+      >
+        <CardContent sx={{display:"flex"}}>
+          <Box marginRight="5">
+            <IconButton sx={{alignItems:'start'}}  {...attributes} {...listeners}>
+              <DragIndicatorIcon />
+            </IconButton>
+          </Box>
+          <Box
+          sx={{width:'100%', marginLeft:'25px'}}
+          >
             <UpdateAttributeFeild
               attributeValue={sectionState.title}
               inEditing={isAddingTitle}
@@ -68,14 +72,14 @@ export const SectionComponent = memo(
                 },
               }}
             />
-          </CardContent>
-          <CardActions>
-            <Button size="small" variant="outlined" onClick={() => {}}>
-              cancel
-            </Button>
-          </CardActions>
-        </Card>
-      </Box>
-    );
-  }
-);
+        <CardActions>
+          <Button size="small" variant="outlined" onClick={() => {}}>
+            cancel
+          </Button>
+        </CardActions>
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+});
