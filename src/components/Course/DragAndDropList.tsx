@@ -13,6 +13,7 @@ import { SectionComponent } from "./SectionComponent";
 import { CSS } from "@dnd-kit/utilities";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import axios from "axios";
+import { SectionDragAndDropList } from "./SectionDragAndDropList";
 
 
 export const DragAndDropList = ({
@@ -81,7 +82,7 @@ const SortableLecture = ({ lecture }: { lecture: Lecture }) => {
     transform: CSS.Transform.toString(transform),
     transition,
     padding: "0px",
-    margin: "10px 0",
+    margin: "5px 0",
     backgroundColor: "#f0f0f0",
     borderRadius: "4px",
     cursor: "grab",
@@ -90,8 +91,8 @@ const SortableLecture = ({ lecture }: { lecture: Lecture }) => {
   return (
     <div ref={setNodeRef} style={style} >
       <LectureProvider lecture={lecture}>
-        {/* ✅ Sections now render inside AccordionDetails again */}
-        {lecture.sections.map((section, sectionIndex) => (
+        
+        {/* {lecture.sections.map((section, sectionIndex) => (
           <SectionComponent
             id={section.id}
             key={`section-${sectionIndex}`}
@@ -99,7 +100,8 @@ const SortableLecture = ({ lecture }: { lecture: Lecture }) => {
             description={section.description}
             lectureId={lecture.id}
           />
-        ))}
+        ))} */}
+        <SectionDragAndDropList lectureSections={lecture.sections || []} />
         <Box sx={{ marginTop: 2 }}>
           <Button variant="outlined">Add Section</Button>
         </Box>

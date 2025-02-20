@@ -101,7 +101,7 @@ export const Curriculum = () => {
       </Typography>
     {course && 
     <DragAndDropList id = {course?.id} courseLectures = {course?.lectures || []}/>
-  }
+    }
       
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
         <Button onClick={() => setDisplayAddLecture(true)}>Add Lecture</Button>
