@@ -14,17 +14,21 @@ import { useEffect, useState } from "react";
 import { GetContractResponse, ReorderResourceDTO } from "../../types/dtos";
 import { Lecture } from "../../types/types";
 import { LectureProvider } from "./LectureProvider";
-import { SectionComponent } from "./SectionComponent";
+
 
 export const DragAndDropList = ({
   courseLectures,
   id,
+  deleteLecture
 }: {
   courseLectures: Lecture[];
   id: string;
+  deleteLecture:(id:string) => void
 }) => {
   const [lectures, setLectures] = useState<Lecture[] | []>(courseLectures);
 
+  const sortedLectures = [...lectures.sort((a,b) => a.order - b.order)];
+  console.log("sorted lectures ", sortedLectures)
 
   useEffect(() => {
       setLectures(courseLectures);
@@ -33,13 +37,15 @@ export const DragAndDropList = ({
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
-    const pristineLectures = lectures;
+    const pristineLectures = sortedLectures;
+    console.log("sorted lectures :",sortedLectures)
 
     const oldIndex = lectures.findIndex((l) => l.id === active.id);
     const newIndex = lectures.findIndex((l) => l.id === over.id);
     const updatedLectures = arrayMove(lectures, oldIndex, newIndex);
 
-    setLectures(updatedLectures);
+    // setLectures(updatedLectures);
+    console.log("old index: ", oldIndex,"newIndex : ", newIndex , "Updated Lectures :", updatedLectures )
 
     const requestBody: ReorderResourceDTO = {
       lectures: updatedLectures.map((l, i) => ({
@@ -54,9 +60,9 @@ export const DragAndDropList = ({
       .post(`http://localhost:8080/lecture-reorder/${id}`, requestBody)
       .then((res: GetContractResponse) => {
         const { data } = res;
-        console.log(data);
+        // console.log(data);
 
-        setLectures(updatedLectures);
+        setLectures(data.lectures);
       })
       .catch((error) => {
         console.log(error);
@@ -64,19 +70,20 @@ export const DragAndDropList = ({
       });
   };
 
-  console.log("updated lectures array ", lectures)
+ 
+
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={lectures} strategy={verticalListSortingStrategy}>
-        {lectures.map((lecture) => (
-          <SortableLecture key={lecture.id} lecture={lecture} />
+      <SortableContext items={sortedLectures} strategy={verticalListSortingStrategy}>
+        {sortedLectures.map((lecture) => (
+          <SortableLecture deleteLecture={deleteLecture} key={lecture.id} lecture={lecture} />
         ))}
       </SortableContext>
     </DndContext>
   );
 };
 
-const SortableLecture = ({ lecture }: { lecture: Lecture }) => {
+const SortableLecture = ({ lecture,deleteLecture }: { lecture: Lecture, deleteLecture: (id:string) => void }) => {
   const { setNodeRef, transform, transition } = useSortable({ id: lecture.id });
 
   const style = {
@@ -89,7 +96,7 @@ const SortableLecture = ({ lecture }: { lecture: Lecture }) => {
     cursor: "grab",
   };
 
-  console.log("new sortable lecture should be added: ", lecture)
+
   return (
     <div ref={setNodeRef} style={style}>
       <LectureProvider lecture={lecture}>
@@ -100,8 +107,18 @@ const SortableLecture = ({ lecture }: { lecture: Lecture }) => {
         <Box sx={{ marginTop: 2 }}>
           <Button variant="outlined">Add Section</Button>
         </Box>
+        <Box
+        sx={{display:'flex', justifyContent:'space-between'}}
+        >
         <Box sx={{ textAlign: "center", marginTop: 2 }}>
           <Button>Save Lecture</Button>
+        </Box>
+        <Box sx={{ textAlign: "center", marginTop: 2 }}>
+          <Button
+          onClick={() => deleteLecture(lecture.id)}
+          sx={{backgroundColor:'red', color:'white'}}
+          >Delete Lecture</Button>
+        </Box>
         </Box>
       </LectureProvider>
     </div>

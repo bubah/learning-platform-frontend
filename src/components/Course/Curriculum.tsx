@@ -51,7 +51,27 @@ export const Curriculum = () => {
     setDisplayAddLecture(false);
   };
 
-  console.log("Course Object with new lecture added ", course);
+ 
+  const deleteLecture = (id:string) =>  {
+    const pristineCourse = course; 
+    const lectures  = course?.lectures;
+
+    setCourse((prevCourse) => ({
+      ...prevCourse!, 
+      lectures: lectures?.filter((lecture) =>  lecture.id !== id) || []
+    }))
+
+    axios.delete(`http://localhost:8080/lectures/${id}`).then((res) => {
+      console.log(res.data); 
+
+    }).catch((error) => {
+      setCourse(pristineCourse);
+      console.log(error)
+    })
+  }
+  
+
+  // console.log("Course Object with new lecture added ", course);
   return (
     <Box
       sx={{
@@ -68,6 +88,7 @@ export const Curriculum = () => {
         <DragAndDropList
           id={course.id}
           courseLectures={course.lectures}
+          deleteLecture={deleteLecture}
         />
       )}
 

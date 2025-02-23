@@ -19,10 +19,10 @@ export type Course = {
 };
 
 export type Lecture = {
-  id: string;
+  id: string | null;
   title: string;
   description: string;
-  sections: Section[];
+  sections?: Section[];
   order: number;
 };
 
