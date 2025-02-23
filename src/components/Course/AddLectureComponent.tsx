@@ -1,13 +1,24 @@
 import { Card, TextField, Button, Box } from "@mui/material";
 import { useState } from "react";
-import { Lecture } from "../../mock-data/course";
+import { Description } from "@mui/icons-material";
+import { Lecture } from "../../types/types";
 
-export const AddLectureComponent = ({ onCancel }: { onCancel: () => void }) => {
-  const [lecture, setLecture] = useState<Lecture | undefined>(undefined);
+export const AddLectureComponent = ({
+  onCancel,
+  saveLecture,
+}: {
+  onCancel: () => void;
+  saveLecture: (lecture: Lecture) => void;
+}) => {
+  const [lecture, setLecture] = useState<Lecture>({
+    title: "",
+    description: "",
+    sections: [],
+    id: null,
+  });
 
-  const saveLecture = () => {
-    // API Call
-    console.log("Saving new lecture", lecture);
+  const createLecture = () => {
+    saveLecture(lecture);
   };
 
   return (
@@ -17,10 +28,24 @@ export const AddLectureComponent = ({ onCancel }: { onCancel: () => void }) => {
         label="Add Lecture title"
         value={lecture?.title ?? ""}
         onChange={(e) => {
-          setLecture({
-            title: e.target.value,
-            description: "",
-            sections: [],
+          setLecture((prevState: Lecture) => {
+            return {
+              ...prevState,
+              title: e.target.value,
+            };
+          });
+        }}
+      />
+      <TextField
+        fullWidth
+        label="Add Lecture description"
+        value={lecture?.description ?? ""}
+        onChange={(e) => {
+          setLecture((prevState: Lecture) => {
+            return {
+              ...prevState,
+              description: e.target.value,
+            };
           });
         }}
       />
@@ -35,7 +60,7 @@ export const AddLectureComponent = ({ onCancel }: { onCancel: () => void }) => {
           marginRight: "auto",
         }}
       >
-        <Button onClick={saveLecture} variant="contained" fullWidth>
+        <Button onClick={createLecture} variant="contained" fullWidth>
           Save
         </Button>
         <Button onClick={onCancel} variant="outlined" fullWidth>

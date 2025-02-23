@@ -23,6 +23,7 @@ export type Lecture = {
   title: string;
   description: string;
   sections: Section[];
+  order: number;
 };
 
 export type Section = {
@@ -34,4 +35,5 @@ export type Section = {
     path?: string;
     type?: string;
   };
+  order:number
 };

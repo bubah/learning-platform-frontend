@@ -10,7 +10,7 @@ import { Box, Button } from "@mui/material";
 import axios from "axios";
 import { SectionDragAndDropList } from "./SectionDragAndDropList";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GetContractResponse, ReorderResourceDTO } from "../../types/dtos";
 import { Lecture } from "../../types/types";
 import { LectureProvider } from "./LectureProvider";
@@ -24,6 +24,11 @@ export const DragAndDropList = ({
   id: string;
 }) => {
   const [lectures, setLectures] = useState<Lecture[] | []>(courseLectures);
+
+
+  useEffect(() => {
+      setLectures(courseLectures);
+  }, [courseLectures]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -59,6 +64,7 @@ export const DragAndDropList = ({
       });
   };
 
+  console.log("updated lectures array ", lectures)
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={lectures} strategy={verticalListSortingStrategy}>
@@ -83,6 +89,7 @@ const SortableLecture = ({ lecture }: { lecture: Lecture }) => {
     cursor: "grab",
   };
 
+  console.log("new sortable lecture should be added: ", lecture)
   return (
     <div ref={setNodeRef} style={style}>
       <LectureProvider lecture={lecture}>
