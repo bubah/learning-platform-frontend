@@ -14,6 +14,7 @@ import UpdateAttributeFeild from "./UpdateAttributeFied";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { useSortable } from "@dnd-kit/sortable";
 import { Section } from "../../types/types";
+import { useSection } from "./SectionProvider";
 
 export const SectionComponent = memo(({ section }: { section: Section }) => {
   const { title, description, id } = section;
@@ -25,6 +26,8 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
   }>({ title, description });
   const [isAddingTitle] = useState(false);
   const [isAddingDescription] = useState(false);
+
+  const { onDeleteSection } = useSection();
 
   const handleSaveV2 = (value: string) => {
     console.log("Printing value", value);
@@ -82,7 +85,7 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
                 size="small"
                 variant="outlined"
                 color="error"
-                onClick={() => {}}
+                onClick={() => onDeleteSection(section.id!)}
               >
                 DELETE SECTION
               </Button>

@@ -12,18 +12,19 @@ import { SectionDragAndDropList } from "./SectionDragAndDropList";
 
 import { useEffect, useState } from "react";
 import { LectureDTO, ReorderResourceDTO } from "../../types/dtos";
-import { Lecture } from "../../types/types";
+import { Lecture, Section } from "../../types/types";
 import { LectureComponent } from "./LectureComponent";
+import { AddLectureComponent } from "./AddLectureComponent";
+import { useSection } from "./SectionProvider";
+import { LectureProvider, useLecture } from "./LectureProvider";
+import { useCourse } from "./CourseProvider";
 
 export const DragAndDropList = ({
   courseLectures,
-  id,
-  deleteLecture,
 }: {
   courseLectures: Lecture[];
-  id: string | null;
-  deleteLecture: (id: string) => void;
 }) => {
+  const { course } = useCourse();
   const [lectures, setLectures] = useState<Lecture[] | []>(courseLectures);
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export const DragAndDropList = ({
     };
 
     axios
-      .post(`http://localhost:8080/lecture-reorder/${id}`, requestBody)
+      .post(`http://localhost:8080/lecture-reorder/${course?.id}`, requestBody)
       .catch((error) => {
         console.log(error);
         setLectures(pristineLectures);
@@ -73,27 +74,28 @@ export const DragAndDropList = ({
         strategy={verticalListSortingStrategy}
       >
         {sortedLectures.map((lecture) => (
-          <SortableLecture
-            deleteLecture={deleteLecture}
-            key={lecture.id}
-            lecture={lecture}
-          />
+          <LectureProvider key={lecture.id} lecture={lecture}>
+            <SortableLecture />
+          </LectureProvider>
         ))}
       </SortableContext>
     </DndContext>
   );
 };
 
-const SortableLecture = ({
-  lecture,
-  deleteLecture,
-}: {
-  lecture: Lecture;
-  deleteLecture: (id: string) => void;
-}) => {
+const SortableLecture = () => {
+  // const { onSaveSection } = useSection();
+  const { lecture } = useLecture();
+  const { deleteLecture, saveSection } = useCourse();
   const { setNodeRef, transform, transition } = useSortable({
-    id: lecture.id ?? "",
+    id: lecture?.id ?? "",
   });
+  const [displayAddSection, setDisplayAddSection] = useState(false);
+
+  const handleSaveSection = (section: Section) => {
+    console.log("save section called", section);
+    saveSection({ ...section, lectureId: lecture.id || "" });
+  };
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -107,13 +109,26 @@ const SortableLecture = ({
 
   return (
     <div ref={setNodeRef} style={style}>
-      <LectureComponent lecture={lecture}>
-        <SectionDragAndDropList
-          lectureId={lecture.id || ""}
-          lectureSections={lecture.sections || []}
-        />
-        <Box sx={{ marginTop: 2 }}>
-          <Button variant="outlined">Add Section</Button>
+      <LectureComponent>
+        <Box sx={{ textAlign: "center", marginTop: 2 }}>
+          <SectionDragAndDropList />
+          <Box sx={{ marginTop: 2 }}>
+            <Button
+              variant="outlined"
+              onClick={() => setDisplayAddSection(true)}
+            >
+              Add Section
+            </Button>
+          </Box>
+          {displayAddSection && (
+            <AddLectureComponent<Section>
+              saveItem={(item) => {
+                console.log("here", item);
+                handleSaveSection(item);
+              }}
+              onCancel={() => setDisplayAddSection(false)}
+            />
+          )}
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ textAlign: "center", marginTop: 2 }}>
@@ -132,6 +147,7 @@ const SortableLecture = ({
     </div>
   );
 };
+
 function toLectureDTO(updatedLectures: Lecture[]): LectureDTO[] {
   return updatedLectures.map((l) => ({
     id: l.id,

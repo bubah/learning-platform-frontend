@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Course, Lecture } from "../../types/types";
+import { Course, Lecture, Section } from "../../types/types";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { LectureDTO } from "../../types/dtos";
@@ -14,6 +14,8 @@ type CourseContextType = {
   course: Course | undefined;
   saveLecture: (lecture: Lecture) => void;
   deleteLecture: (id: string) => void;
+  saveSection: (section: Section) => void;
+  deleteSection: (id: string) => void;
 };
 
 const CourseContext = createContext({} as CourseContextType);
@@ -71,6 +73,60 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const saveSection = (section: Section) => {
+    const pristineCourse = course;
+    const lectures = course?.lectures;
+
+    setCourse((prevCourse) => ({
+      ...prevCourse!,
+      lectures:
+        lectures?.map((lecture) => ({
+          ...lecture,
+          sections: [
+            ...(lecture.sections || []),
+            {
+              title: section.title,
+              description: section.description,
+              order: lecture.sections?.length || 0,
+              id: null,
+            },
+          ],
+        })) || [],
+    }));
+
+    axios
+      .post("http://localhost:8080/sections", {
+        title: section.title,
+        description: section.description,
+        order: section.order,
+        lectureId: section.lectureId,
+        content: "place holder"
+      })
+      .catch((error) => {
+        setCourse(pristineCourse);
+        console.log(error);
+      });
+  };
+
+  const deleteSection = (id: string) => {
+    const pristineCourse = course;
+    const lectures = course?.lectures;
+
+    setCourse((prevCourse) => ({
+      ...prevCourse!,
+      lectures:
+        lectures?.map((lecture) => ({
+          ...lecture,
+          sections: lecture.sections?.filter((section) => section.id !== id),
+        })) || [],
+    }));
+
+    axios.delete(`http://localhost:8080/sections/${id}`).catch((error) => {
+      setCourse(pristineCourse);
+      console.log(error);
+    });
+  };
+
   useEffect(() => {
     axios.get(`http://localhost:8080/courses/${id}`).then((res) => {
       const { data } = res;
@@ -79,7 +135,9 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <CourseContext.Provider value={{ course, saveLecture, deleteLecture }}>
+    <CourseContext.Provider
+      value={{ course, saveLecture, deleteLecture, saveSection, deleteSection }}
+    >
       {children}
     </CourseContext.Provider>
   );

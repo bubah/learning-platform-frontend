@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AddLectureComponent } from "./AddLectureComponent";
 import { DragAndDropList } from "./DragAndDropList";
 import { useCourse } from "./CourseProvider";
+import { Lecture } from "../../types/types";
 
 export const Curriculum = () => {
   const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);
@@ -27,9 +28,7 @@ export const Curriculum = () => {
 
       {course && (
         <DragAndDropList
-          id={course.id}
           courseLectures={course.lectures}
-          deleteLecture={deleteLecture}
         />
       )}
 
@@ -38,8 +37,8 @@ export const Curriculum = () => {
       </Box>
 
       {displayAddLecture && (
-        <AddLectureComponent
-          saveLecture={handleSaveLecture}
+        <AddLectureComponent<Lecture>
+          saveItem={handleSaveLecture}
           onCancel={() => setDisplayAddLecture(false)}
         />
       )}

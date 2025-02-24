@@ -11,15 +11,14 @@ import { CSS } from "@dnd-kit/utilities";
 import axios from "axios";
 import { Section } from "../../types/types";
 import { ReorderResourceDTO, SectionDTO } from "../../types/dtos";
+import { SectionProvider, useSection } from "./SectionProvider";
+import { useLecture } from "./LectureProvider";
 
-export const SectionDragAndDropList = ({
-  lectureSections,
-  lectureId,
-}: {
-  lectureSections: Section[];
-  lectureId: string;
-}) => {
-  const [sections, setSections] = useState<Section[] | []>(lectureSections);
+export const SectionDragAndDropList = () => {
+  const { lecture } = useLecture();
+  const [sections, setSections] = useState<Section[] | []>(
+    lecture.sections || []
+  );
 
   const handleDragEnd = (event: DragEndEvent) => {
     const pristineSections = sortedSections;
@@ -29,7 +28,11 @@ export const SectionDragAndDropList = ({
 
     const oldIndex = sortedSections.findIndex((s) => s.id === active.id);
     const newIndex = sortedSections.findIndex((s) => s.id === over.id);
-    const updaatedSections: Section[] = arrayMove(sortedSections, oldIndex, newIndex).map((s, i) => {
+    const updaatedSections: Section[] = arrayMove(
+      sortedSections,
+      oldIndex,
+      newIndex
+    ).map((s, i) => {
       return {
         title: s.title,
         description: s.description,
@@ -45,7 +48,7 @@ export const SectionDragAndDropList = ({
     };
 
     axios
-      .post(`http://localhost:8080/section-reorder/${lectureId}`, requestBody)
+      .post(`http://localhost:8080/section-reorder/${lecture.id}`, requestBody)
       .catch((error) => {
         console.log(error);
         setSections(pristineSections);
@@ -56,19 +59,28 @@ export const SectionDragAndDropList = ({
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext
-        items={sortedSections?.map((section) => section.id).filter(id => id !== null) as string[]}
+        items={
+          sortedSections
+            ?.map((section) => section.id)
+            .filter((id) => id !== null) as string[]
+        }
         strategy={verticalListSortingStrategy}
       >
         {sortedSections?.map((section) => (
-          <SortabelSection key={section.id} section={section} />
+          <SectionProvider key={section.id} section={section}>
+            <SortabelSection />
+          </SectionProvider>
         ))}
       </SortableContext>
     </DndContext>
   );
 };
 
-const SortabelSection = ({ section }: { section: Section }) => {
-  const { setNodeRef, transform, transition } = useSortable({ id: section.id || "" });
+const SortabelSection = () => {
+  const { section } = useSection();
+  const { setNodeRef, transform, transition } = useSortable({
+    id: section.id || "",
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -94,4 +106,3 @@ function toSectionDTO(updaatedSections: Section[]): SectionDTO[] {
     order: s.order,
   }));
 }
-

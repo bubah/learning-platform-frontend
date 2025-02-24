@@ -11,14 +11,17 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import { memo, useState } from "react";
-import { Lecture } from "../../types/types";
+import { memo, ReactNode, useState } from "react";
+import { useLecture } from "./LectureProvider";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
 
 export const LectureComponent = memo(
-  ({ children, lecture }: { children: React.ReactNode; lecture: Lecture }) => {
+  ({ children }: { children: ReactNode }) => {
+    const { lecture } = useLecture();
     const { attributes, listeners } = useSortable({ id: lecture.id || "" });
-    const [lectureTitle, setLectureTitle] = useState<string>(lecture.title);
+    const [lectureTitle, setLectureTitle] = useState<string>(
+      lecture.title
+    );
     const [lectureDescription, setLectureDescription] = useState<string>(
       lecture.description
     );
@@ -49,56 +52,56 @@ export const LectureComponent = memo(
     };
 
     return (
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1-content"
+          id="panel1-header"
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center", // ✅ Vertically center items
+              justifyContent: "flex-start", // ✅ Align items to the start (left)
+              width: "100%",
+              gap: 1, // ✅ Adds space between the icon and text
+            }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center", // ✅ Vertically center items
-                justifyContent: "flex-start", // ✅ Align items to the start (left)
-                width: "100%",
-                gap: 1, // ✅ Adds space between the icon and text
-              }}
-            >
-              <Box display="flex" alignItems="center">
-                <IconButton {...attributes} {...listeners}>
-                  <DragIndicatorIcon />
-                </IconButton>
-              </Box>
-              <Typography component="span">{lectureTitle || "---"}</Typography>
+            <Box display="flex" alignItems="center">
+              <IconButton {...attributes} {...listeners}>
+                <DragIndicatorIcon />
+              </IconButton>
             </Box>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Card
-              variant="outlined"
-              sx={{ padding: "1rem", textAlign: "left", marginBottom: 5 }}
-            >
-              <Box display={"flex"} justifyContent={"space-between"}>
-                <Box flexGrow={1}>
-                  <UpdateAttributeFeild
-                    attributeValue={lectureTitle}
-                    inEditing={isAddingTitle}
-                    handleUpdate={updateTitle}
-                    label="Title"
-                  />
+            <Typography component="span">{lectureTitle || "---"}</Typography>
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Card
+            variant="outlined"
+            sx={{ padding: "1rem", textAlign: "left", marginBottom: 5 }}
+          >
+            <Box display={"flex"} justifyContent={"space-between"}>
+              <Box flexGrow={1}>
+                <UpdateAttributeFeild
+                  attributeValue={lectureTitle}
+                  inEditing={isAddingTitle}
+                  handleUpdate={updateTitle}
+                  label="Title"
+                />
 
-                  <UpdateAttributeFeild
-                    attributeValue={lectureDescription}
-                    inEditing={isAddingDescription}
-                    handleUpdate={updateDescription}
-                    label="Description"
-                  />
-                </Box>
+                <UpdateAttributeFeild
+                  attributeValue={lectureDescription}
+                  inEditing={isAddingDescription}
+                  handleUpdate={updateDescription}
+                  label="Description"
+                />
               </Box>
+            </Box>
 
-              {children}
-            </Card>
-          </AccordionDetails>
-        </Accordion>
+            {children}
+          </Card>
+        </AccordionDetails>
+      </Accordion>
     );
   }
 );
