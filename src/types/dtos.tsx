@@ -17,7 +17,7 @@ export type LectureDTO = {
 };
 
 export type SectionDTO = {
-  id: string;
+  id: string | null;
   title: string;
   description: string;
   order: number;

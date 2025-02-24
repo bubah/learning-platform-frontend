@@ -22,7 +22,7 @@ export const SectionDragAndDropList = ({
   const [sections, setSections] = useState<Section[] | []>(lectureSections);
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const prevSectionOrder = sections;
+    const prevSections = sections;
     const { active, over } = event;
 
     if (!over || active.id === over.id) return;
@@ -52,14 +52,15 @@ export const SectionDragAndDropList = ({
       })
       .catch((error) => {
         console.log(error);
-        setSections(prevSectionOrder);
+        setSections(prevSections);
       });
   };
 
+  const sortedSections = [...sections].sort((a, b) => a.order - b.order);
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext
-        items={sections?.map((section) => section.id)}
+        items={sortedSections?.map((section) => section.id).filter(id => id !== null) as string[]}
         strategy={verticalListSortingStrategy}
       >
         {sections?.map((section) => (
@@ -71,7 +72,7 @@ export const SectionDragAndDropList = ({
 };
 
 const SortabelSection = ({ section }: { section: Section }) => {
-  const { setNodeRef, transform, transition } = useSortable({ id: section.id });
+  const { setNodeRef, transform, transition } = useSortable({ id: section.id || "" });
 
   const style = {
     transform: CSS.Transform.toString(transform),

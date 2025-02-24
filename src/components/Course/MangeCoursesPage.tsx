@@ -1,7 +1,7 @@
-import { EditCourse } from "./EditCourse";
-import { Curriculum } from "./Curriculum";
-import { Box, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
+import { Curriculum } from "./Curriculum";
+import { EditCourse } from "./EditCourse";
 
 interface TabPanelProps {
   children?: React.ReactNode;

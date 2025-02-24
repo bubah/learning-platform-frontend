@@ -12,7 +12,7 @@ export type AuthContextType = {
 };
 
 export type Course = {
-  id: string;
+  id: string | null;
   description: string;
   title: string;
   lectures: Lecture[];
@@ -27,7 +27,7 @@ export type Lecture = {
 };
 
 export type Section = {
-  id: string;
+  id: string | null;
   lectureId?: string;
   title: string;
   description: string;

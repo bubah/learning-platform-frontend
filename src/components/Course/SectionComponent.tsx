@@ -11,9 +11,9 @@ import { useState } from "react";
 
 import { memo } from "react";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
-import { Section } from "../../mock-data/course";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { useSortable } from "@dnd-kit/sortable";
+import { Section } from "../../types/types";
 
 export const SectionComponent = memo(({ section }: { section: Section }) => {
   const { title, description, id } = section;

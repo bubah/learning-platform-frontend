@@ -1,8 +1,4 @@
-import {
-  Box,
-  Button,
-  Typography
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -23,55 +19,51 @@ export const Curriculum = () => {
     });
   }, []);
 
-  const saveLecture = (lecture:Lecture) => {
-    console.log("Saving new lecture", lecture);
+  const saveLecture = (lecture: Lecture) => {
+    const lectureDTO: LectureDTO = {
+      title: lecture.title,
+      description: lecture.description,
+      sections: lecture.sections?.map((s) => ({
+        title: s.title,
+        description: s.description,
+        order: s.order,
+        id: s.id,
+      })),
+      courseId: course?.id || undefined,
+      id: null,
+      order: course?.lectures.length || 0,
+    };
 
-    const lectureDTO:LectureDTO = {
-      title:lecture.title, 
-      description:lecture.description,
-      sections:lecture.sections.map((s) => ({ title:s.title, description:s.description,order:s.order,id:s.id})), 
-      courseId:course?.id, 
-      id:null, 
-      order:course?.lectures.length || 0
-    }
+    axios
+      .post("http://localhost:8080/lectures", lectureDTO)
+      .then((res) => {
+        setCourse((prevCourse) => ({
+          ...prevCourse!,
+          lectures: [...prevCourse!.lectures, res.data],
+        }));
+      })
+      .catch((error) => console.log(error));
 
-    axios.post("http://localhost:8080/lectures",lectureDTO).then((res) => {
-      console.log(res.data)
-    setCourse((prevCourse) => ({ 
-      ...prevCourse!, 
-      lectures:[
-        ...prevCourse!.lectures,
-          res.data
-      ]
-    }))
-    
-    })
-      
-      .catch((error) => console.log(error))
     setDisplayAddLecture(false);
   };
 
- 
-  const deleteLecture = (id:string) =>  {
-    const pristineCourse = course; 
-    const lectures  = course?.lectures;
+  const deleteLecture = (id: string) => {
+    const pristineCourse = course;
+    const lectures = course?.lectures;
 
     setCourse((prevCourse) => ({
-      ...prevCourse!, 
-      lectures: lectures?.filter((lecture) =>  lecture.id !== id) || []
-    }))
+      ...prevCourse!,
+      lectures: lectures?.filter((lecture) => lecture.id !== id) || [],
+    }));
 
-    axios.delete(`http://localhost:8080/lectures/${id}`).then((res) => {
-      console.log(res.data); 
+    axios
+      .delete(`http://localhost:8080/lectures/${id}`)
+      .catch((error) => {
+        setCourse(pristineCourse);
+        console.log(error);
+      });
+  };
 
-    }).catch((error) => {
-      setCourse(pristineCourse);
-      console.log(error)
-    })
-  }
-  
-
-  // console.log("Course Object with new lecture added ", course);
   return (
     <Box
       sx={{
@@ -97,7 +89,10 @@ export const Curriculum = () => {
       </Box>
 
       {displayAddLecture && (
-        <AddLectureComponent saveLecture = {saveLecture} onCancel={() => setDisplayAddLecture(false)} />
+        <AddLectureComponent
+          saveLecture={saveLecture}
+          onCancel={() => setDisplayAddLecture(false)}
+        />
       )}
     </Box>
   );

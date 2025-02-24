@@ -15,6 +15,7 @@ export const AddLectureComponent = ({
     description: "",
     sections: [],
     id: null,
+    order: -1,
   });
 
   const createLecture = () => {

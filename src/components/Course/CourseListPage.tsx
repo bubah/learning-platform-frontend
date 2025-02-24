@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Course } from "../../mock-data/course";
 import { Box, Card, CardMedia, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Course } from "../../types/types";
 
 export const CourseList = () => {
   const [courses, setCourses] = useState<Course[] | []>([]);

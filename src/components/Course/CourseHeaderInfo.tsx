@@ -1,5 +1,5 @@
 import { Box, Typography, CircularProgress } from "@mui/material";
-import { Course } from "../../mock-data/course";
+import { Course } from "../../types/types";
 
 export const CourseHeaderInfo = ({
   course,

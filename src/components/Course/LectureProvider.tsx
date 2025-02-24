@@ -27,7 +27,7 @@ export const useLecture = () => {
 
 export const LectureProvider = memo(
   ({ children, lecture }: { children: React.ReactNode; lecture: Lecture }) => {
-    const { attributes, listeners } = useSortable({ id: lecture.id });
+    const { attributes, listeners } = useSortable({ id: lecture.id || "" });
     const [lectureTitle, setLectureTitle] = useState<string>(lecture.title);
     const [lectureDescription, setLectureDescription] = useState<string>(
       lecture.description
