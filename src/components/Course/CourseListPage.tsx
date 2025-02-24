@@ -8,28 +8,28 @@ export const CourseList = () => {
   const [courses, setCourses] = useState<Course[] | []>([]);
   const navigate = useNavigate();
 
-const handleCourseClick = (course:Course) => {
-  const id = course.id;
-  navigate(`/curriculum/${id}`)
-}
-  
-  
-  
+  const handleCourseClick = (course: Course) => {
+    const id = course.id;
+    navigate(`/manage/course/${id}`);
+  };
+
   useEffect(() => {
     // setCourses([mockCourse, mockCourse]);
     axios.get(`http://localhost:8080/courses`).then((res) => {
-      const {data} = res;
+      const { data } = res;
       setCourses(data);
-    })
+    });
   }, []);
-
 
   return (
     <Box sx={{ margin: 10 }}>
       {courses.map((course, index) => (
-        <Card 
-        onClick={() => handleCourseClick(course)}
-        key={index} variant="outlined" sx={{ marginBottom: 5, display: "flex", cursor:"pointer" }}>
+        <Card
+          onClick={() => handleCourseClick(course)}
+          key={index}
+          variant="outlined"
+          sx={{ marginBottom: 5, display: "flex", cursor: "pointer" }}
+        >
           <Box>
             <CardMedia
               component="img"

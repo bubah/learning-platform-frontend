@@ -10,6 +10,12 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { LectureDTO } from "../../types/dtos";
 
+type CourseContextType = {
+  course: Course | undefined;
+  saveLecture: (lecture: Lecture) => void;
+  deleteLecture: (id: string) => void;
+};
+
 const CourseContext = createContext({} as CourseContextType);
 
 export const useCourse = () => {

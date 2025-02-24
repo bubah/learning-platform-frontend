@@ -21,7 +21,7 @@ function App() {
           element={<LoginForm />}
         />
         <Route
-          path="/curriculum/:id"
+          path="/manage/course/:id"
           element={
             <ProtectedRoute>
               <CourseManagementScreen />
