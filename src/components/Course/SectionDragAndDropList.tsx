@@ -10,7 +10,7 @@ import { SectionComponent } from "./SectionComponent";
 import { CSS } from "@dnd-kit/utilities";
 import axios from "axios";
 import { Section } from "../../types/types";
-import { ReorderResourceDTO } from "../../types/dtos";
+import { ReorderResourceDTO, SectionDTO } from "../../types/dtos";
 
 export const SectionDragAndDropList = ({
   lectureSections,
@@ -22,37 +22,33 @@ export const SectionDragAndDropList = ({
   const [sections, setSections] = useState<Section[] | []>(lectureSections);
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const prevSections = sections;
+    const pristineSections = sortedSections;
     const { active, over } = event;
 
     if (!over || active.id === over.id) return;
 
-    const oldIndex = sections.findIndex((s) => s.id === active.id);
-    const newIndex = sections.findIndex((s) => s.id === over.id);
-    const newArray = arrayMove(sections, oldIndex, newIndex);
+    const oldIndex = sortedSections.findIndex((s) => s.id === active.id);
+    const newIndex = sortedSections.findIndex((s) => s.id === over.id);
+    const updaatedSections: Section[] = arrayMove(sortedSections, oldIndex, newIndex).map((s, i) => {
+      return {
+        title: s.title,
+        description: s.description,
+        id: s.id,
+        order: i,
+      };
+    });
 
-    setSections(newArray);
+    setSections(updaatedSections);
 
     const requestBody: ReorderResourceDTO = {
-      sections: newArray.map((s, i) => {
-        return {
-          title: s.title,
-          description: s.description,
-          id: s.id,
-          order: i,
-        };
-      }),
+      sections: toSectionDTO(updaatedSections),
     };
 
     axios
       .post(`http://localhost:8080/section-reorder/${lectureId}`, requestBody)
-      .then((res) => {
-        const { data } = res;
-        console.log(data);
-      })
       .catch((error) => {
         console.log(error);
-        setSections(prevSections);
+        setSections(pristineSections);
       });
   };
 
@@ -63,7 +59,7 @@ export const SectionDragAndDropList = ({
         items={sortedSections?.map((section) => section.id).filter(id => id !== null) as string[]}
         strategy={verticalListSortingStrategy}
       >
-        {sections?.map((section) => (
+        {sortedSections?.map((section) => (
           <SortabelSection key={section.id} section={section} />
         ))}
       </SortableContext>
@@ -90,3 +86,12 @@ const SortabelSection = ({ section }: { section: Section }) => {
     </div>
   );
 };
+function toSectionDTO(updaatedSections: Section[]): SectionDTO[] {
+  return updaatedSections.map((s) => ({
+    title: s.title,
+    description: s.description,
+    id: s.id,
+    order: s.order,
+  }));
+}
+

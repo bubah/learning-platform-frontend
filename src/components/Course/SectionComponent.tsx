@@ -17,14 +17,14 @@ import { Section } from "../../types/types";
 
 export const SectionComponent = memo(({ section }: { section: Section }) => {
   const { title, description, id } = section;
-  const { attributes, listeners } = useSortable({ id: id });
+  const { attributes, listeners } = useSortable({ id: id  || "" });
 
-  const [sectionState, setSectionState] = useState<{
+  const [sectionState] = useState<{
     title: string;
     description: string;
   }>({ title, description });
-  const [isAddingTitle, setIsAddingTitle] = useState(false);
-  const [isAddingDescription, setIsAddingDescription] = useState(false);
+  const [isAddingTitle] = useState(false);
+  const [isAddingDescription] = useState(false);
 
   const handleSaveV2 = (value: string) => {
     console.log("Printing value", value);
