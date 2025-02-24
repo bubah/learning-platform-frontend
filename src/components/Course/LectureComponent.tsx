@@ -11,21 +11,11 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import { createContext, memo, useState } from "react";
-import UpdateAttributeFeild from "./UpdateAttributeFied";
+import { memo, useState } from "react";
 import { Lecture } from "../../types/types";
+import UpdateAttributeFeild from "./UpdateAttributeFied";
 
-const LectureContext = createContext({});
-
-export const useLecture = () => {
-  const context = LectureContext;
-  if (!context) {
-    throw new Error("useLecture must be used within a LectureProvider");
-  }
-  return context;
-};
-
-export const LectureProvider = memo(
+export const LectureComponent = memo(
   ({ children, lecture }: { children: React.ReactNode; lecture: Lecture }) => {
     const { attributes, listeners } = useSortable({ id: lecture.id || "" });
     const [lectureTitle, setLectureTitle] = useState<string>(lecture.title);
@@ -59,7 +49,6 @@ export const LectureProvider = memo(
     };
 
     return (
-      <LectureContext.Provider value={{}}>
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -110,7 +99,6 @@ export const LectureProvider = memo(
             </Card>
           </AccordionDetails>
         </Accordion>
-      </LectureContext.Provider>
     );
   }
 );

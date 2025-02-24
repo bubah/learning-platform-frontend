@@ -17,7 +17,7 @@ import { Section } from "../../types/types";
 
 export const SectionComponent = memo(({ section }: { section: Section }) => {
   const { title, description, id } = section;
-  const { attributes, listeners } = useSortable({ id: id  || "" });
+  const { attributes, listeners } = useSortable({ id: id || "" });
 
   const [sectionState] = useState<{
     title: string;
@@ -40,15 +40,17 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
           marginBottom: 2,
         }}
       >
-        <CardContent sx={{display:"flex"}}>
+        <CardContent sx={{ display: "flex" }}>
           <Box marginRight="5">
-            <IconButton sx={{alignItems:'start'}}  {...attributes} {...listeners}>
+            <IconButton
+              sx={{ alignItems: "start" }}
+              {...attributes}
+              {...listeners}
+            >
               <DragIndicatorIcon />
             </IconButton>
           </Box>
-          <Box
-          sx={{width:'100%', marginLeft:'25px'}}
-          >
+          <Box sx={{ width: "100%", marginLeft: "25px" }}>
             <UpdateAttributeFeild
               attributeValue={sectionState.title}
               inEditing={isAddingTitle}
@@ -72,11 +74,19 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
                 },
               }}
             />
-        <CardActions>
-          <Button size="small" variant="outlined" onClick={() => {}}>
-            cancel
-          </Button>
-        </CardActions>
+            <CardActions>
+              <Button size="small" variant="outlined" onClick={() => {}}>
+                cancel
+              </Button>
+              <Button
+                size="small"
+                variant="outlined"
+                color="error"
+                onClick={() => {}}
+              >
+                DELETE SECTION
+              </Button>
+            </CardActions>
           </Box>
         </CardContent>
       </Card>

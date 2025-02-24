@@ -1,67 +1,16 @@
 import { Box, Button, Typography } from "@mui/material";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
 import { AddLectureComponent } from "./AddLectureComponent";
 import { DragAndDropList } from "./DragAndDropList";
-import { Course, Lecture } from "../../types/types";
-import { LectureDTO } from "../../types/dtos";
+import { useCourse } from "./CourseProvider";
 
 export const Curriculum = () => {
-  const [course, setCourse] = useState<Course | undefined>(undefined);
   const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);
-  const { id } = useParams();
+  const { course, saveLecture, deleteLecture } = useCourse();
 
-  useEffect(() => {
-    axios.get(`http://localhost:8080/courses/${id}`).then((res) => {
-      const { data } = res;
-      setCourse(data);
-    });
-  }, []);
-
-  const saveLecture = (lecture: Lecture) => {
-    const lectureDTO: LectureDTO = {
-      title: lecture.title,
-      description: lecture.description,
-      sections: lecture.sections?.map((s) => ({
-        title: s.title,
-        description: s.description,
-        order: s.order,
-        id: s.id,
-      })),
-      courseId: course?.id || undefined,
-      id: null,
-      order: course?.lectures.length || 0,
-    };
-
-    axios
-      .post("http://localhost:8080/lectures", lectureDTO)
-      .then((res) => {
-        setCourse((prevCourse) => ({
-          ...prevCourse!,
-          lectures: [...prevCourse!.lectures, res.data],
-        }));
-      })
-      .catch((error) => console.log(error));
-
+  const handleSaveLecture = (lecture: any) => {
+    saveLecture(lecture);
     setDisplayAddLecture(false);
-  };
-
-  const deleteLecture = (id: string) => {
-    const pristineCourse = course;
-    const lectures = course?.lectures;
-
-    setCourse((prevCourse) => ({
-      ...prevCourse!,
-      lectures: lectures?.filter((lecture) => lecture.id !== id) || [],
-    }));
-
-    axios
-      .delete(`http://localhost:8080/lectures/${id}`)
-      .catch((error) => {
-        setCourse(pristineCourse);
-        console.log(error);
-      });
   };
 
   return (
@@ -90,7 +39,7 @@ export const Curriculum = () => {
 
       {displayAddLecture && (
         <AddLectureComponent
-          saveLecture={saveLecture}
+          saveLecture={handleSaveLecture}
           onCancel={() => setDisplayAddLecture(false)}
         />
       )}

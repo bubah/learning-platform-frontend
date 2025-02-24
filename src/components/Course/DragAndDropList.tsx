@@ -13,7 +13,7 @@ import { SectionDragAndDropList } from "./SectionDragAndDropList";
 import { useEffect, useState } from "react";
 import { LectureDTO, ReorderResourceDTO } from "../../types/dtos";
 import { Lecture } from "../../types/types";
-import { LectureProvider } from "./LectureProvider";
+import { LectureComponent } from "./LectureComponent";
 
 export const DragAndDropList = ({
   courseLectures,
@@ -37,14 +37,16 @@ export const DragAndDropList = ({
 
     const oldIndex = sortedLectures.findIndex((l) => l.id === active.id);
     const newIndex = sortedLectures.findIndex((l) => l.id === over.id);
-    const updatedLectures: Lecture[] = arrayMove(sortedLectures, oldIndex, newIndex).map(
-      (l, i) => ({
-        title: l.title,
-        description: l.description,
-        id: l.id,
-        order: i,
-      })
-    );
+    const updatedLectures: Lecture[] = arrayMove(
+      sortedLectures,
+      oldIndex,
+      newIndex
+    ).map((l, i) => ({
+      title: l.title,
+      description: l.description,
+      id: l.id,
+      order: i,
+    }));
 
     setLectures(updatedLectures);
 
@@ -65,7 +67,9 @@ export const DragAndDropList = ({
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext
-        items={sortedLectures.map((l) => l.id).filter((id): id is string => id !== null)}
+        items={sortedLectures
+          .map((l) => l.id)
+          .filter((id): id is string => id !== null)}
         strategy={verticalListSortingStrategy}
       >
         {sortedLectures.map((lecture) => (
@@ -87,7 +91,9 @@ const SortableLecture = ({
   lecture: Lecture;
   deleteLecture: (id: string) => void;
 }) => {
-  const { setNodeRef, transform, transition } = useSortable({ id: lecture.id ?? "" });
+  const { setNodeRef, transform, transition } = useSortable({
+    id: lecture.id ?? "",
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -101,7 +107,7 @@ const SortableLecture = ({
 
   return (
     <div ref={setNodeRef} style={style}>
-      <LectureProvider lecture={lecture}>
+      <LectureComponent lecture={lecture}>
         <SectionDragAndDropList
           lectureId={lecture.id || ""}
           lectureSections={lecture.sections || []}
@@ -122,7 +128,7 @@ const SortableLecture = ({
             </Button>
           </Box>
         </Box>
-      </LectureProvider>
+      </LectureComponent>
     </div>
   );
 };
@@ -140,4 +146,3 @@ function toLectureDTO(updatedLectures: Lecture[]): LectureDTO[] {
     })),
   }));
 }
-

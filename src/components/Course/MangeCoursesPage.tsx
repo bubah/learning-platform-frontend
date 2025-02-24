@@ -2,6 +2,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import { Curriculum } from "./Curriculum";
 import { EditCourse } from "./EditCourse";
+import { CourseProvider } from "./CourseProvider";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -33,34 +34,36 @@ export default function CourseManagementScreen() {
   };
 
   return (
-    <Box display={"flex"} sx={{ display: "flex", paddingLeft: 2 }}>
-      <Tabs
-        aria-label="Vertical tabs"
-        orientation="vertical"
-        value={value}
-        onChange={handleChange}
-        sx={{
-          minWidth: 300,
-          height: "100vh",
-          borderRight: 1,
-          borderColor: "divider",
-        }}
-      >
-        <Tab label="Edit Course" />
-        <Tab label="Second tabsge" />
-        <Tab label="Course Overview" />
-      </Tabs>
-      <Box sx={{ flexGrow: 1 }}>
-        <TabPanel value={value} index={0}>
-          <EditCourse />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Curriculum />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <b>Third</b> tab panel
-        </TabPanel>
+    <CourseProvider>
+      <Box display={"flex"} sx={{ display: "flex", paddingLeft: 2 }}>
+        <Tabs
+          aria-label="Vertical tabs"
+          orientation="vertical"
+          value={value}
+          onChange={handleChange}
+          sx={{
+            minWidth: 300,
+            height: "100vh",
+            borderRight: 1,
+            borderColor: "divider",
+          }}
+        >
+          <Tab label="Edit Course" />
+          <Tab label="Second tabsge" />
+          <Tab label="Course Overview" />
+        </Tabs>
+        <Box sx={{ flexGrow: 1 }}>
+          <TabPanel value={value} index={0}>
+            <EditCourse />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Curriculum />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <b>Third</b> tab panel
+          </TabPanel>
+        </Box>
       </Box>
-    </Box>
+    </CourseProvider>
   );
 }
