@@ -93,8 +93,8 @@ const SortableLecture = () => {
   const [displayAddSection, setDisplayAddSection] = useState(false);
 
   const handleSaveSection = (section: Section) => {
-    console.log("save section called", section);
     saveSection({ ...section, lectureId: lecture.id || "" });
+    setDisplayAddSection(false);
   };
 
   const style = {
