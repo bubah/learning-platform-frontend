@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -13,12 +13,17 @@ import { Section } from "../../types/types";
 import { ReorderResourceDTO, SectionDTO } from "../../types/dtos";
 import { SectionProvider, useSection } from "./SectionProvider";
 import { useLecture } from "./LectureProvider";
+import { use } from "video.js/dist/types/tech/middleware";
 
 export const SectionDragAndDropList = () => {
   const { lecture } = useLecture();
   const [sections, setSections] = useState<Section[] | []>(
     lecture.sections || []
   );
+
+  useEffect(() => {
+    setSections(lecture.sections || []);
+  }, [lecture.sections]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const pristineSections = sortedSections;
@@ -56,6 +61,8 @@ export const SectionDragAndDropList = () => {
   };
 
   const sortedSections = [...sections].sort((a, b) => a.order - b.order);
+
+  console.log("Section Drag & drop", lecture, sections, sortedSections);
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext

@@ -15,7 +15,6 @@ import { LectureDTO, ReorderResourceDTO } from "../../types/dtos";
 import { Lecture, Section } from "../../types/types";
 import { LectureComponent } from "./LectureComponent";
 import { AddLectureComponent } from "./AddLectureComponent";
-import { useSection } from "./SectionProvider";
 import { LectureProvider, useLecture } from "./LectureProvider";
 import { useCourse } from "./CourseProvider";
 
@@ -65,6 +64,7 @@ export const DragAndDropList = ({
 
   const sortedLectures = [...lectures].sort((a, b) => a.order - b.order);
 
+  console.log("Sorted Lectures", sortedLectures);
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext

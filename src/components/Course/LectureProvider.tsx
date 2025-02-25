@@ -24,6 +24,8 @@ export const LectureProvider = ({
   children: ReactNode;
   lecture: Lecture;
 }) => {
+    
+    console.log("LectureProvider", lecture)
   return (
     <LectureContext.Provider value={{ lecture }}>
       {children}

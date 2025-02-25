@@ -14,6 +14,8 @@ export const Curriculum = () => {
     setDisplayAddLecture(false);
   };
 
+  console.log("Course", course);
+
   return (
     <Box
       sx={{

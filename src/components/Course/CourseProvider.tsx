@@ -80,27 +80,33 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     setCourse((prevCourse) => ({
       ...prevCourse!,
       lectures:
-        lectures?.map((lecture) => ({
-          ...lecture,
-          sections: [
-            ...(lecture.sections || []),
-            {
-              title: section.title,
-              description: section.description,
-              order: lecture.sections?.length || 0,
-              id: null,
-            },
-          ],
-        })) || [],
+        lectures?.map((lecture) => {
+          if (lecture.id !== section.lectureId) return lecture;
+          
+          return {
+            ...lecture,
+            sections: [
+              ...(lecture.sections || []),
+              {
+                title: section.title,
+                description: section.description,
+                order: lecture.sections?.length || 0,
+                id: null,
+              },
+            ],
+          };
+        }) || [],
     }));
 
     axios
       .post("http://localhost:8080/sections", {
         title: section.title,
         description: section.description,
-        order: section.order,
+        order:
+          lectures?.find((lecture) => lecture.id === section.lectureId)
+            ?.sections?.length || 0,
         lectureId: section.lectureId,
-        content: "place holder"
+        content: "place holder",
       })
       .catch((error) => {
         setCourse(pristineCourse);
@@ -133,6 +139,8 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
       setCourse(data);
     });
   }, []);
+
+  console.log("course Provider", course);
 
   return (
     <CourseContext.Provider
