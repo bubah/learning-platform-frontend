@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useContext } from "react";
 import { Lecture } from "../../types/types";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type LectureContextType = {
   lecture: Lecture;
@@ -17,6 +19,8 @@ export const useLecture = () => {
   return context;
 };
 
+
+
 export const LectureProvider = ({
   children,
   lecture,
@@ -24,11 +28,29 @@ export const LectureProvider = ({
   children: ReactNode;
   lecture: Lecture;
 }) => {
-    
-    console.log("LectureProvider", lecture)
+
+  const { setNodeRef, transform, transition } = useSortable({
+    id: lecture?.id ?? "",
+  });
+  // console.log("LectureProvider", lecture);
+
+
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    padding: "0px",
+    margin: "5px 0",
+    backgroundColor: "#f0f0f0",
+    borderRadius: "4px",
+    cursor: "grab",
+  };
+
   return (
     <LectureContext.Provider value={{ lecture }}>
-      {children}
+      <div ref={setNodeRef} style={style}>
+        {children}
+      </div>
     </LectureContext.Provider>
   );
 };

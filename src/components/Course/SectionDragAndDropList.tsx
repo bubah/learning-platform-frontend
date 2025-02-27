@@ -62,7 +62,7 @@ export const SectionDragAndDropList = () => {
 
   const sortedSections = [...sections].sort((a, b) => a.order - b.order);
 
-  console.log("Section Drag & drop", lecture, sections, sortedSections);
+  // console.log("Section Drag & drop", lecture, sections, sortedSections);
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext

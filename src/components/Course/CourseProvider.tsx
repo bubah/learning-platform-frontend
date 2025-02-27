@@ -8,7 +8,7 @@ import {
 import { Course, Lecture, Section } from "../../types/types";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { LectureDTO } from "../../types/dtos";
+import { LectureDTO, ReorderResourceDTO } from "../../types/dtos";
 
 type CourseContextType = {
   course: Course | undefined;
@@ -16,6 +16,7 @@ type CourseContextType = {
   deleteLecture: (id: string) => void;
   saveSection: (section: Section) => void;
   deleteSection: (id: string) => void;
+  reorderLectures:(pristineLecture:Lecture[],updatedLecture:Lecture[]) => void;
 };
 
 const CourseContext = createContext({} as CourseContextType);
@@ -140,13 +141,70 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
-  console.log("course Provider", course);
+  // console.log("course Provider", course);
+
+
+  const reorderLectures = (pristineLectures:Lecture[],updatedLectures:Lecture[]) => {
+    const requestBody: ReorderResourceDTO = {
+      lectures: toLectureDTO(updatedLectures),
+    };
+
+    setCourse((prevCourse) => (
+      {
+        ...prevCourse!, 
+      lectures:updatedLectures
+        
+      }
+    ))
+
+    axios
+      .post(`http://localhost:8080/lecture-reorder/${course?.id}`, requestBody)
+      .then((res) => {
+        const {lectures} = res.data
+        console.log(lectures);
+        // console.log("updated lecture order: ", lectures)
+        // setCourse((prevCourse) => (
+        //   {
+        //     ...prevCourse!, 
+        //           lectures
+            
+        //   }
+        // ))
+      })
+      .catch((error) => {
+        console.log(error);
+        setCourse((prevCourse) => (
+          {
+            ...prevCourse!, 
+            lectures:pristineLectures
+            
+          }
+        ))
+      });
+  }
 
   return (
     <CourseContext.Provider
-      value={{ course, saveLecture, deleteLecture, saveSection, deleteSection }}
+      value={{ course, saveLecture, deleteLecture, saveSection, deleteSection,reorderLectures }}
     >
       {children}
     </CourseContext.Provider>
   );
 };
+
+
+
+function toLectureDTO(updatedLectures: Lecture[]): LectureDTO[] {
+  return updatedLectures.map((l) => ({
+    id: l.id,
+    order: l.order,
+    title: l.title,
+    description: l.description,
+    sections: l.sections?.map((s) => ({
+      id: s.id,
+      title: s.title,
+      description: s.description,
+      order: s.order,
+    })),
+  }));
+}

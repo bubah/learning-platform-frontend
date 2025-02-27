@@ -4,6 +4,8 @@ import { AddLectureComponent } from "./AddLectureComponent";
 import { DragAndDropList } from "./DragAndDropList";
 import { useCourse } from "./CourseProvider";
 import { Lecture } from "../../types/types";
+import { LectureProvider } from "./LectureProvider";
+import { LectureComponent } from "./LectureComponent";
 
 export const Curriculum = () => {
   const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);
@@ -14,7 +16,9 @@ export const Curriculum = () => {
     setDisplayAddLecture(false);
   };
 
-  console.log("Course", course);
+  // console.log("Course", course);
+  
+  const sortedLectures = [...(course?.lectures || [])].sort((a, b) => a.order - b.order);
 
   return (
     <Box
@@ -28,11 +32,19 @@ export const Curriculum = () => {
     >
       <Typography color="black">Curriculum</Typography>
 
-      {course && (
+      {/* {course && (
         <DragAndDropList
           courseLectures={course.lectures}
         />
-      )}
+      )} */}
+
+      <DragAndDropList >
+         {sortedLectures.map((lecture) => (
+          <LectureProvider key={lecture.id} lecture={lecture}>
+             <LectureComponent />
+          </LectureProvider>
+        ))}
+      </DragAndDropList>
 
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
         <Button onClick={() => setDisplayAddLecture(true)}>Add Lecture</Button>

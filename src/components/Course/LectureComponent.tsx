@@ -6,6 +6,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
   Card,
   IconButton,
   Typography,
@@ -14,9 +15,25 @@ import axios from "axios";
 import { memo, ReactNode, useState } from "react";
 import { useLecture } from "./LectureProvider";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
+import { SectionDragAndDropList } from "./SectionDragAndDropList";
+import { useCourse } from "./CourseProvider";
+import { Section } from "../../types/types";
+import { AddLectureComponent } from "./AddLectureComponent";
 
-export const LectureComponent = memo(
-  ({ children }: { children: ReactNode }) => {
+export const LectureComponent = 
+  () => {
+  
+    //  states and functions moved from sortable lecture to lecture component
+    const { deleteLecture, saveSection } = useCourse();
+    const [displayAddSection, setDisplayAddSection] = useState(false);
+  
+    const handleSaveSection = (section: Section) => {
+      saveSection({ ...section, lectureId: lecture.id || "" });
+      setDisplayAddSection(false);
+    };
+    // end of states and functions added from sortable lectures from drag and drop list
+
+
     const { lecture } = useLecture();
     const { attributes, listeners } = useSortable({ id: lecture.id || "" });
     const [lectureTitle, setLectureTitle] = useState<string>(
@@ -97,11 +114,44 @@ export const LectureComponent = memo(
                 />
               </Box>
             </Box>
-
-            {children}
+            {/* start of newly added code */}
+            <Box sx={{ textAlign: "center", marginTop: 2 }}>
+          <SectionDragAndDropList />
+          <Box sx={{ marginTop: 2 }}>
+            <Button
+              variant="outlined"
+              onClick={() => setDisplayAddSection(true)}
+            >
+              Add Section
+            </Button>
+          </Box>
+          {displayAddSection && (
+            <AddLectureComponent<Section>
+              saveItem={(item) => {
+                console.log("here", item);
+                handleSaveSection(item);
+              }}
+              onCancel={() => setDisplayAddSection(false)}
+            />
+          )}
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ textAlign: "center", marginTop: 2 }}>
+            <Button>Save Lecture</Button>
+          </Box>
+          <Box sx={{ textAlign: "center", marginTop: 2 }}>
+            <Button
+              onClick={() => deleteLecture(lecture.id || "")}
+              sx={{ backgroundColor: "red", color: "white" }}
+            >
+              Delete Lecture
+            </Button>
+          </Box>
+        </Box>
+            {/* {children}  this is part of refactor will be deleted if refactor works properly  */}
           </Card>
         </AccordionDetails>
       </Accordion>
     );
   }
-);
+
