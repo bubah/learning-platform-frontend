@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import { Lecture } from "../../mock-data/course";
+import { Lecture } from "../../types/types";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -66,7 +66,7 @@ export const LessonsList = ({ lectures }: { lectures: Lecture[] }) => {
           </AccordionSummary>
           <AccordionDetails>
             <Box sx={{ textAlign: "left" }}>
-              {lecture.sections.map((lesson, idx) => (
+              {lecture?.sections?.map((lesson, idx) => (
                 <Box
                   display={"flex"}
                   key={lesson.title}

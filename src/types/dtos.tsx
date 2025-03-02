@@ -8,24 +8,26 @@ export type ReorderResourceDTO = {
 };
 
 export type LectureDTO = {
-  id: string;
+  id: string | null;
   title: string;
   description: string;
   order: number;
   sections?: SectionDTO[];
+  courseId?: string;
 };
 
 export type SectionDTO = {
-  id: string;
+  id: string | null;
   title: string;
   description: string;
   order: number;
 };
 
 export type CourseDTO = {
-  id: string;
+  id?: string;
   title: string;
-  description: string;
-  order: number;
-  lectures: LectureDTO[];
+  description?: string;
+  // order: number;
+  lectures?: LectureDTO[];
+  category:string;
 };

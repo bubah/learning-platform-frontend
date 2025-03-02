@@ -1,26 +1,52 @@
 import { Card, TextField, Button, Box } from "@mui/material";
 import { useState } from "react";
-import { Lecture } from "../../mock-data/course";
+import { Description } from "@mui/icons-material";
+import { Lecture, Section } from "../../types/types";
 
-export const AddLectureComponent = ({ onCancel }: { onCancel: () => void }) => {
-  const [lecture, setLecture] = useState<Lecture | undefined>(undefined);
+export const AddLectureComponent = <T extends Lecture | Section>({
+  onCancel,
+  saveItem,
+}: {
+  onCancel: () => void;
+  saveItem: (item: T) => void;
+}) => {
+  const [item, setItem] = useState<T>({
+    title: "",
+    description: "",
+    id: null,
+    order: -1,
+  } as T);
 
-  const saveLecture = () => {
-    // API Call
-    console.log("Saving new lecture", lecture);
+  const createItem = () => {
+    console.log("Printing item", item);
+    saveItem(item);
   };
 
   return (
     <Card sx={{ textAlign: "center", marginTop: 2, padding: 2 }}>
       <TextField
         fullWidth
-        label="Add Lecture title"
-        value={lecture?.title ?? ""}
+        label="Add title"
+        value={item?.title ?? ""}
         onChange={(e) => {
-          setLecture({
-            title: e.target.value,
-            description: "",
-            sections: [],
+          setItem((prevState: T) => {
+            return {
+              ...prevState,
+              title: e.target.value,
+            };
+          });
+        }}
+      />
+      <TextField
+        fullWidth
+        label="Add description"
+        value={item?.description ?? ""}
+        onChange={(e) => {
+          setItem((prevState: T) => {
+            return {
+              ...prevState,
+              description: e.target.value,
+            };
           });
         }}
       />
@@ -35,7 +61,7 @@ export const AddLectureComponent = ({ onCancel }: { onCancel: () => void }) => {
           marginRight: "auto",
         }}
       >
-        <Button onClick={saveLecture} variant="contained" fullWidth>
+        <Button onClick={createItem} variant="contained" fullWidth>
           Save
         </Button>
         <Button onClick={onCancel} variant="outlined" fullWidth>

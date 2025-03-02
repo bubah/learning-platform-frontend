@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import { AuthenticationProvider } from "./components/Course/AuthenticationProvider";
 import { CourseList } from "./components/Course/CourseListPage";
 import { CoursePage } from "./components/Course/CoursePage";
 import { LoginForm } from "./components/Course/LoginForm";
-import { NavBar } from "./components/NavBar";
-import { Curriculum } from "./components/Course/Curriculum";
+import CourseManagementScreen from "./components/Course/MangeCoursesPage";
 import { ProtectedRoute } from "./components/Course/ProtectedRoute";
-import { AuthenticationProvider } from "./components/Course/AuthenticationProvider";
+import { NavBar } from "./components/NavBar";
 
 function App() {
   return (
@@ -21,10 +21,10 @@ function App() {
           element={<LoginForm />}
         />
         <Route
-          path="/curriculum/:id"
+          path="/manage/course/:id"
           element={
             <ProtectedRoute>
-              <Curriculum />
+              <CourseManagementScreen />
             </ProtectedRoute>
           }
         />

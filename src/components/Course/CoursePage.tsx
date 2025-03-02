@@ -1,11 +1,12 @@
 import { Box, createTheme, useMediaQuery } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useEffect, useState } from "react";
-import { Course, mockCourse } from "../../mock-data/course";
+import { mockCourse } from "../../mock-data/course";
 import VideoPlayer from "../VideoPlayer";
 import { LessonsList } from "./LessonsList";
 import { CourseDetails } from "./CourseDetails";
 import { CourseHeaderInfo } from "./CourseHeaderInfo";
+import { Course } from "../../types/types";
 const theme = createTheme();
 
 export const CoursePage = () => {

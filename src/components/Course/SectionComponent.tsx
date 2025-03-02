@@ -11,24 +11,29 @@ import { useState } from "react";
 
 import { memo } from "react";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
-import { Section } from "../../mock-data/course";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { useSortable } from "@dnd-kit/sortable";
+import { Section } from "../../types/types";
+import { useSection } from "./SectionProvider";
 
 export const SectionComponent = memo(({ section }: { section: Section }) => {
   const { title, description, id } = section;
-  const { attributes, listeners } = useSortable({ id: id });
+  const { attributes, listeners } = useSortable({ id: id || "" });
 
-  const [sectionState, setSectionState] = useState<{
+  const [sectionState] = useState<{
     title: string;
     description: string;
   }>({ title, description });
-  const [isAddingTitle, setIsAddingTitle] = useState(false);
-  const [isAddingDescription, setIsAddingDescription] = useState(false);
+  const [isAddingTitle] = useState(false);
+  const [isAddingDescription] = useState(false);
+
+  const { onDeleteSection } = useSection();
 
   const handleSaveV2 = (value: string) => {
     console.log("Printing value", value);
   };
+
+  // console.log("section: ", section)
 
   return (
     <Box>
@@ -40,15 +45,17 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
           marginBottom: 2,
         }}
       >
-        <CardContent sx={{display:"flex"}}>
+        <CardContent sx={{ display: "flex" }}>
           <Box marginRight="5">
-            <IconButton sx={{alignItems:'start'}}  {...attributes} {...listeners}>
+            <IconButton
+              sx={{ alignItems: "start" }}
+              {...attributes}
+              {...listeners}
+            >
               <DragIndicatorIcon />
             </IconButton>
           </Box>
-          <Box
-          sx={{width:'100%', marginLeft:'25px'}}
-          >
+          <Box sx={{ width: "100%", marginLeft: "25px" }}>
             <UpdateAttributeFeild
               attributeValue={sectionState.title}
               inEditing={isAddingTitle}
@@ -72,11 +79,23 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
                 },
               }}
             />
-        <CardActions>
-          <Button size="small" variant="outlined" onClick={() => {}}>
-            cancel
-          </Button>
-        </CardActions>
+            <CardActions>
+              <Button size="small" variant="outlined" onClick={() => {}}>
+                cancel
+              </Button>
+              <Button
+                size="small"
+                variant="outlined"
+                color="error"
+                // onClick={() => onDeleteSection(section.id!)}
+                onClick={() => {
+                  console.log("section id ", id)
+                  onDeleteSection(id!)}
+                }
+              >
+                DELETE SECTION
+              </Button>
+            </CardActions>
           </Box>
         </CardContent>
       </Card>

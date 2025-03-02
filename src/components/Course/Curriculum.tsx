@@ -1,26 +1,24 @@
-import {
-  Box,
-  Button,
-  Typography
-} from "@mui/material";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Box, Button, Typography } from "@mui/material";
+import { useState } from "react";
 import { AddLectureComponent } from "./AddLectureComponent";
 import { DragAndDropList } from "./DragAndDropList";
-import { Course } from "../../types/types";
+import { useCourse } from "./CourseProvider";
+import { Lecture } from "../../types/types";
+import { LectureProvider } from "./LectureProvider";
+import { LectureComponent } from "./LectureComponent";
 
 export const Curriculum = () => {
-  const [course, setCourse] = useState<Course | undefined>(undefined);
   const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);
-  const { id } = useParams();
+  const { course, saveLecture, deleteLecture } = useCourse();
 
-  useEffect(() => {
-    axios.get(`http://localhost:8080/courses/${id}`).then((res) => {
-      const { data } = res;
-      setCourse(data);
-    });
-  }, []);
+  const handleSaveLecture = (lecture: any) => {
+    saveLecture(lecture);
+    setDisplayAddLecture(false);
+  };
+
+  // console.log("Course", course);
+  
+  const sortedLectures = [...(course?.lectures || [])].sort((a, b) => a.order - b.order);
 
   return (
     <Box
@@ -34,19 +32,29 @@ export const Curriculum = () => {
     >
       <Typography color="black">Curriculum</Typography>
 
-      {course && (
+      {/* {course && (
         <DragAndDropList
-          id={course.id}
           courseLectures={course.lectures}
         />
-      )}
+      )} */}
+
+      <DragAndDropList >
+         {sortedLectures.map((lecture) => (
+          <LectureProvider key={lecture.id} lecture={lecture}>
+             <LectureComponent />
+          </LectureProvider>
+        ))}
+      </DragAndDropList>
 
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
         <Button onClick={() => setDisplayAddLecture(true)}>Add Lecture</Button>
       </Box>
 
       {displayAddLecture && (
-        <AddLectureComponent onCancel={() => setDisplayAddLecture(false)} />
+        <AddLectureComponent<Lecture>
+          saveItem={handleSaveLecture}
+          onCancel={() => setDisplayAddLecture(false)}
+        />
       )}
     </Box>
   );
