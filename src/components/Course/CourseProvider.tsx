@@ -17,6 +17,7 @@ type CourseContextType = {
   saveSection: (section: Section) => void;
   deleteSection: (id: string) => void;
   reorderLectures:(pristineLecture:Lecture[],updatedLecture:Lecture[]) => void;
+  isLoading:boolean;
 };
 
 const CourseContext = createContext({} as CourseContextType);
@@ -31,6 +32,8 @@ export const useCourse = () => {
 
 export const CourseProvider = ({ children }: { children: ReactNode }) => {
   const [course, setCourse] = useState<Course | undefined>(undefined);
+  const [isLoading, setIsLoading]  = useState<boolean>(true);
+
   const { id } = useParams();
 
   const saveLecture = (lecture: Lecture) => {
@@ -134,6 +137,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     axios.get(`http://localhost:8080/courses/${id}`).then((res) => {
       const { data } = res;
       setCourse(data);
+      setIsLoading(false)
     });
   }, []);
 
@@ -182,7 +186,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CourseContext.Provider
-      value={{ course, saveLecture, deleteLecture, saveSection, deleteSection,reorderLectures }}
+      value={{ course, saveLecture, deleteLecture, saveSection, deleteSection,reorderLectures, isLoading }}
     >
       {children}
     </CourseContext.Provider>

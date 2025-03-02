@@ -20,7 +20,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./Course/AuthenticationProvider";
 const pages = ["My Courses", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+
 
 export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -42,7 +43,26 @@ export const NavBar = () => {
     setAnchorElUser(null);
   };
 
-  const {user} = useAuth();
+  const {user, logout} = useAuth();
+
+  const settings  = [
+    {
+      name:"Profile",
+      action: () => {}
+    },
+    {
+      name:"Account",
+      action: () => {}
+    },
+    {
+      name:"Dashboard",
+      action: () => {}
+    },
+    {
+      name:"Logout",
+      action:logout
+    }
+  ]
 
 
   return (
@@ -215,9 +235,11 @@ export const NavBar = () => {
         >
 
           {settings.map((setting) => (
-            <MenuItem key={setting} onClick={handleCloseUserMenu}>
-              <Typography sx={{ textAlign: "center" }}>
-                {setting}
+            <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+              <Typography
+              onClick={() => setting.action()}
+              sx={{ textAlign: "center" }}>
+                {setting.name}
               </Typography>
             </MenuItem>
           ))}
