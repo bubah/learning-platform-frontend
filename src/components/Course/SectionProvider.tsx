@@ -33,6 +33,7 @@ export const SectionProvider = ({
   };
 
   const onDeleteSection = (id: string) => {
+    console.log("section id at use Section :", id)
     deleteSection(id);
   };
 

@@ -8,7 +8,7 @@ import {
 import { Course, Lecture, Section } from "../../types/types";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { LectureDTO, ReorderResourceDTO } from "../../types/dtos";
+import {LectureDTO, ReorderResourceDTO } from "../../types/dtos";
 
 type CourseContextType = {
   course: Course | undefined;
@@ -78,27 +78,6 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     const pristineCourse = course;
     const lectures = course?.lectures;
 
-    setCourse((prevCourse) => ({
-      ...prevCourse!,
-      lectures:
-        lectures?.map((lecture) => {
-          if (lecture.id !== section.lectureId) return lecture;
-          
-          return {
-            ...lecture,
-            sections: [
-              ...(lecture.sections || []),
-              {
-                title: section.title,
-                description: section.description,
-                order: lecture.sections?.length || 0,
-                id: null,
-              },
-            ],
-          };
-        }) || [],
-    }));
-
     axios
       .post("http://localhost:8080/sections", {
         title: section.title,
@@ -109,6 +88,22 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
         lectureId: section.lectureId,
         content: "place holder",
       })
+      .then((res) => {
+        console.log(res)
+        setCourse((prevCourse) => ({
+
+          ...prevCourse!,
+          lectures:[...prevCourse!.lectures.map((lecture) => {
+            return lecture.id === res.data.lectureId ?  
+              {
+                ...lecture, 
+                  sections:[...lecture.sections || [], res.data]
+              } 
+              :
+              lecture
+          })]
+        }))
+      })
       .catch((error) => {
         setCourse(pristineCourse);
         console.log(error);
@@ -116,6 +111,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const deleteSection = (id: string) => {
+    console.log("section id at useCourse :", id)
     const pristineCourse = course;
     const lectures = course?.lectures;
 
@@ -182,6 +178,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
         ))
       });
   }
+
 
   return (
     <CourseContext.Provider

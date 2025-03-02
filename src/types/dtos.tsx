@@ -24,9 +24,10 @@ export type SectionDTO = {
 };
 
 export type CourseDTO = {
-  id: string;
+  id?: string;
   title: string;
-  description: string;
-  order: number;
-  lectures: LectureDTO[];
+  description?: string;
+  // order: number;
+  lectures?: LectureDTO[];
+  category:string;
 };

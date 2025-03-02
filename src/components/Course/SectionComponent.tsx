@@ -33,6 +33,8 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
     console.log("Printing value", value);
   };
 
+  // console.log("section: ", section)
+
   return (
     <Box>
       <Card
@@ -85,7 +87,11 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
                 size="small"
                 variant="outlined"
                 color="error"
-                onClick={() => onDeleteSection(section.id!)}
+                // onClick={() => onDeleteSection(section.id!)}
+                onClick={() => {
+                  console.log("section id ", id)
+                  onDeleteSection(id!)}
+                }
               >
                 DELETE SECTION
               </Button>

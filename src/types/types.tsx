@@ -16,6 +16,7 @@ export type Course = {
   description: string;
   title: string;
   lectures: Lecture[];
+  category:string;
 };
 
 export type Lecture = {
