@@ -14,7 +14,7 @@ function App() {
     <AuthenticationProvider>
       <NavBar />
       <Routes>
-        <Route path="/" element={<CourseList />} />
+        <Route path="/" element={<CoursePage />} />
         <Route path="/courses/:id" element={<CoursePage />} />
         <Route
           path="/login"
