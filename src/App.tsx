@@ -12,26 +12,23 @@ import { CourseProvider } from "./components/Course/CourseProvider";
 function App() {
   return (
     <BrowserRouter>
-    <AuthenticationProvider>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<CourseList />} />
-        <Route path="/courses/:id" element={<CoursePage />} />
-        <Route
-          path="/login"
-          element={<LoginForm />}
-        />
-        <Route
-          path="/manage/course/:id"
-          element={
-            <ProtectedRoute>
-              <CourseProvider>
-              <CourseManagementScreen />
-              </CourseProvider>
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <AuthenticationProvider>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<CourseList />} />
+          <Route path="/courses/:id" element={<CoursePage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route
+            path="/manage/course/:id"
+            element={
+              <ProtectedRoute>
+                <CourseProvider>
+                  <CourseManagementScreen />
+                </CourseProvider>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </AuthenticationProvider>
     </BrowserRouter>
   );

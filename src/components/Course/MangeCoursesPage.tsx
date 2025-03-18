@@ -38,7 +38,6 @@ export default function CourseManagementScreen() {
   };
 
   return (
-    // <CourseProvider>
     <Box display={"flex"} sx={{ display: "flex", paddingLeft: 2 }}>
       <Tabs
         aria-label="Vertical tabs"
@@ -70,6 +69,6 @@ export default function CourseManagementScreen() {
         </Box>
       )}
     </Box>
-    // </CourseProvider>
+    
   );
 }

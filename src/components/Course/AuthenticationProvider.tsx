@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContextType, LoginCredentials } from "../../types/types";
+import axios from "axios";
 
 const credentials = [
   {
@@ -19,6 +20,7 @@ function getLoginStatus(): LoginCredentials | null {
   const userCreds: LoginCredentials | null = JSON.parse(
     localStorage.getItem("authenticatedUser") || "{}"
   );
+  
   return (
     credentials.find(
       (crendential) =>
@@ -28,12 +30,14 @@ function getLoginStatus(): LoginCredentials | null {
   );
 }
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  authLoading: false,
-  login: (user: LoginCredentials) => {},
-  logout: () => {},
-});
+// const AuthContext = createContext<AuthContextType>({
+//   user: null,
+//   authLoading: false,
+//   login: (user: LoginCredentials) => {},
+//   logout: () => {},
+// });
+
+const AuthContext = createContext({} as AuthContextType)
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -76,6 +80,11 @@ export const AuthenticationProvider = ({
     localStorage.removeItem("authenticatedUser");
     navigate("/login");
   };
+
+  const token = localStorage.getItem('authenticatedUser'); // Retrieve the token
+if (token) {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
   return (
     <AuthContext.Provider value={{ user, authLoading: loading, login, logout }}>
