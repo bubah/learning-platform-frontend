@@ -1,0 +1,42 @@
+name: React CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "23"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Type Check
+        run: npx tsc --noEmit
+
+      - name: Run npm audit
+        # run at moderate to see if build fails possible change to high.
+        run: npm audit --audit-level=moderate
+
+      - name: Run tests
+        run: npm test -- --watchAll=false
+        # add coverage flag once tests are written --coverage
+
+      - name: Build app
+        run: npm run build
