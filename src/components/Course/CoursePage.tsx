@@ -1,7 +1,6 @@
 import { Box, createTheme, useMediaQuery } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { useEffect, useState } from "react";
-import { mockCourse } from "../../mock-data/course";
+import {  useState } from "react";
 import VideoPlayer from "../VideoPlayer";
 import { LessonsList } from "./LessonsList";
 import { CourseDetails } from "./CourseDetails";
@@ -11,11 +10,11 @@ const theme = createTheme();
 
 export const CoursePage = () => {
   const isMdOrLower = useMediaQuery(theme.breakpoints.down("lg"));
-  const [course, setCourse] = useState<Course | undefined>(undefined);
+  const [course] = useState<Course | undefined>(undefined);
 
-  useEffect(() => {
-    setCourse(mockCourse);
-  }, []);
+  // useEffect(() => {
+  //   setCourse(mockCourse);
+  // }, []);
 
   return (
     <Box

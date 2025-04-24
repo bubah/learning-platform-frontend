@@ -1,6 +1,5 @@
-import { Card, TextField, Button, Box } from "@mui/material";
+import { Box, Button, Card, TextField } from "@mui/material";
 import { useState } from "react";
-import { Description } from "@mui/icons-material";
 import { Lecture, Section } from "../../types/types";
 
 export const AddLectureComponent = <T extends Lecture | Section>({

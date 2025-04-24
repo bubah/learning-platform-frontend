@@ -9,7 +9,7 @@ import { LectureComponent } from "./LectureComponent";
 
 export const Curriculum = () => {
   const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);
-  const { course, saveLecture, deleteLecture } = useCourse();
+  const { course, saveLecture } = useCourse();
 
   const handleSaveLecture = (lecture: any) => {
     saveLecture(lecture);
