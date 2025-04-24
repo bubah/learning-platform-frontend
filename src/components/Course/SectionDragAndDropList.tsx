@@ -13,7 +13,7 @@ import { Section } from "../../types/types";
 import { ReorderResourceDTO, SectionDTO } from "../../types/dtos";
 import { SectionProvider, useSection } from "./SectionProvider";
 import { useLecture } from "./LectureProvider";
-import { use } from "video.js/dist/types/tech/middleware";
+
 
 export const SectionDragAndDropList = () => {
   const { lecture } = useLecture();

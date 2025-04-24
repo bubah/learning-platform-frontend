@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import { memo, ReactNode, useState } from "react";
+import {  useState } from "react";
 import { useLecture } from "./LectureProvider";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
 import { SectionDragAndDropList } from "./SectionDragAndDropList";

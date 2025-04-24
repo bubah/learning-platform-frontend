@@ -2,18 +2,10 @@ import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
+  verticalListSortingStrategy
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { Box, Button } from "@mui/material";
-import axios from "axios";
-import { SectionDragAndDropList } from "./SectionDragAndDropList";
 
-import { useEffect, useState } from "react";
-import { LectureDTO, ReorderResourceDTO } from "../../types/dtos";
-import { Lecture, Section } from "../../types/types";
-import { LectureComponent } from "./LectureComponent";
+import { Lecture } from "../../types/types";
 // import { AddLectureComponent } from "./AddLectureComponent";
 // import { LectureProvider, useLecture } from "./LectureProvider";
 import { useCourse } from "./CourseProvider";

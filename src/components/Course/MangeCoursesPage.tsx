@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Curriculum } from "./Curriculum";
 import { EditCourse } from "./EditCourse";
 import { CourseProvider } from "./CourseProvider";
-import { SectionProvider } from "./SectionProvider";
+
 
 interface TabPanelProps {
   children?: React.ReactNode;

@@ -31,7 +31,7 @@ function getLoginStatus(): LoginCredentials | null {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   authLoading: false,
-  login: (user: LoginCredentials) => {},
+  login: (user: LoginCredentials) => {console.log(user)},
   logout: () => {},
 });
 
