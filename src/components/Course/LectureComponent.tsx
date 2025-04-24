@@ -43,8 +43,7 @@ export const LectureComponent =
       lecture.description
     );
 
-    const [isAddingTitle] = useState(false);
-    const [isAddingDescription] = useState(false);
+    
 
     const updateTitle = (value: string) => {
       console.log("Updating title to: ", value);
@@ -101,14 +100,14 @@ export const LectureComponent =
               <Box flexGrow={1}>
                 <UpdateAttributeFeild
                   attributeValue={lectureTitle}
-                  inEditing={isAddingTitle}
+                  
                   handleUpdate={updateTitle}
                   label="Title"
                 />
 
                 <UpdateAttributeFeild
                   attributeValue={lectureDescription}
-                  inEditing={isAddingDescription}
+                  
                   handleUpdate={updateDescription}
                   label="Description"
                 />
