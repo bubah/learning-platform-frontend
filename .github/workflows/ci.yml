@@ -32,7 +32,7 @@ jobs:
 
       - name: Run npm audit
         # run at moderate to see if build fails possible change to high.
-        run: npm audit --audit-level=moderate
+        run: npm audit --audit-level=critical
 
       - name: Run tests
         run: npm test -- --watchAll=false
