@@ -18,26 +18,26 @@ const credentials = [
 
 function getLoginStatus(): LoginCredentials | null {
   const userCreds: LoginCredentials | null = JSON.parse(
-    localStorage.getItem("authenticatedUser") || "{}"
+    localStorage.getItem("authenticatedUser") || "{}",
   );
   
   return (
     credentials.find(
       (crendential) =>
         crendential.username === userCreds?.username &&
-        crendential.password === userCreds?.password
+        crendential.password === userCreds?.password,
     ) || null
   );
 }
 
-// const AuthContext = createContext<AuthContextType>({
-//   user: null,
-//   authLoading: false,
-//   login: (user: LoginCredentials) => {},
-//   logout: () => {},
-// });
-
-const AuthContext = createContext({} as AuthContextType)
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  authLoading: false,
+  login: (user: LoginCredentials) => {
+    console.log(user);
+  },
+  logout: () => {},
+});
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

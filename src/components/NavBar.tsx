@@ -64,7 +64,6 @@ export const NavBar = () => {
     }
   ]
 
-
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -74,7 +73,7 @@ export const NavBar = () => {
             variant="h6"
             noWrap
             component={Link}
-            to={("/")}
+            to={"/"}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -142,15 +141,14 @@ export const NavBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              <Button
-                to="/"
-                component = {Link}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                My Courses
-              </Button>
-            
+            <Button
+              to="/courses"
+              component={Link}
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              My Courses
+            </Button>
           </Box>
           <Box sx={{ flexGrow: 5 }}>
             <Autocomplete
@@ -178,7 +176,7 @@ export const NavBar = () => {
               display: "flex",
               margin: 3,
               alignItems: "center",
-              position: "relative"
+              position: "relative",
             }}
           >
             <CircularProgress
@@ -197,8 +195,7 @@ export const NavBar = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                width: 'fit-content',
-
+                width: "fit-content",
               }}
             >
               <Typography
@@ -209,7 +206,7 @@ export const NavBar = () => {
             </Box>
             <Typography>Your Progress</Typography>
           </Box>
-          
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

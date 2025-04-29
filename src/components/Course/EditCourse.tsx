@@ -40,7 +40,15 @@ export const EditCourse = () => {
     console.log(learners);
   };
   return (
-    <Box sx={{ justifyContent: "center", margin: "auto", padding: "2rem", display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        justifyContent: "center",
+        margin: "auto",
+        padding: "2rem",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <Typography color="black">Edit Course</Typography>
 
       <Card variant="outlined" sx={{ padding: "1rem", textAlign: "left" }}>

@@ -9,16 +9,16 @@ import { LectureComponent } from "./LectureComponent";
 
 export const Curriculum = () => {
   const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);
-  const { course, saveLecture, deleteLecture } = useCourse();
+  const { course, saveLecture } = useCourse();
 
   const handleSaveLecture = (lecture: any) => {
     saveLecture(lecture);
     setDisplayAddLecture(false);
   };
 
-  // console.log("Course", course);
-  
-  const sortedLectures = [...(course?.lectures || [])].sort((a, b) => a.order - b.order);
+  const sortedLectures = [...(course?.lectures || [])].sort(
+    (a, b) => a.order - b.order,
+  );
 
   return (
     <Box
@@ -32,16 +32,10 @@ export const Curriculum = () => {
     >
       <Typography color="black">Curriculum</Typography>
 
-      {/* {course && (
-        <DragAndDropList
-          courseLectures={course.lectures}
-        />
-      )} */}
-
-      <DragAndDropList >
-         {sortedLectures.map((lecture) => (
+      <DragAndDropList>
+        {sortedLectures.map((lecture) => (
           <LectureProvider key={lecture.id} lecture={lecture}>
-             <LectureComponent />
+            <LectureComponent />
           </LectureProvider>
         ))}
       </DragAndDropList>

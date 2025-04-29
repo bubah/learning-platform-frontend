@@ -28,12 +28,12 @@ export const SectionProvider = ({
   const { saveSection, deleteSection } = useCourse();
 
   const onSaveSection = (section: Section) => {
-    console.log("save section called", section)
+    console.log("save section called", section);
     saveSection(section);
   };
 
   const onDeleteSection = (id: string) => {
-    console.log("section id at use Section :", id)
+    console.log("section id at use Section :", id);
     deleteSection(id);
   };
 

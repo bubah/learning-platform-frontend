@@ -24,8 +24,6 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
     title: string;
     description: string;
   }>({ title, description });
-  const [isAddingTitle] = useState(false);
-  const [isAddingDescription] = useState(false);
 
   const { onDeleteSection } = useSection();
 
@@ -58,14 +56,12 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
           <Box sx={{ width: "100%", marginLeft: "25px" }}>
             <UpdateAttributeFeild
               attributeValue={sectionState.title}
-              inEditing={isAddingTitle}
               label="Title"
               handleUpdate={handleSaveV2}
             />
 
             <UpdateAttributeFeild
               attributeValue={sectionState.description}
-              inEditing={isAddingDescription}
               label="Description"
               handleUpdate={handleSaveV2}
             />
@@ -89,9 +85,9 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
                 color="error"
                 // onClick={() => onDeleteSection(section.id!)}
                 onClick={() => {
-                  console.log("section id ", id)
-                  onDeleteSection(id!)}
-                }
+                  console.log("section id ", id);
+                  onDeleteSection(id!);
+                }}
               >
                 DELETE SECTION
               </Button>

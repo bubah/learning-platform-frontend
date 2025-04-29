@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 
-export type GetContractResponse = AxiosResponse<CourseDTO, any>
+export type GetContractResponse = AxiosResponse<CourseDTO, any>;
 
 export type ReorderResourceDTO = {
   lectures?: LectureDTO[];
@@ -29,5 +29,5 @@ export type CourseDTO = {
   description?: string;
   // order: number;
   lectures?: LectureDTO[];
-  category:string;
+  category: string;
 };

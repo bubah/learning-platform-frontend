@@ -16,7 +16,7 @@ export type Course = {
   description: string;
   title: string;
   lectures: Lecture[];
-  category:string;
+  category: string;
 };
 
 export type Lecture = {
@@ -36,5 +36,5 @@ export type Section = {
     path?: string;
     type?: string;
   };
-  order:number
+  order: number;
 };

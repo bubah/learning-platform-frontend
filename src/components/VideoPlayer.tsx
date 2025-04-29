@@ -8,28 +8,28 @@ const VideoPlayer = ({ src }: { src: string }) => {
   useEffect(() => {
     // Need to wait for the component to be mounted before creating the player
     setTimeout(() => {
-        if (!videoNode.current) {
-            return;
-          }
-        const player = videojs(videoNode.current, {
-          controls: true,
-          autoplay: false,
-          preload: "auto",
-          techOrder: ["html5"], // Use HTML5 tech for MP4 and other formats
-          controlBar: {
-            playToggle: true, // Ensure the play button is enabled
-            fullscreenToggle: true,
-            volumePanel: { inline: false },
+      if (!videoNode.current) {
+        return;
+      }
+      const player = videojs(videoNode.current, {
+        controls: true,
+        autoplay: false,
+        preload: "auto",
+        techOrder: ["html5"], // Use HTML5 tech for MP4 and other formats
+        controlBar: {
+          playToggle: true, // Ensure the play button is enabled
+          fullscreenToggle: true,
+          volumePanel: { inline: false },
+        },
+        sources: [
+          {
+            src: src, // HLS stream URL
+            type: "application/x-mpegURL", // Specify HLS MIME type
           },
-          sources: [
-            {
-              src: src, // HLS stream URL
-              type: "application/x-mpegURL", // Specify HLS MIME type
-            },
-          ],
-        });
-    
-        console.log("player", player);
+        ],
+      });
+
+      console.log("player", player);
     }, 1000);
     // return () => {
     //   player.dispose(); // Clean up player when component is unmounted
@@ -37,12 +37,17 @@ const VideoPlayer = ({ src }: { src: string }) => {
   }, [src]);
 
   return (
-      <video
-        ref={videoNode}
-        className="video-js vjs-default-skin"
-        controls
-        style={{ width: '100%', backgroundColor: 'black', minHeight: 400, maxHeight: 480 }}
-      />
+    <video
+      ref={videoNode}
+      className="video-js vjs-default-skin"
+      controls
+      style={{
+        width: "100%",
+        backgroundColor: "black",
+        minHeight: 400,
+        maxHeight: 480,
+      }}
+    />
   );
 };
 

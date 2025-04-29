@@ -3,12 +3,12 @@ import { useState } from "react";
 
 const UpdateAttributeFeild = ({
   attributeValue,
-  inEditing,
+
   label,
   handleUpdate,
 }: {
   attributeValue: string;
-  inEditing: boolean;
+
   label: string;
   handleUpdate: (value: string) => void;
 }) => {
@@ -19,7 +19,6 @@ const UpdateAttributeFeild = ({
     // API Call here using attributeValue to determine field that needs to be updated.
     handleUpdate(newValue);
     setIsEditing(false);
-    
   };
 
   return (

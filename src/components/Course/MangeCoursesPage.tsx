@@ -2,8 +2,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import { Curriculum } from "./Curriculum";
 import { EditCourse } from "./EditCourse";
-import { CourseProvider, useCourse } from "./CourseProvider";
-import { SectionProvider } from "./SectionProvider";
+import { useCourse } from "./CourseProvider";
 import { CourseOverViewEdit } from "./CourseOverViewEdit";
 
 interface TabPanelProps {

@@ -8,7 +8,7 @@ import {
 import { Course, Lecture, Section } from "../../types/types";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import {LectureDTO, ReorderResourceDTO } from "../../types/dtos";
+import { LectureDTO, ReorderResourceDTO } from "../../types/dtos";
 
 type CourseContextType = {
   course: Course | undefined;
@@ -16,7 +16,10 @@ type CourseContextType = {
   deleteLecture: (id: string) => void;
   saveSection: (section: Section) => void;
   deleteSection: (id: string) => void;
-  reorderLectures:(pristineLecture:Lecture[],updatedLecture:Lecture[]) => void;
+  reorderLectures: (
+    pristineLecture: Lecture[],
+    updatedLecture: Lecture[],
+  ) => void;
   isLoading:boolean;
 };
 
@@ -92,20 +95,20 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
         content: "place holder",
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         setCourse((prevCourse) => ({
-
           ...prevCourse!,
-          lectures:[...prevCourse!.lectures.map((lecture) => {
-            return lecture.id === res.data.lectureId ?  
-              {
-                ...lecture, 
-                  sections:[...lecture.sections || [], res.data]
-              } 
-              :
-              lecture
-          })]
-        }))
+          lectures: [
+            ...prevCourse!.lectures.map((lecture) => {
+              return lecture.id === res.data.lectureId
+                ? {
+                    ...lecture,
+                    sections: [...(lecture.sections || []), res.data],
+                  }
+                : lecture;
+            }),
+          ],
+        }));
       })
       .catch((error) => {
         setCourse(pristineCourse);
@@ -114,7 +117,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const deleteSection = (id: string) => {
-    console.log("section id at useCourse :", id)
+    console.log("section id at useCourse :", id);
     const pristineCourse = course;
     const lectures = course?.lectures;
 
@@ -143,57 +146,58 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
 
   // console.log("course Provider", course);
 
-
-  const reorderLectures = (pristineLectures:Lecture[],updatedLectures:Lecture[]) => {
+  const reorderLectures = (
+    pristineLectures: Lecture[],
+    updatedLectures: Lecture[],
+  ) => {
     const requestBody: ReorderResourceDTO = {
       lectures: toLectureDTO(updatedLectures),
     };
 
-    setCourse((prevCourse) => (
-      {
-        ...prevCourse!, 
-      lectures:updatedLectures
-        
-      }
-    ))
+    setCourse((prevCourse) => ({
+      ...prevCourse!,
+      lectures: updatedLectures,
+    }));
 
     axios
       .post(`http://localhost:8080/lecture-reorder/${course?.id}`, requestBody)
       .then((res) => {
-        const {lectures} = res.data
+        const { lectures } = res.data;
         console.log(lectures);
         // console.log("updated lecture order: ", lectures)
         // setCourse((prevCourse) => (
         //   {
-        //     ...prevCourse!, 
+        //     ...prevCourse!,
         //           lectures
-            
+
         //   }
         // ))
       })
       .catch((error) => {
         console.log(error);
-        setCourse((prevCourse) => (
-          {
-            ...prevCourse!, 
-            lectures:pristineLectures
-            
-          }
-        ))
+        setCourse((prevCourse) => ({
+          ...prevCourse!,
+          lectures: pristineLectures,
+        }));
       });
-  }
-
+  };
 
   return (
     <CourseContext.Provider
-      value={{ course, saveLecture, deleteLecture, saveSection, deleteSection,reorderLectures, isLoading }}
+      value={{
+        course,
+        saveLecture,
+        deleteLecture,
+        saveSection,
+        deleteSection,
+        reorderLectures,
+        isLoading
+      }}
     >
       {children}
     </CourseContext.Provider>
   );
 };
-
-
 
 function toLectureDTO(updatedLectures: Lecture[]): LectureDTO[] {
   return updatedLectures.map((l) => ({
