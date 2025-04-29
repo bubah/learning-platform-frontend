@@ -23,7 +23,7 @@ export const CourseOverViewEdit = () => {
     }
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("handle submit fire ", formData)
         const requestBody = formData;
