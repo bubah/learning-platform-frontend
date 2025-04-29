@@ -3,10 +3,10 @@ import "./App.css";
 import { AuthenticationProvider } from "./components/Course/AuthenticationProvider";
 import { CourseList } from "./components/Course/CourseListPage";
 import { CoursePage } from "./components/Course/CoursePage";
-import { LoginForm } from "./components/Course/LoginForm";
 import CourseManagementScreen from "./components/Course/MangeCoursesPage";
 import { ProtectedRoute } from "./components/Course/ProtectedRoute";
 import { NavBar } from "./components/NavBar";
+import LoginForm from "./components/Course/LoginForm";
 import { Card, Typography } from "@mui/material";
 
 function App() {

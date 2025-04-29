@@ -45,6 +45,27 @@ export const CourseList = () => {
       });
   };
 
+  const deleteCourse = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string,
+  ) => {
+    const pristineCourses = courses;
+
+    setCourses((prevCourses) => [
+      ...prevCourses.filter((course) => course.id !== id),
+    ]);
+
+    e.stopPropagation();
+
+    axios
+      .delete(`http://localhost:8080/courses/${id}`)
+      .then((res) => console.log(res.data))
+      .catch((error) => {
+        console.log(error);
+        setCourses(pristineCourses);
+      });
+  };
+
   return (
     <Box sx={{ margin: 10 }}>
       <Box display="flex" width="100%">
@@ -82,6 +103,12 @@ export const CourseList = () => {
             <Box sx={{ flex: 1 }}>
               <Typography>Meta Data</Typography>
             </Box>
+            <Button
+              onClick={(e) => deleteCourse(e, course.id!)}
+              sx={{ color: "white", backgroundColor: "red" }}
+            >
+              Delete
+            </Button>
           </Card>
         ))}
       </Box>

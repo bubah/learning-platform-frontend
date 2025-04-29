@@ -20,7 +20,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./Course/AuthenticationProvider";
 const pages = ["My Courses", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -31,6 +30,9 @@ export const NavBar = () => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    console.log(event.currentTarget);
+    console.log(user);
+
     setAnchorElUser(event.currentTarget);
   };
 
@@ -42,7 +44,26 @@ export const NavBar = () => {
     setAnchorElUser(null);
   };
 
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+
+  const settings = [
+    {
+      name: "Profile",
+      action: () => {},
+    },
+    {
+      name: "Account",
+      action: () => {},
+    },
+    {
+      name: "Dashboard",
+      action: () => {},
+    },
+    {
+      name: "Logout",
+      action: logout,
+    },
+  ];
 
   return (
     <AppBar position="static">
@@ -188,36 +209,44 @@ export const NavBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
             {user ? (
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography sx={{ textAlign: "center" }}>
-                      {setting}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                      <Typography
+                        onClick={setting.action}
+                        sx={{ textAlign: "center" }}
+                      >
+                        {setting.name}
+                      </Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
             ) : (
               <Button>Sign up</Button>
             )}
