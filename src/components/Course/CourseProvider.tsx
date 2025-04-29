@@ -20,7 +20,7 @@ type CourseContextType = {
     pristineLecture: Lecture[],
     updatedLecture: Lecture[],
   ) => void;
-  isLoading:boolean;
+  isLoading: boolean;
 };
 
 const CourseContext = createContext({} as CourseContextType);
@@ -35,7 +35,7 @@ export const useCourse = () => {
 
 export const CourseProvider = ({ children }: { children: ReactNode }) => {
   const [course, setCourse] = useState<Course | undefined>(undefined);
-  const [isLoading, setIsLoading]  = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { id } = useParams();
 
@@ -140,7 +140,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     axios.get(`http://localhost:8080/courses/${id}`).then((res) => {
       const { data } = res;
       setCourse(data);
-      setIsLoading(false)
+      setIsLoading(false);
     });
   }, []);
 
@@ -191,7 +191,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
         saveSection,
         deleteSection,
         reorderLectures,
-        isLoading
+        isLoading,
       }}
     >
       {children}

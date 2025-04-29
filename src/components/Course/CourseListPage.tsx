@@ -45,13 +45,15 @@ export const CourseList = () => {
       });
   };
 
-  const deleteCourse = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>,id: string) => {
+  const deleteCourse = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string,
+  ) => {
+    const pristineCourses = courses;
 
-    const pristineCourses = courses; 
-
-    setCourses((prevCourses) => ([
-      ...prevCourses.filter((course) => course.id !== id )
-    ]))
+    setCourses((prevCourses) => [
+      ...prevCourses.filter((course) => course.id !== id),
+    ]);
 
     e.stopPropagation();
 
@@ -59,10 +61,9 @@ export const CourseList = () => {
       .delete(`http://localhost:8080/courses/${id}`)
       .then((res) => console.log(res.data))
       .catch((error) => {
-        console.log(error)
-        setCourses(pristineCourses)
-
-  })
+        console.log(error);
+        setCourses(pristineCourses);
+      });
   };
 
   return (

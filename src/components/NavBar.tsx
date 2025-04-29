@@ -209,13 +209,17 @@ export const NavBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            {user 
-            ? (
-            <><Tooltip title="Open settings">
+            {user ? (
+              <>
+                <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
                   </IconButton>
-                </Tooltip><Menu
+                </Tooltip>
+                <Menu
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
@@ -231,17 +235,18 @@ export const NavBar = () => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                    {settings.map((setting) => (
-                      <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                        <Typography
-                          onClick={setting.action}
-                          sx={{ textAlign: "center" }}
-                        >
-                          {setting.name}
-                        </Typography>
-                      </MenuItem>
-                    ))}
-                  </Menu></>
+                  {settings.map((setting) => (
+                    <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                      <Typography
+                        onClick={setting.action}
+                        sx={{ textAlign: "center" }}
+                      >
+                        {setting.name}
+                      </Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
             ) : (
               <Button>Sign up</Button>
             )}

@@ -68,6 +68,5 @@ export default function CourseManagementScreen() {
         </Box>
       )}
     </Box>
-    
   );
 }

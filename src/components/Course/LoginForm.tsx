@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Container,
   Box,
@@ -8,35 +8,33 @@ import {
   FormControlLabel,
   Checkbox,
   Link,
-} from '@mui/material';
-import { useAuth } from './AuthenticationProvider';
+} from "@mui/material";
+import { useAuth } from "./AuthenticationProvider";
 
-const LoginForm = () =>  {
-
-  const {login} = useAuth();
-
+const LoginForm = () => {
+  const { login } = useAuth();
 
   const [errors, setErrors] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const email = data.get('email')?.toString().trim() || '';
-    const password = data.get('password')?.toString().trim() || '';
+    const email = data.get("email")?.toString().trim() || "";
+    const password = data.get("password")?.toString().trim() || "";
 
-    const tempErrors = { email: '', password: '' };
+    const tempErrors = { email: "", password: "" };
     let isValid = true;
 
     if (!email) {
-      tempErrors.email = 'Email is required';
+      tempErrors.email = "Email is required";
       isValid = false;
     }
     if (!password) {
-      tempErrors.password = 'Password is required';
+      tempErrors.password = "Password is required";
       isValid = false;
     }
 
@@ -46,16 +44,14 @@ const LoginForm = () =>  {
       console.log({
         email,
         password,
-        remember: data.get('remember'),
+        remember: data.get("remember"),
       });
 
       login({
         username: email,
         password: password,
-      }); 
+      });
     }
-
-
   };
 
   return (
@@ -63,13 +59,13 @@ const LoginForm = () =>  {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
           padding: 2,
-          borderRadius: 1,  
+          borderRadius: 1,
           boxShadow: 3,
-        }}  
+        }}
       >
         <Typography component="h1" variant="h5" color="primary">
           Sign in
@@ -80,7 +76,7 @@ const LoginForm = () =>  {
           fullWidth
           variant="outlined"
           sx={{ mt: 2, mb: 2 }}
-          onClick={() => alert('Third-party Sign-in (e.g., Google)')}
+          onClick={() => alert("Third-party Sign-in (e.g., Google)")}
         >
           Sign in with Google
         </Button>
@@ -131,7 +127,7 @@ const LoginForm = () =>  {
           </Button>
 
           {/* Forgot Password and Sign Up */}
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Link href="#" variant="body2">
               Forgot password?
             </Link>
@@ -144,6 +140,6 @@ const LoginForm = () =>  {
       </Box>
     </Container>
   );
-}
+};
 
 export default LoginForm;

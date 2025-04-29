@@ -20,7 +20,7 @@ function getLoginStatus(): LoginCredentials | null {
   const userCreds: LoginCredentials | null = JSON.parse(
     localStorage.getItem("authenticatedUser") || "{}",
   );
-  
+
   return (
     credentials.find(
       (crendential) =>
@@ -76,16 +76,16 @@ export const AuthenticationProvider = ({
   };
 
   const logout = () => {
-    console.log("logging out")
+    console.log("logging out");
     setUser(null);
     localStorage.removeItem("authenticatedUser");
     navigate("/login");
   };
 
-  const token = localStorage.getItem('authenticatedUser'); // Retrieve the token
-if (token) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
+  const token = localStorage.getItem("authenticatedUser"); // Retrieve the token
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
 
   return (
     <AuthContext.Provider value={{ user, authLoading: loading, login, logout }}>
