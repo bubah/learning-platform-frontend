@@ -35,13 +35,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Upload to commit-specific path
+      - name: Upload build artifacts
         run: |
           COMMIT_HASH=${GITHUB_SHA::7}
           aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }}/frontend/main/$COMMIT_HASH/ \
-            --delete --acl public-read --cache-control "max-age=0,no-cache,no-store,must-revalidate"
-
-      - name: Upload to latest path
-        run: |
+          --delete --cache-control "max-age=0,no-cache,no-store,must-revalidate"
           aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }}/frontend/main/latest/ \
-            --delete --acl public-read --cache-control "max-age=0,no-cache,no-store,must-revalidate"
+          --delete --cache-control "max-age=0,no-cache,no-store,must-revalidate"
