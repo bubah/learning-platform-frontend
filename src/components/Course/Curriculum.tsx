@@ -15,8 +15,6 @@ export const Curriculum = () => {
     saveLecture(lecture);
     setDisplayAddLecture(false);
   };
-
-  // console.log("Course", course);
   
   const sortedLectures = [...(course?.lectures || [])].sort((a, b) => a.order - b.order);
 
@@ -31,12 +29,6 @@ export const Curriculum = () => {
       }}
     >
       <Typography color="black">Curriculum</Typography>
-
-      {/* {course && (
-        <DragAndDropList
-          courseLectures={course.lectures}
-        />
-      )} */}
 
       <DragAndDropList >
          {sortedLectures.map((lecture) => (

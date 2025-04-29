@@ -23,7 +23,6 @@ import { AddLectureComponent } from "./AddLectureComponent";
 export const LectureComponent = 
   () => {
   
-    //  states and functions moved from sortable lecture to lecture component
     const { deleteLecture, saveSection } = useCourse();
     const [displayAddSection, setDisplayAddSection] = useState(false);
   
@@ -31,8 +30,6 @@ export const LectureComponent =
       saveSection({ ...section, lectureId: lecture.id || "" });
       setDisplayAddSection(false);
     };
-    // end of states and functions added from sortable lectures from drag and drop list
-
 
     const { lecture } = useLecture();
     const { attributes, listeners } = useSortable({ id: lecture.id || "" });
@@ -42,8 +39,6 @@ export const LectureComponent =
     const [lectureDescription, setLectureDescription] = useState<string>(
       lecture.description
     );
-
-    
 
     const updateTitle = (value: string) => {
       console.log("Updating title to: ", value);
@@ -113,7 +108,6 @@ export const LectureComponent =
                 />
               </Box>
             </Box>
-            {/* start of newly added code */}
             <Box sx={{ textAlign: "center", marginTop: 2 }}>
           <SectionDragAndDropList />
           <Box sx={{ marginTop: 2 }}>
