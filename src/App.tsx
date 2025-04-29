@@ -7,28 +7,34 @@ import { LoginForm } from "./components/Course/LoginForm";
 import CourseManagementScreen from "./components/Course/MangeCoursesPage";
 import { ProtectedRoute } from "./components/Course/ProtectedRoute";
 import { NavBar } from "./components/NavBar";
+import { Card, Typography } from "@mui/material";
 
 function App() {
   return (
     <BrowserRouter>
-    <AuthenticationProvider>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<CourseList />} />
-        <Route path="/courses/:id" element={<CoursePage />} />
-        <Route
-          path="/login"
-          element={<LoginForm />}
-        />
-        <Route
-          path="/manage/course/:id"
-          element={
-            <ProtectedRoute>
-              <CourseManagementScreen />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <AuthenticationProvider>
+        <NavBar />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Card>
+                <Typography>LANDING PAGE</Typography>
+              </Card>
+            }
+          />
+          <Route path="/courses" element={<CourseList />} />
+          <Route path="/courses/:id" element={<CoursePage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route
+            path="/manage/course/:id"
+            element={
+              <ProtectedRoute>
+                <CourseManagementScreen />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </AuthenticationProvider>
     </BrowserRouter>
   );

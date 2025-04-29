@@ -19,8 +19,6 @@ export const useLecture = () => {
   return context;
 };
 
-
-
 export const LectureProvider = ({
   children,
   lecture,
@@ -28,13 +26,10 @@ export const LectureProvider = ({
   children: ReactNode;
   lecture: Lecture;
 }) => {
-
   const { setNodeRef, transform, transition } = useSortable({
     id: lecture?.id ?? "",
   });
   // console.log("LectureProvider", lecture);
-
-
 
   const style = {
     transform: CSS.Transform.toString(transform),

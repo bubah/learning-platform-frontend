@@ -16,9 +16,9 @@ export const Curriculum = () => {
     setDisplayAddLecture(false);
   };
 
-  // console.log("Course", course);
-  
-  const sortedLectures = [...(course?.lectures || [])].sort((a, b) => a.order - b.order);
+  const sortedLectures = [...(course?.lectures || [])].sort(
+    (a, b) => a.order - b.order,
+  );
 
   return (
     <Box
@@ -32,16 +32,10 @@ export const Curriculum = () => {
     >
       <Typography color="black">Curriculum</Typography>
 
-      {/* {course && (
-        <DragAndDropList
-          courseLectures={course.lectures}
-        />
-      )} */}
-
-      <DragAndDropList >
-         {sortedLectures.map((lecture) => (
+      <DragAndDropList>
+        {sortedLectures.map((lecture) => (
           <LectureProvider key={lecture.id} lecture={lecture}>
-             <LectureComponent />
+            <LectureComponent />
           </LectureProvider>
         ))}
       </DragAndDropList>

@@ -42,8 +42,7 @@ export const NavBar = () => {
     setAnchorElUser(null);
   };
 
-  const {user} = useAuth();
-
+  const { user } = useAuth();
 
   return (
     <AppBar position="static">
@@ -54,7 +53,7 @@ export const NavBar = () => {
             variant="h6"
             noWrap
             component={Link}
-            to={("/")}
+            to={"/"}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -122,15 +121,14 @@ export const NavBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              <Button
-                to="/"
-                component = {Link}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                My Courses
-              </Button>
-            
+            <Button
+              to="/courses"
+              component={Link}
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              My Courses
+            </Button>
           </Box>
           <Box sx={{ flexGrow: 5 }}>
             <Autocomplete
@@ -158,7 +156,7 @@ export const NavBar = () => {
               display: "flex",
               margin: 3,
               alignItems: "center",
-              position: "relative"
+              position: "relative",
             }}
           >
             <CircularProgress
@@ -177,8 +175,7 @@ export const NavBar = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                width: 'fit-content',
-
+                width: "fit-content",
               }}
             >
               <Typography
@@ -189,43 +186,41 @@ export const NavBar = () => {
             </Box>
             <Typography>Your Progress</Typography>
           </Box>
-          
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
-            {user ? 
-          <Menu
-          sx={{ mt: "45px" }}
-          id="menu-appbar"
-          anchorEl={anchorElUser}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
-        >
-
-          {settings.map((setting) => (
-            <MenuItem key={setting} onClick={handleCloseUserMenu}>
-              <Typography sx={{ textAlign: "center" }}>
-                {setting}
-              </Typography>
-            </MenuItem>
-          ))}
-        </Menu>
-        : 
-        <Button>Sign up</Button>
-          }
-            
+            {user ? (
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography sx={{ textAlign: "center" }}>
+                      {setting}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            ) : (
+              <Button>Sign up</Button>
+            )}
           </Box>
         </Toolbar>
       </Container>
