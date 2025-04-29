@@ -76,6 +76,7 @@ export const AuthenticationProvider = ({
   };
 
   const logout = () => {
+    console.log("logging out")
     setUser(null);
     localStorage.removeItem("authenticatedUser");
     navigate("/login");

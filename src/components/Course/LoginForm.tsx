@@ -9,8 +9,13 @@ import {
   Checkbox,
   Link,
 } from '@mui/material';
+import { useAuth } from './AuthenticationProvider';
 
 const LoginForm = () =>  {
+
+  const {login} = useAuth();
+
+
   const [errors, setErrors] = useState({
     email: '',
     password: '',
@@ -43,8 +48,14 @@ const LoginForm = () =>  {
         password,
         remember: data.get('remember'),
       });
-      // proceed with form submission
+
+      login({
+        username: email,
+        password: password,
+      }); 
     }
+
+
   };
 
   return (
