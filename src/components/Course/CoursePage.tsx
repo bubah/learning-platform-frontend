@@ -1,6 +1,6 @@
 import { Box, createTheme, useMediaQuery } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import {  useState } from "react";
+import { useState } from "react";
 import VideoPlayer from "../VideoPlayer";
 import { LessonsList } from "./LessonsList";
 import { CourseDetails } from "./CourseDetails";

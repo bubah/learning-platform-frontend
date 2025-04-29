@@ -4,7 +4,6 @@ import { Curriculum } from "./Curriculum";
 import { EditCourse } from "./EditCourse";
 import { CourseProvider } from "./CourseProvider";
 
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
