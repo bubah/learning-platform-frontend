@@ -2,7 +2,8 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import { Curriculum } from "./Curriculum";
 import { EditCourse } from "./EditCourse";
-import { CourseProvider } from "./CourseProvider";
+import { useCourse } from "./CourseProvider";
+import { CourseOverViewEdit } from "./CourseOverViewEdit";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -29,41 +30,43 @@ function TabPanel(props: TabPanelProps) {
 export default function CourseManagementScreen() {
   const [value, setValue] = useState(0);
 
+  const { isLoading } = useCourse();
+
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   return (
-    <CourseProvider>
-      <Box display={"flex"} sx={{ display: "flex", paddingLeft: 2 }}>
-        <Tabs
-          aria-label="Vertical tabs"
-          orientation="vertical"
-          value={value}
-          onChange={handleChange}
-          sx={{
-            minWidth: 300,
-            height: "100vh",
-            borderRight: 1,
-            borderColor: "divider",
-          }}
-        >
-          <Tab label="Edit Course" />
-          <Tab label="Curriculum" />
-          <Tab label="Course Overview" />
-        </Tabs>
+    <Box display={"flex"} sx={{ display: "flex", paddingLeft: 2 }}>
+      <Tabs
+        aria-label="Vertical tabs"
+        orientation="vertical"
+        value={value}
+        onChange={handleChange}
+        sx={{
+          minWidth: 300,
+          height: "100vh",
+          borderRight: 1,
+          borderColor: "divider",
+        }}
+      >
+        <Tab label="Course Overview" />
+        <Tab label="Edit Course" />
+        <Tab label="Curriculum" />
+      </Tabs>
+      {!isLoading && (
         <Box sx={{ flexGrow: 1 }}>
           <TabPanel value={value} index={0}>
-            <EditCourse />
+            <CourseOverViewEdit />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Curriculum />
+            <EditCourse />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <b>Third</b> tab panel
+            <Curriculum />
           </TabPanel>
         </Box>
-      </Box>
-    </CourseProvider>
+      )}
+    </Box>
   );
 }

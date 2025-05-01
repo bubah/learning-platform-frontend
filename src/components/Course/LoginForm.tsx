@@ -1,55 +1,145 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
-import { FormEvent, useState } from "react";
+import React, { useState } from "react";
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  FormControlLabel,
+  Checkbox,
+  Link,
+} from "@mui/material";
 import { useAuth } from "./AuthenticationProvider";
 
-export const LoginForm = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
+const LoginForm = () => {
   const { login } = useAuth();
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    login({ username, password });
-  }
+    const data = new FormData(event.currentTarget);
+
+    const email = data.get("email")?.toString().trim() || "";
+    const password = data.get("password")?.toString().trim() || "";
+
+    const tempErrors = { email: "", password: "" };
+    let isValid = true;
+
+    if (!email) {
+      tempErrors.email = "Email is required";
+      isValid = false;
+    }
+    if (!password) {
+      tempErrors.password = "Password is required";
+      isValid = false;
+    }
+
+    setErrors(tempErrors);
+
+    if (isValid) {
+      console.log({
+        email,
+        password,
+        remember: data.get("remember"),
+      });
+
+      login({
+        username: email,
+        password: password,
+      });
+    }
+  };
 
   return (
-    <Box>
-      <Box>
-        <Box>
-          <Typography variant="h2">Login</Typography>
-        </Box>
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            maxWidth: "300px",
-          }}
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: 2,
+          borderRadius: 1,
+          boxShadow: 3,
+        }}
+      >
+        <Typography component="h1" variant="h5" color="primary">
+          Sign in
+        </Typography>
+
+        {/* Third-party sign-in */}
+        <Button
+          fullWidth
+          variant="outlined"
+          sx={{ mt: 2, mb: 2 }}
+          onClick={() => alert("Third-party Sign-in (e.g., Google)")}
         >
+          Sign in with Google
+        </Button>
+
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {/* Email Field */}
           <TextField
-            label="username"
-            name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            variant="outlined"
+            margin="normal"
             required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            error={Boolean(errors.email)}
+            helperText={errors.email}
           />
+
+          {/* Password Field */}
           <TextField
-            label="Password"
+            margin="normal"
+            required
+            fullWidth
             name="password"
+            label="Password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            variant="outlined"
-            required
+            id="password"
+            autoComplete="current-password"
+            error={Boolean(errors.password)}
+            helperText={errors.password}
           />
-          <Button type="submit" variant="contained" color="primary">
-            Submit
+
+          {/* Remember Me */}
+          <FormControlLabel
+            control={<Checkbox name="remember" color="primary" />}
+            label="Remember me"
+          />
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
           </Button>
-        </form>
+
+          {/* Forgot Password and Sign Up */}
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Link href="#" variant="body2">
+              Forgot password?
+            </Link>
+
+            <Link href="#" variant="body2">
+              {"Don't have an account? Sign Up"}
+            </Link>
+          </Box>
+        </Box>
       </Box>
-    </Box>
+    </Container>
   );
 };
+
+export default LoginForm;
