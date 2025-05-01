@@ -7,7 +7,7 @@ export type LoginCredentials = {
 export type AuthContextType = {
   user: LoginCredentials | null;
   authLoading: boolean;
-  login: (user: LoginCredentials) => void;
+  login: (jwtToken: string) => void;
   logout: () => void;
 };
 

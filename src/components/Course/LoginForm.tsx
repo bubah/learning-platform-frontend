@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+ import React, { useState } from "react";
 import {
   Container,
   Box,
@@ -10,6 +10,7 @@ import {
   Link,
 } from "@mui/material";
 import { useAuth } from "./AuthenticationProvider";
+import { AuthenticationDetails, CognitoUser, userPool } from "../../auth/cognitoConfig";
 
 const LoginForm = () => {
   const { login } = useAuth();
@@ -18,6 +19,31 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
+
+  const loginV2 = (email:string, password:string) :Promise<string> => {
+  
+    return new Promise((resolve, reject) => {
+      const user = new CognitoUser({
+        Username: email,
+        Pool: userPool
+      });
+  
+      const authDetails = new AuthenticationDetails({
+        Username: email,
+        Password: password
+      });
+  
+      user.authenticateUser(authDetails, {
+        onSuccess: (result) => {
+          const accessToken = result.getAccessToken().getJwtToken();
+          resolve(accessToken);
+        },
+        onFailure: (err) => {
+          reject(err);
+        }
+      });
+    });
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -47,12 +73,13 @@ const LoginForm = () => {
         remember: data.get("remember"),
       });
 
-      login({
-        username: email,
-        password: password,
-      });
-    }
-  };
+      loginV2(email, password)
+        .then((accessToken) => {
+          login(accessToken);
+    })
+  }
+};
+
 
   return (
     <Container component="main" maxWidth="xs">

@@ -33,8 +33,8 @@ function getLoginStatus(): LoginCredentials | null {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   authLoading: false,
-  login: (user: LoginCredentials) => {
-    console.log(user);
+  login: (jwtToken: string) => {
+    console.log(jwtToken);
   },
   logout: () => {},
 });
@@ -63,14 +63,26 @@ export const AuthenticationProvider = ({
     setLoading(false);
   }, []);
 
-  const login = (user: LoginCredentials) => {
-    if (!user) {
+  // const login = (user: LoginCredentials) => {
+  //   if (!user) {
+  //     navigate("/login");
+  //     return;
+  //   }
+
+  //   setUser(user);
+  //   localStorage.setItem("authenticatedUser", JSON.stringify(user));
+  //   const redirectUrl = location.state?.from?.pathname || "/";
+  //   navigate(redirectUrl);
+  // };
+
+  const login = (jwtToken: string) => {
+    if (!jwtToken) {
       navigate("/login");
       return;
     }
 
-    setUser(user);
-    localStorage.setItem("authenticatedUser", JSON.stringify(user));
+    // setUser(user);
+    localStorage.setItem("accessToken", jwtToken);
     const redirectUrl = location.state?.from?.pathname || "/";
     navigate(redirectUrl);
   };

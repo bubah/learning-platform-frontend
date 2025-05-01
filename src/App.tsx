@@ -6,8 +6,8 @@ import { CoursePage } from "./components/Course/CoursePage";
 import CourseManagementScreen from "./components/Course/MangeCoursesPage";
 import { ProtectedRoute } from "./components/Course/ProtectedRoute";
 import { NavBar } from "./components/NavBar";
-import LoginForm from "./components/Course/LoginForm";
 import { Card, Typography } from "@mui/material";
+import LoginScreen from "./components/Course/LoginScreen";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
           />
           <Route path="/courses" element={<CourseList />} />
           <Route path="/courses/:id" element={<CoursePage />} />
-          <Route path="/login" element={<LoginForm />} />
+          <Route path="/login" element={<LoginScreen />} />
           <Route
             path="/manage/course/:id"
             element={
