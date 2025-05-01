@@ -36,6 +36,8 @@ const LoginForm = () => {
       user.authenticateUser(authDetails, {
         onSuccess: (result) => {
           const accessToken = result.getAccessToken().getJwtToken();
+          const idToken = result.getIdToken().getJwtToken();
+          const refreshToken = result.getRefreshToken().getToken();
           resolve(accessToken);
         },
         onFailure: (err) => {
