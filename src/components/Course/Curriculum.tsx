@@ -6,6 +6,11 @@ import { useCourse } from "./CourseProvider";
 import { Lecture } from "../../types/types";
 import { LectureProvider } from "./LectureProvider";
 import { LectureComponent } from "./LectureComponent";
+import { SectionDragAndDropList } from "./SectionDragAndDropList";
+import { SectionProvider, useSection } from "./SectionProvider";
+import { SectionComponent } from "./SectionComponent";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 export const Curriculum = () => {
   const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);
@@ -17,7 +22,7 @@ export const Curriculum = () => {
   };
 
   const sortedLectures = [...(course?.lectures || [])].sort(
-    (a, b) => a.order - b.order,
+    (a, b) => a.order - b.order
   );
 
   return (
@@ -33,11 +38,24 @@ export const Curriculum = () => {
       <Typography color="black">Curriculum</Typography>
 
       <DragAndDropList>
-        {sortedLectures.map((lecture) => (
-          <LectureProvider key={lecture.id} lecture={lecture}>
-            <LectureComponent />
-          </LectureProvider>
-        ))}
+        {sortedLectures.map((lecture) => {
+          const sortedSections = [...(lecture?.sections || [])].sort(
+            (a, b) => a.order - b.order
+          );
+          return (
+            <LectureProvider key={lecture.id} lecture={lecture}>
+              <LectureComponent>
+                <SectionDragAndDropList>
+                  {sortedSections?.map((section) => (
+                    <SectionProvider key={section.id} section={section}>
+                      <SortabelSection />
+                    </SectionProvider>
+                  ))}
+                </SectionDragAndDropList>
+              </LectureComponent>
+            </LectureProvider>
+          );
+        })}
       </DragAndDropList>
 
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
@@ -51,5 +69,28 @@ export const Curriculum = () => {
         />
       )}
     </Box>
+  );
+};
+
+const SortabelSection = () => {
+  const { section } = useSection();
+  const { setNodeRef, transform, transition } = useSortable({
+    id: section.id || "",
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    padding: "0px",
+    margin: "5px 0",
+    backgroundColor: "#f0f0f0",
+    borderRadius: "4px",
+    cursor: "grab",
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <SectionComponent />
+    </div>
   );
 };

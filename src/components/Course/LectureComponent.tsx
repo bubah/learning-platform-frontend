@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { useLecture } from "./LectureProvider";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
 import { SectionDragAndDropList } from "./SectionDragAndDropList";
@@ -20,7 +20,7 @@ import { useCourse } from "./CourseProvider";
 import { Section } from "../../types/types";
 import { AddLectureComponent } from "./AddLectureComponent";
 
-export const LectureComponent = () => {
+export const LectureComponent = ({children}: {children: ReactNode}) => {
   const { deleteLecture, saveSection } = useCourse();
   const [displayAddSection, setDisplayAddSection] = useState(false);
 
@@ -103,7 +103,7 @@ export const LectureComponent = () => {
             </Box>
           </Box>
           <Box sx={{ textAlign: "center", marginTop: 2 }}>
-            <SectionDragAndDropList />
+            {children}
             <Box sx={{ marginTop: 2 }}>
               <Button
                 variant="outlined"

@@ -13,10 +13,10 @@ import { memo } from "react";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { useSortable } from "@dnd-kit/sortable";
-import { Section } from "../../types/types";
 import { useSection } from "./SectionProvider";
 
-export const SectionComponent = memo(({ section }: { section: Section }) => {
+export const SectionComponent = memo(() => {
+  const {section} = useSection();
   const { title, description, id } = section;
   const { attributes, listeners } = useSortable({ id: id || "" });
 
@@ -30,8 +30,6 @@ export const SectionComponent = memo(({ section }: { section: Section }) => {
   const handleSaveV2 = (value: string) => {
     console.log("Printing value", value);
   };
-
-  // console.log("section: ", section)
 
   return (
     <Box>

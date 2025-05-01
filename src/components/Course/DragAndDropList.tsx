@@ -36,21 +36,6 @@ export const DragAndDropList = ({
       order: i,
     }));
     reorderLectures(pristineLectures, updatedLectures);
-    console.log("updated lectures :", updatedLectures);
-
-    // setLectures(updatedLectures);
-
-    // const requestBody: ReorderResourceDTO = {
-    // lectures: toLectureDTO(updatedLectures),
-    // };
-
-    // axios
-    // .post(`http://localhost:8080/lecture-reorder/${course?.id}`, requestBody)
-    // .catch((error) => {
-    // console.log(error);
-    // setLectures(pristineLectures);
-    // need a hook to send new order of lectures to back end
-    // });
   };
   const sortedLectures = [...(course?.lectures || [])].sort(
     (a, b) => a.order - b.order,
