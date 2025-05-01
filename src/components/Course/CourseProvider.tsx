@@ -18,7 +18,12 @@ type CourseContextType = {
   deleteSection: (id: string) => void;
   reorderLectures: (
     pristineLecture: Lecture[],
-    updatedLecture: Lecture[],
+    updatedLecture: Lecture[]
+  ) => void;
+  reorderSections: (
+    pristineSection: Section[],
+    updatedSection: Section[],
+    lectureId: string
   ) => void;
   isLoading: boolean;
 };
@@ -148,7 +153,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
 
   const reorderLectures = (
     pristineLectures: Lecture[],
-    updatedLectures: Lecture[],
+    updatedLectures: Lecture[]
   ) => {
     const requestBody: ReorderResourceDTO = {
       lectures: toLectureDTO(updatedLectures),
@@ -164,20 +169,50 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
       .then((res) => {
         const { lectures } = res.data;
         console.log(lectures);
-        // console.log("updated lecture order: ", lectures)
-        // setCourse((prevCourse) => (
-        //   {
-        //     ...prevCourse!,
-        //           lectures
-
-        //   }
-        // ))
       })
       .catch((error) => {
         console.log(error);
         setCourse((prevCourse) => ({
           ...prevCourse!,
           lectures: pristineLectures,
+        }));
+      });
+  };
+
+  const reorderSections = (
+    pristineSections: Section[],
+    updatedSections: Section[],
+    lectureId: string
+  ) => {
+    const requestBody: ReorderResourceDTO = {
+      sections: toSectionDTO(updatedSections),
+    };
+    setCourse((prevCourse) => ({
+      ...prevCourse!,
+      lectures: prevCourse!.lectures.map((lecture) => {
+        return lecture.id === lectureId
+          ? { ...lecture, sections: updatedSections }
+          : lecture;
+      }),
+    }));
+    axios
+      .post(
+        `http://localhost:8080/section-reorder/${lectureId}`,
+        requestBody
+      )
+      .then((res) => {
+        const { sections } = res.data;
+        console.log(sections);
+      })
+      .catch((error) => {
+        console.log(error);
+        setCourse((prevCourse) => ({
+          ...prevCourse!,
+          lectures: prevCourse!.lectures.map((lecture) => {
+            return lecture.id === pristineSections[0].lectureId
+              ? { ...lecture, sections: pristineSections }
+              : lecture;
+          }),
         }));
       });
   };
@@ -191,6 +226,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
         saveSection,
         deleteSection,
         reorderLectures,
+        reorderSections,
         isLoading,
       }}
     >
@@ -211,5 +247,14 @@ function toLectureDTO(updatedLectures: Lecture[]): LectureDTO[] {
       description: s.description,
       order: s.order,
     })),
+  }));
+}
+
+function toSectionDTO(updatedSections: Section[]): LectureDTO[] {
+  return updatedSections.map((s) => ({
+    id: s.id,
+    order: s.order,
+    title: s.title,
+    description: s.description,
   }));
 }

@@ -5,8 +5,6 @@ import { CSS } from "@dnd-kit/utilities";
 
 type LectureContextType = {
   lecture: Lecture;
-  //   saveLecture: (lecture: Lecture) => void;
-  //   deleteLecture: (id: string) => void;
 };
 
 const LectureContext = createContext({} as LectureContextType);
@@ -29,7 +27,6 @@ export const LectureProvider = ({
   const { setNodeRef, transform, transition } = useSortable({
     id: lecture?.id ?? "",
   });
-  // console.log("LectureProvider", lecture);
 
   const style = {
     transform: CSS.Transform.toString(transform),

@@ -1,20 +1,16 @@
-import { useEffect, useState } from "react";
 import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
+  verticalListSortingStrategy
 } from "@dnd-kit/sortable";
-import { SectionComponent } from "./SectionComponent";
-import { CSS } from "@dnd-kit/utilities";
-import axios from "axios";
+import { ReactNode, useEffect, useState } from "react";
 import { Section } from "../../types/types";
-import { ReorderResourceDTO, SectionDTO } from "../../types/dtos";
-import { SectionProvider, useSection } from "./SectionProvider";
+import { useCourse } from "./CourseProvider";
 import { useLecture } from "./LectureProvider";
 
-export const SectionDragAndDropList = () => {
+export const SectionDragAndDropList = ({children}: {children: ReactNode}) => {
+  const { reorderSections } = useCourse();
   const { lecture } = useLecture();
   const [sections, setSections] = useState<Section[] | []>(
     lecture.sections || [],
@@ -32,7 +28,7 @@ export const SectionDragAndDropList = () => {
 
     const oldIndex = sortedSections.findIndex((s) => s.id === active.id);
     const newIndex = sortedSections.findIndex((s) => s.id === over.id);
-    const updaatedSections: Section[] = arrayMove(
+    const updatedSections: Section[] = arrayMove(
       sortedSections,
       oldIndex,
       newIndex,
@@ -45,23 +41,11 @@ export const SectionDragAndDropList = () => {
       };
     });
 
-    setSections(updaatedSections);
-
-    const requestBody: ReorderResourceDTO = {
-      sections: toSectionDTO(updaatedSections),
-    };
-
-    axios
-      .post(`http://localhost:8080/section-reorder/${lecture.id}`, requestBody)
-      .catch((error) => {
-        console.log(error);
-        setSections(pristineSections);
-      });
+    reorderSections(pristineSections, updatedSections, lecture.id || "");
   };
 
   const sortedSections = [...sections].sort((a, b) => a.order - b.order);
 
-  // console.log("Section Drag & drop", lecture, sections, sortedSections);
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext
@@ -72,43 +56,8 @@ export const SectionDragAndDropList = () => {
         }
         strategy={verticalListSortingStrategy}
       >
-        {sortedSections?.map((section) => (
-          <SectionProvider key={section.id} section={section}>
-            <SortabelSection />
-          </SectionProvider>
-        ))}
+        {children}
       </SortableContext>
     </DndContext>
   );
 };
-
-const SortabelSection = () => {
-  const { section } = useSection();
-  const { setNodeRef, transform, transition } = useSortable({
-    id: section.id || "",
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    padding: "0px",
-    margin: "5px 0",
-    backgroundColor: "#f0f0f0",
-    borderRadius: "4px",
-    cursor: "grab",
-  };
-
-  return (
-    <div ref={setNodeRef} style={style}>
-      <SectionComponent section={section} />
-    </div>
-  );
-};
-function toSectionDTO(updaatedSections: Section[]): SectionDTO[] {
-  return updaatedSections.map((s) => ({
-    title: s.title,
-    description: s.description,
-    id: s.id,
-    order: s.order,
-  }));
-}

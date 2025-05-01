@@ -12,10 +12,6 @@ export const CoursePage = () => {
   const isMdOrLower = useMediaQuery(theme.breakpoints.down("lg"));
   const [course] = useState<Course | undefined>(undefined);
 
-  // useEffect(() => {
-  //   setCourse(mockCourse);
-  // }, []);
-
   return (
     <Box
       sx={{
