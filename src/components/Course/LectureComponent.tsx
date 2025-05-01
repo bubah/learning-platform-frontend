@@ -13,12 +13,11 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { ReactNode, useState } from "react";
-import { useLecture } from "./LectureProvider";
-import UpdateAttributeFeild from "./UpdateAttributeFied";
-import { SectionDragAndDropList } from "./SectionDragAndDropList";
-import { useCourse } from "./CourseProvider";
 import { Section } from "../../types/types";
 import { AddLectureComponent } from "./AddLectureComponent";
+import { useCourse } from "./CourseProvider";
+import { useLecture } from "./LectureProvider";
+import UpdateAttributeFeild from "./UpdateAttributeFied";
 
 export const LectureComponent = ({children}: {children: ReactNode}) => {
   const { deleteLecture, saveSection } = useCourse();

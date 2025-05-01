@@ -165,14 +165,6 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
       .then((res) => {
         const { lectures } = res.data;
         console.log(lectures);
-        // console.log("updated lecture order: ", lectures)
-        // setCourse((prevCourse) => (
-        //   {
-        //     ...prevCourse!,
-        //           lectures
-
-        //   }
-        // ))
       })
       .catch((error) => {
         console.log(error);

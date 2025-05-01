@@ -3,7 +3,6 @@ import { useState } from "react";
 
 const UpdateAttributeFeild = ({
   attributeValue,
-
   label,
   handleUpdate,
 }: {
@@ -16,7 +15,6 @@ const UpdateAttributeFeild = ({
   const [newValue, setNewValue] = useState(attributeValue);
 
   const handleSave = () => {
-    // API Call here using attributeValue to determine field that needs to be updated.
     handleUpdate(newValue);
     setIsEditing(false);
   };

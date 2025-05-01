@@ -5,7 +5,6 @@ import {
   verticalListSortingStrategy
 } from "@dnd-kit/sortable";
 import { ReactNode, useEffect, useState } from "react";
-import { SectionDTO } from "../../types/dtos";
 import { Section } from "../../types/types";
 import { useCourse } from "./CourseProvider";
 import { useLecture } from "./LectureProvider";
@@ -43,22 +42,9 @@ export const SectionDragAndDropList = ({children}: {children: ReactNode}) => {
     });
 
     reorderSections(pristineSections, updatedSections, lecture.id || "");
-
-    // const requestBody: ReorderResourceDTO = {
-    //   sections: toSectionDTO(updatedSections),
-    // };
-
-    // axios
-    //   .post(`http://localhost:8080/section-reorder/${lecture.id}`, requestBody)
-    //   .catch((error) => {
-    //     console.log(error);
-    //     setSections(pristineSections);
-    //   });
   };
 
   const sortedSections = [...sections].sort((a, b) => a.order - b.order);
-
-  console.log("sorted sections :", sortedSections);
 
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -75,12 +61,3 @@ export const SectionDragAndDropList = ({children}: {children: ReactNode}) => {
     </DndContext>
   );
 };
-
-function toSectionDTO(updaatedSections: Section[]): SectionDTO[] {
-  return updaatedSections.map((s) => ({
-    title: s.title,
-    description: s.description,
-    id: s.id,
-    order: s.order,
-  }));
-}
