@@ -23,9 +23,24 @@ function App() {
               </Card>
             }
           />
-          <Route path="/courses" element={<CourseList />} />
-          <Route path="/courses/:id" element={<CoursePage />} />
           <Route path="/login" element={<LoginScreen />} />
+
+          <Route
+            path="/courses"
+            element={
+              <ProtectedRoute>
+                <CourseList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/courses/:id"
+            element={
+              <ProtectedRoute>
+                <CoursePage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/manage/course/:id"
             element={

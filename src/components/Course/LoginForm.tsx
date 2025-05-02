@@ -1,16 +1,15 @@
- import React, { useState } from "react";
 import {
-  Container,
   Box,
-  Typography,
-  TextField,
   Button,
-  FormControlLabel,
   Checkbox,
+  Container,
+  FormControlLabel,
   Link,
+  TextField,
+  Typography,
 } from "@mui/material";
+import React, { useState } from "react";
 import { useAuth } from "./AuthenticationProvider";
-import { AuthenticationDetails, CognitoUser, userPool } from "../../auth/cognitoConfig";
 
 const LoginForm = () => {
   const { login } = useAuth();
@@ -19,33 +18,6 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
-
-  const loginV2 = (email:string, password:string) :Promise<string> => {
-  
-    return new Promise((resolve, reject) => {
-      const user = new CognitoUser({
-        Username: email,
-        Pool: userPool
-      });
-  
-      const authDetails = new AuthenticationDetails({
-        Username: email,
-        Password: password
-      });
-  
-      user.authenticateUser(authDetails, {
-        onSuccess: (result) => {
-          const accessToken = result.getAccessToken().getJwtToken();
-          const idToken = result.getIdToken().getJwtToken();
-          const refreshToken = result.getRefreshToken().getToken();
-          resolve(accessToken);
-        },
-        onFailure: (err) => {
-          reject(err);
-        }
-      });
-    });
-  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -75,13 +47,9 @@ const LoginForm = () => {
         remember: data.get("remember"),
       });
 
-      loginV2(email, password)
-        .then((accessToken) => {
-          login(accessToken);
-    })
-  }
-};
-
+      login({ username: email, password });
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -111,7 +79,6 @@ const LoginForm = () => {
         </Button>
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          {/* Email Field */}
           <TextField
             margin="normal"
             required
@@ -124,8 +91,6 @@ const LoginForm = () => {
             error={Boolean(errors.email)}
             helperText={errors.email}
           />
-
-          {/* Password Field */}
           <TextField
             margin="normal"
             required
@@ -138,14 +103,10 @@ const LoginForm = () => {
             error={Boolean(errors.password)}
             helperText={errors.password}
           />
-
-          {/* Remember Me */}
           <FormControlLabel
             control={<Checkbox name="remember" color="primary" />}
             label="Remember me"
           />
-
-          {/* Submit Button */}
           <Button
             type="submit"
             fullWidth

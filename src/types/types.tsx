@@ -1,3 +1,5 @@
+import { CognitoUserSession } from "amazon-cognito-identity-js";
+
 export type LoginCredentials = {
   username: string;
   password: string;
@@ -5,9 +7,9 @@ export type LoginCredentials = {
 };
 
 export type AuthContextType = {
-  user: LoginCredentials | null;
+  user: CognitoUserSession | null;
   authLoading: boolean;
-  login: (jwtToken: string) => void;
+  login: (user: LoginCredentials) => void;
   logout: () => void;
 };
 
