@@ -33,8 +33,8 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
       return;
     }
     oauthManager.login(user, () => {
-      navigate(location.state?.from?.pathname || "/");
       setUser(oauthManager.getUserSession());
+      navigate(location.state?.from?.pathname || "/");
     });
   };
 
