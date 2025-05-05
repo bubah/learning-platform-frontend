@@ -47,8 +47,21 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
     });
   };
 
+  const signUp = (user: LoginCredentials) => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    oauthManager.signUp(user, () => {
+      setUser(oauthManager.getUserSession());
+      navigate(location.state?.from?.pathname || "/");
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, authLoading: loading, login, logout }}>
+    <AuthContext.Provider
+      value={{ signUp, user, authLoading: loading, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

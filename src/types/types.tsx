@@ -10,6 +10,7 @@ export type AuthContextType = {
   user: CognitoUserSession | null;
   authLoading: boolean;
   login: (user: LoginCredentials) => void;
+  signUp: (user: LoginCredentials) => void;
   logout: () => void;
 };
 

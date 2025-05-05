@@ -1,16 +1,21 @@
 import {
-  Container,
   Box,
-  Typography,
   Button,
-  TextField,
-  FormControlLabel,
   Checkbox,
+  Container,
+  FormControlLabel,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useAuth } from "./AuthenticationProvider";
 
 const SignUp = () => {
+  const { signUp } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({
     email: "",
     password: "",
@@ -18,10 +23,6 @@ const SignUp = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
-    const email = data.get("email")?.toString().trim() || "";
-    const password = data.get("password")?.toString().trim() || "";
 
     const tempErrors = { email: "", password: "" };
     let isValid = true;
@@ -34,6 +35,14 @@ const SignUp = () => {
       tempErrors.password = "Password is required";
       isValid = false;
     }
+    if (email !== confirmEmail) {
+      tempErrors.email = "Email addresses do not match";
+      isValid = false;
+    }
+    if (password !== confirmPassword) {
+      tempErrors.password = "Passwords do not match";
+      isValid = false;
+    }
 
     setErrors(tempErrors);
 
@@ -41,8 +50,8 @@ const SignUp = () => {
       console.log({
         email,
         password,
-        remember: data.get("remember"),
       });
+      signUp({ username: email, password });
     }
   };
 
@@ -81,6 +90,7 @@ const SignUp = () => {
           >
             <TextField
               margin="normal"
+              onChange={(e) => setEmail(e.target.value)}
               required
               fullWidth
               id="email"
@@ -91,9 +101,21 @@ const SignUp = () => {
               error={Boolean(errors.email)}
               helperText={errors.email}
             />
-
             <TextField
               margin="normal"
+              onChange={(e) => setConfirmEmail(e.target.value)}
+              required
+              fullWidth
+              id="email-confirm"
+              label="Confirm Email Address"
+              name="email-confirm"
+              autoComplete="email"
+              autoFocus
+              helperText={errors.email}
+            />
+            <TextField
+              margin="normal"
+              onChange={(e) => setPassword(e.target.value)}
               required
               fullWidth
               name="password"
@@ -104,12 +126,17 @@ const SignUp = () => {
               error={Boolean(errors.password)}
               helperText={errors.password}
             />
-
-            <FormControlLabel
-              control={<Checkbox name="remember" color="primary" />}
-              label="Remember me"
+            <TextField
+              margin="normal"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              fullWidth
+              name="confirm-password"
+              label="Confirm Password"
+              type="password"
+              id="confirm-password"
+              autoComplete="current-password"
             />
-
             <Button
               type="submit"
               fullWidth

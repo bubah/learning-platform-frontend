@@ -1,4 +1,4 @@
-import { CognitoUserSession, CognitoUser, AuthenticationDetails, CognitoIdToken, CognitoAccessToken, CognitoRefreshToken } from "amazon-cognito-identity-js";
+import { CognitoUserSession, CognitoUser, AuthenticationDetails, CognitoIdToken, CognitoAccessToken, CognitoRefreshToken, CognitoUserAttribute } from "amazon-cognito-identity-js";
 import { LoginCredentials } from "../types/types";
 import { userPool } from "./cognitoConfig";
 import axios from "axios";
@@ -38,7 +38,6 @@ class SessionManager {
     }
 
     public login(loginCredentials: LoginCredentials, navigate?: () => void) {
-        // Implement login logic here
         this.fetchUserSession(loginCredentials)
         .then((session: CognitoUserSession) => {
             console.log("Login successful", session);
@@ -71,6 +70,35 @@ class SessionManager {
         if (callback) {
             callback();
         }
+    }
+
+    public signUp(loginCredentials: LoginCredentials, callback?: () => void) {
+        const { username: email, password } = loginCredentials;
+        const attributeList = [];
+        const emailAttribute = new CognitoUserAttribute({
+            Name: "email",
+            Value: email,
+        });
+
+        attributeList.push(emailAttribute);
+
+        userPool.signUp(email, password, attributeList, null, (err: Error | null, cognitoUser: CognitoUser) => {
+            if (err) {
+                console.error("Sign up failed", err);
+                return;
+            }
+            // TODO: Send Post request to backend to create user
+            // axios.post("", userDTO)
+            this.userSession = cognitoUser.getSignInUserSession();
+            const accessToken = this.userSession?.getAccessToken().getJwtToken();
+
+            if (accessToken) {
+                axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+            }
+            if (callback) {
+                callback();
+            }
+        });
     }
 
     public isValidToken(): boolean {

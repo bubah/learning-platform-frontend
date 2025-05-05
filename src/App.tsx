@@ -8,6 +8,7 @@ import { ProtectedRoute } from "./components/Course/ProtectedRoute";
 import { NavBar } from "./components/NavBar";
 import { Card, Typography } from "@mui/material";
 import LoginScreen from "./components/Course/LoginScreen";
+import VerificationComponent from "./components/Course/AccountVerificationScreen";
 
 function App() {
   return (
@@ -21,6 +22,12 @@ function App() {
               <Card>
                 <Typography>LANDING PAGE</Typography>
               </Card>
+            }
+          />
+          <Route
+            path="/account-verify"
+            element={
+              <VerificationComponent />
             }
           />
           <Route path="/login" element={<LoginScreen />} />
