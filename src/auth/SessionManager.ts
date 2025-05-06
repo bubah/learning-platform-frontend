@@ -1,5 +1,5 @@
 import { CognitoUserSession, CognitoUser, AuthenticationDetails, CognitoIdToken, CognitoAccessToken, CognitoRefreshToken, CognitoUserAttribute } from "amazon-cognito-identity-js";
-import { LoginCredentials } from "../types/types";
+import { LoginCredentials, User } from "../types/types";
 import { userPool } from "./cognitoConfig";
 import axios from "axios";
 import { UserDTO } from "../types/dtos";
@@ -15,27 +15,13 @@ class SessionManager {
 
     static getInstance(): SessionManager {
         if (!SessionManager._instance) {
-        SessionManager._instance = new SessionManager();
+            SessionManager._instance = new SessionManager();
         }
         return SessionManager._instance;
     }
 
     async refreshTokenIfNeeded(): Promise<void> {
-        if (this.userSession && !this.userSession.isValid()) {
-            return new Promise((resolve, reject) => {
-                this.userSession?.refreshSession(this.userSession.getRefreshToken(), (err: Error, session: CognitoUserSession) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        this.userSession = session;
-                        localStorage.setItem("accessToken", session.getAccessToken().getJwtToken());
-                        localStorage.setItem("idToken", session.getIdToken().getJwtToken());
-                        localStorage.setItem("refreshToken", session.getRefreshToken().getToken());
-                        resolve();
-                    }
-                });
-            });
-        }
+        // TODO: Implement token refresh logic
         return Promise.resolve();   
     }
 
@@ -130,6 +116,13 @@ class SessionManager {
 
     public getUserSession(): CognitoUserSession | null {
         return this.userSession;
+    }
+
+    public getLoggedInUser(): User | null {
+        return this.userSession ? {
+            email: this.userSession.getIdToken().payload.email,
+            role: this.userSession.getIdToken().payload["cognito:groups"] ? this.userSession.getIdToken().payload["cognito:groups"][0] : "LEARNER",
+        } : null;
     }
 
     public get accessToken(): string | null {

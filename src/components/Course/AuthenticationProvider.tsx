@@ -1,8 +1,8 @@
 import { CognitoUserSession } from "amazon-cognito-identity-js";
 import { createContext, useContext, useEffect, useState } from "react";
-import { Location, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import oauthManager from "../../auth/SessionManager";
-import { AuthContextType, LoginCredentials } from "../../types/types";
+import { AuthContextType, LoginCredentials, User } from "../../types/types";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -17,13 +17,13 @@ export const useAuth = () => {
 type AuthProviderProps = React.PropsWithChildren<{}>;
 
 export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<CognitoUserSession | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    setUser(oauthManager.getUserSession());
+    setUser(oauthManager.getLoggedInUser());
     setLoading(false);
   }, []);
 
@@ -33,17 +33,15 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
       return;
     }
     oauthManager.login(user, location, (locationString: string) => {
-      setUser(oauthManager.getUserSession());
+      setUser(oauthManager.getLoggedInUser());
       navigate(locationString);
     });
   };
 
   const logout = () => {
-    console.log("logging out");
-
     oauthManager.logout(() => {
       navigate("/login");
-      setUser(null);
+      setUser(null)
     });
   };
 
@@ -53,7 +51,6 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
       return;
     }
     oauthManager.signUp(user, () => {
-      setUser(oauthManager.getUserSession());
       navigate("/account-verify");
     });
   };
