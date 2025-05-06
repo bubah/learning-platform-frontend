@@ -2,6 +2,8 @@ import { CognitoUserSession, CognitoUser, AuthenticationDetails, CognitoIdToken,
 import { LoginCredentials } from "../types/types";
 import { userPool } from "./cognitoConfig";
 import axios from "axios";
+import { UserDTO } from "../types/dtos";
+import { Location } from "react-router-dom";
   
 class SessionManager {
     private static _instance: SessionManager;
@@ -37,23 +39,52 @@ class SessionManager {
         return Promise.resolve();   
     }
 
-    public login(loginCredentials: LoginCredentials, navigate?: () => void) {
+    public login(loginCredentials: LoginCredentials, location: Location<any>, navigate?: (locationString: string) => void) {
         this.fetchUserSession(loginCredentials)
         .then((session: CognitoUserSession) => {
             console.log("Login successful", session);
             this.userSession = session;
             this.updateLocalStorage();
             const accessToken = session.getAccessToken().getJwtToken();
+            const idToken = session.getIdToken().getJwtToken();
+            console.log("IdToken", idToken);
+
+            const userDTO: UserDTO = {
+                email: session.getIdToken().payload.email,
+                username: session.getIdToken().payload.email,
+                role: session.getIdToken().payload["cognito:groups"] ? session.getIdToken().payload["cognito:groups"][0] : "LEARNER",
+            }
+
+            console.log("UserDTO", userDTO);
+
+            axios.post("http://localhost:8080/login", userDTO, {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                },
+            })
 
             if (accessToken) {
                 axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
             }
 
-            if (navigate) {
-                navigate();
-            }
+            navigate && navigate(location.state?.from?.pathname || "/");
         })
         .catch((error: Error) => {
+            if(error.name === "UserNotConfirmedException") {
+                navigate && navigate("/account-verify");
+            }
+
+            // TODO: Handle other error cases
+            /**
+             * NotAuthorizedException: The username or password is incorrect.
+             * UserNotFoundException: The specified username does not exist.
+             * UserPasswordResetRequiredException: The user is required to reset their password.
+             * TooManyRequestsException: Too many requests have been made to the service.
+             * TooManyFailedAttemptsException: Too many failed attempts to log in.
+             * InvalidParameterException: The input parameters for the request are invalid.
+             * ResourceNotFoundException: The specified resource does not exist.
+             */
+            
             console.error("Login failed", error);
         });
     }
@@ -82,18 +113,10 @@ class SessionManager {
 
         attributeList.push(emailAttribute);
 
-        userPool.signUp(email, password, attributeList, null, (err: Error | null, cognitoUser: CognitoUser) => {
+        userPool.signUp(email, password, attributeList, [], (err: Error | null | undefined) => {
             if (err) {
                 console.error("Sign up failed", err);
                 return;
-            }
-            // TODO: Send Post request to backend to create user
-            // axios.post("", userDTO)
-            this.userSession = cognitoUser.getSignInUserSession();
-            const accessToken = this.userSession?.getAccessToken().getJwtToken();
-
-            if (accessToken) {
-                axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
             }
             if (callback) {
                 callback();
