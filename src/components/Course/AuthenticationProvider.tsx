@@ -18,14 +18,14 @@ const credentials = [
 
 function getLoginStatus(): LoginCredentials | null {
   const userCreds: LoginCredentials | null = JSON.parse(
-    localStorage.getItem("authenticatedUser") || "{}",
+    localStorage.getItem("authenticatedUser") || "{}"
   );
 
   return (
     credentials.find(
       (crendential) =>
         crendential.username === userCreds?.username &&
-        crendential.password === userCreds?.password,
+        crendential.password === userCreds?.password
     ) || null
   );
 }

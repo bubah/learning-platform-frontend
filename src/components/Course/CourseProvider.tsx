@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   createContext,
   ReactNode,
@@ -5,10 +6,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Course, Lecture, Section } from "../../types/types";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { LectureDTO, ReorderResourceDTO } from "../../types/dtos";
+import { Course, Lecture, Section } from "../../types/types";
 
 type CourseContextType = {
   course: Course | undefined;
