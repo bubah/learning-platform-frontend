@@ -6,7 +6,6 @@ const VideoPlayer = ({ src }: { src: string }) => {
   const videoNode = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    // Need to wait for the component to be mounted before creating the player
     setTimeout(() => {
       if (!videoNode.current) {
         return;

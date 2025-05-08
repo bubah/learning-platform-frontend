@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import oauthManager from "../../auth/SessionManager";
@@ -18,11 +17,10 @@ type AuthProviderProps = React.PropsWithChildren<object>;
 
 export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const[email,setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
-
 
   useEffect(() => {
     setUser(oauthManager.getLoggedInUser());
@@ -40,14 +38,13 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
     oauthManager.login(loginCredentials, location, (locationString: string) => {
       setUser(oauthManager.getLoggedInUser());
       navigate(locationString);
-
     });
   };
 
   const logout = () => {
     oauthManager.logout(() => {
       navigate("/login");
-      setUser(null)
+      setUser(null);
     });
   };
 

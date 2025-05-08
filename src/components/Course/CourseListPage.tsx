@@ -146,9 +146,9 @@ const NewCourseModule = ({
     <Box>
       <TextField
         label="Course Title"
-        variant="outlined" // "filled" | "standard"
-        color="primary" // "secondary" | "error" | "success"
-        size="small" // "medium" | "small"
+        variant="outlined"
+        color="primary"
+        size="small"
         fullWidth
         margin="normal"
         onChange={(e) => setTitle(e.target.value)}

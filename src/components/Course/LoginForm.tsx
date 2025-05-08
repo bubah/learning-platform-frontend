@@ -22,7 +22,6 @@ const LoginForm = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    
 
     const email = data.get("email")?.toString().trim() || "";
     const password = data.get("password")?.toString().trim() || "";
@@ -69,7 +68,6 @@ const LoginForm = () => {
           Sign in
         </Typography>
 
-        {/* Third-party sign-in */}
         <Button
           fullWidth
           variant="outlined"
@@ -117,7 +115,6 @@ const LoginForm = () => {
             Sign In
           </Button>
 
-          {/* Forgot Password and Sign Up */}
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Link href="#" variant="body2">
               Forgot password?

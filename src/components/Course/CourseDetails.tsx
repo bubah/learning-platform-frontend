@@ -1,8 +1,8 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import Card from "@mui/material/Card/Card";
 import { useState } from "react";
-import { LessonsList } from "./LessonsList";
 import { Lecture } from "../../types/types";
+import { LessonsList } from "./LessonsList";
 
 const tabs = ["OVERVIEW", "NOTES", "Q/A"];
 

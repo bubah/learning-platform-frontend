@@ -1,16 +1,16 @@
-import { Box, Button, Typography } from "@mui/material";
-import { useState } from "react";
-import { AddLectureComponent } from "./AddLectureComponent";
-import { DragAndDropList } from "./DragAndDropList";
-import { useCourse } from "./CourseProvider";
-import { Lecture } from "../../types/types";
-import { LectureProvider } from "./LectureProvider";
-import { LectureComponent } from "./LectureComponent";
-import { SectionDragAndDropList } from "./SectionDragAndDropList";
-import { SectionProvider, useSection } from "./SectionProvider";
-import { SectionComponent } from "./SectionComponent";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Box, Button, Typography } from "@mui/material";
+import { useState } from "react";
+import { Lecture } from "../../types/types";
+import { AddLectureComponent } from "./AddLectureComponent";
+import { useCourse } from "./CourseProvider";
+import { DragAndDropList } from "./DragAndDropList";
+import { LectureComponent } from "./LectureComponent";
+import { LectureProvider } from "./LectureProvider";
+import { SectionComponent } from "./SectionComponent";
+import { SectionDragAndDropList } from "./SectionDragAndDropList";
+import { SectionProvider, useSection } from "./SectionProvider";
 
 export const Curriculum = () => {
   const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);

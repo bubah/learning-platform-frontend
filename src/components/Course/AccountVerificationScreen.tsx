@@ -11,7 +11,6 @@ import {
 import { CognitoUser, userPool } from "../../auth/cognitoConfig";
 import { useAuth } from "./AuthenticationProvider";
 
-
 const VerificationComponent = () => {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,7 +50,7 @@ const VerificationComponent = () => {
 
   const verifyCode = async (
     email: string,
-    code: string
+    code: string,
   ): Promise<{ success: boolean; message?: string }> => {
     return new Promise((resolve) => {
       const userData = {
@@ -73,42 +72,41 @@ const VerificationComponent = () => {
     });
   };
 
+  const resendConfirmationCode = (): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const userData = {
+        Username: email,
+        Pool: userPool,
+      };
 
-const resendConfirmationCode = (): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const userData = {
-      Username: email,
-      Pool: userPool,
-    };
+      const cognitoUser = new CognitoUser(userData);
 
-    const cognitoUser = new CognitoUser(userData);
-
-    cognitoUser.resendConfirmationCode((err, result) => {
-      if (err) {
-        console.error("❌ Resend code failed:", err);
-        return reject(err);
-      }
-      console.log("✅ Code resent:", result);
-      resolve();
+      cognitoUser.resendConfirmationCode((err, result) => {
+        if (err) {
+          console.error("❌ Resend code failed:", err);
+          return reject(err);
+        }
+        console.log("✅ Code resent:", result);
+        resolve();
+      });
     });
-  });
-};
+  };
 
-const handleResendCode = async () => {
-  try {
-    setLoading(true);
-    console.log("Resending code...", email);
-    await resendConfirmationCode(); 
-    setSuccessMessage("A new code has been sent to your email.");
-  } catch (err) {
-    setError("Failed to resend verification code. Try again later.");
-    console.error("Error during resend code:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+  const handleResendCode = async () => {
+    try {
+      setLoading(true);
+      console.log("Resending code...", email);
+      await resendConfirmationCode();
+      setSuccessMessage("A new code has been sent to your email.");
+    } catch (err) {
+      setError("Failed to resend verification code. Try again later.");
+      console.error("Error during resend code:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-console.log("Email:", email);
+  console.log("Email:", email);
 
   return (
     <Box sx={{ width: "100%", maxWidth: 400, margin: "auto", padding: 3 }}>
@@ -158,18 +156,18 @@ console.log("Email:", email);
               Verify
             </Button>
           )}
-           <Button
-              variant="contained"
-              onClick={handleResendCode}
-              disabled={code.length === 0}
-            >
-              Resend Code
-            </Button>
-            {successMessage && (
-              <Alert severity="success" sx={{ marginTop: 2 }}>
-                {successMessage}
-              </Alert>
-            )}
+          <Button
+            variant="contained"
+            onClick={handleResendCode}
+            disabled={code.length === 0}
+          >
+            Resend Code
+          </Button>
+          {successMessage && (
+            <Alert severity="success" sx={{ marginTop: 2 }}>
+              {successMessage}
+            </Alert>
+          )}
         </Grid>
       </Grid>
     </Box>

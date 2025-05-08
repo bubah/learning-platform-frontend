@@ -7,7 +7,6 @@ const UpdateAttributeFeild = ({
   handleUpdate,
 }: {
   attributeValue: string;
-
   label: string;
   handleUpdate: (value: string) => void;
 }) => {

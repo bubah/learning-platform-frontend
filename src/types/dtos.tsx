@@ -27,7 +27,6 @@ export type CourseDTO = {
   id?: string;
   title: string;
   description?: string;
-  // order: number;
   lectures?: LectureDTO[];
   category: string;
 };
@@ -37,4 +36,4 @@ export type UserDTO = {
   email: string;
   username: string;
   role: string;
-}
+};

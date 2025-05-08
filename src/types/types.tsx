@@ -1,4 +1,3 @@
-
 export type LoginCredentials = {
   username: string;
   password: string;
@@ -11,7 +10,7 @@ export type AuthContextType = {
   login: (user: LoginCredentials) => void;
   signUp: (user: LoginCredentials) => void;
   logout: () => void;
-  email:string;
+  email: string;
 };
 
 export type Course = {
@@ -35,11 +34,11 @@ export type Section = {
   lectureId?: string;
   title: string;
   description: string;
+  order: number;
   content?: {
     path?: string;
     type?: string;
   };
-  order: number;
 };
 
 export type User = {
@@ -47,4 +46,4 @@ export type User = {
   role: string;
   id?: string;
   username?: string;
-}
+};

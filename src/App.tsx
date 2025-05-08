@@ -24,12 +24,7 @@ function App() {
               </Card>
             }
           />
-          <Route
-            path="/account-verify"
-            element={
-              <VerificationComponent />
-            }
-          />
+          <Route path="/account-verify" element={<VerificationComponent />} />
           <Route path="/login" element={<LoginScreen />} />
 
           <Route

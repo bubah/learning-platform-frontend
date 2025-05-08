@@ -67,7 +67,6 @@ export const CourseOverViewEdit = () => {
         onChange={(e) => handleChange(e)}
       />
 
-      {/* Description Input */}
       <TextField
         label="Description"
         name="description"
