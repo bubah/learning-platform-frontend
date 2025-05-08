@@ -1,14 +1,14 @@
-import React, { useState } from "react";
 import {
-  Container,
   Box,
-  Typography,
-  TextField,
   Button,
-  FormControlLabel,
   Checkbox,
+  Container,
+  FormControlLabel,
   Link,
+  TextField,
+  Typography,
 } from "@mui/material";
+import React, { useState } from "react";
 import { useAuth } from "./AuthenticationProvider";
 
 const LoginForm = () => {
@@ -22,6 +22,7 @@ const LoginForm = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    
 
     const email = data.get("email")?.toString().trim() || "";
     const password = data.get("password")?.toString().trim() || "";
@@ -47,10 +48,7 @@ const LoginForm = () => {
         remember: data.get("remember"),
       });
 
-      login({
-        username: email,
-        password: password,
-      });
+      login({ username: email, password });
     }
   };
 
@@ -82,7 +80,6 @@ const LoginForm = () => {
         </Button>
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          {/* Email Field */}
           <TextField
             margin="normal"
             required
@@ -95,8 +92,6 @@ const LoginForm = () => {
             error={Boolean(errors.email)}
             helperText={errors.email}
           />
-
-          {/* Password Field */}
           <TextField
             margin="normal"
             required
@@ -109,14 +104,10 @@ const LoginForm = () => {
             error={Boolean(errors.password)}
             helperText={errors.password}
           />
-
-          {/* Remember Me */}
           <FormControlLabel
             control={<Checkbox name="remember" color="primary" />}
             label="Remember me"
           />
-
-          {/* Submit Button */}
           <Button
             type="submit"
             fullWidth

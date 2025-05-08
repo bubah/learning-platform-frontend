@@ -31,3 +31,10 @@ export type CourseDTO = {
   lectures?: LectureDTO[];
   category: string;
 };
+
+export type UserDTO = {
+  id?: string;
+  email: string;
+  username: string;
+  role: string;
+}
