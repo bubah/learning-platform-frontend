@@ -1,18 +1,15 @@
 import {
-  CognitoUserSession,
-  CognitoUser,
   AuthenticationDetails,
-  CognitoIdToken,
   CognitoAccessToken,
+  CognitoIdToken,
   CognitoRefreshToken,
+  CognitoUser,
   CognitoUserAttribute,
+  CognitoUserSession,
 } from "amazon-cognito-identity-js";
+import { COGNITO_ERRORS, LOCAL_STORAGE_KEYS } from "../constants";
 import { LoginCredentials, User } from "../types/types";
 import { userPool } from "./cognitoConfig";
-import axios from "axios";
-import { UserDTO } from "../types/dtos";
-import { Location } from "react-router-dom";
-import { COGNITO_ERRORS, HTTP_HEADERS, LOCAL_STORAGE_KEYS } from "../constants";
 
 class SessionManager {
   private static _instance: SessionManager;
@@ -29,55 +26,21 @@ class SessionManager {
     return SessionManager._instance;
   }
 
-  async refreshTokenIfNeeded(): Promise<void> {
-    // TODO: Implement token refresh logic
-    return Promise.resolve();
-  }
-
   public login(
     loginCredentials: LoginCredentials,
-    location: Location<any>,
-    navigate?: (locationString: string) => void,
+    callBack: { onSuccess: () => void; onFailure: () => void },
   ) {
     this.fetchUserSession(loginCredentials)
       .then((session: CognitoUserSession) => {
         console.log("Login successful", session);
         this.userSession = session;
         this.updateLocalStorage();
-        const accessToken = session.getAccessToken().getJwtToken();
-        const idToken = session.getIdToken().getJwtToken();
-        console.log(LOCAL_STORAGE_KEYS.ID_TOKEN, idToken);
 
-        const userDTO: UserDTO = {
-          email: session.getIdToken().payload.email,
-          username: session.getIdToken().payload.email,
-          role: session.getIdToken().payload["cognito:groups"]
-            ? session.getIdToken().payload["cognito:groups"][0]?.toUpperCase()
-            : "LEARNER",
-        };
-
-        axios.post("http://localhost:8080/login", userDTO, {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          },
-        });
-
-        if (accessToken) {
-          axios.defaults.headers.common[HTTP_HEADERS.AUTHORIZATION] =
-            `Bearer ${accessToken}`;
-        }
-
-        if (navigate) {
-          navigate(location.state?.from?.pathname || "/");
-        }
+        callBack.onSuccess;
       })
       .catch((error: Error) => {
-        const { USER_NOT_CONFIRMED } = COGNITO_ERRORS;
-
-        if (error.name === USER_NOT_CONFIRMED) {
-          if (navigate) {
-            navigate("/account-verify");
-          }
+        if (error.name === COGNITO_ERRORS.USER_NOT_CONFIRMED) {
+          callBack.onFailure;
         }
 
         // TODO: Handle other error cases
@@ -103,13 +66,15 @@ class SessionManager {
       localStorage.removeItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN);
       userPool.getCurrentUser()?.signOut();
     }
-    delete axios.defaults.headers.common[HTTP_HEADERS.AUTHORIZATION];
     if (callback) {
       callback();
     }
   }
 
-  public signUp(loginCredentials: LoginCredentials, callback?: () => void) {
+  public signUp(
+    loginCredentials: LoginCredentials,
+    callback: { onSuccess: () => void; onFailure: () => void },
+  ) {
     const { username: email, password } = loginCredentials;
     const attributeList = [];
     const emailAttribute = new CognitoUserAttribute({
@@ -127,11 +92,11 @@ class SessionManager {
       (err: Error | null | undefined) => {
         if (err) {
           console.error("Sign up failed", err);
+          callback.onFailure;
           return;
         }
-        if (callback) {
-          callback();
-        }
+
+        callback.onSuccess;
       },
     );
   }
@@ -141,6 +106,7 @@ class SessionManager {
   }
 
   public getUserSession(): CognitoUserSession | null {
+    this.refreshTokenIfNeeded();
     return this.userSession;
   }
 
@@ -156,21 +122,55 @@ class SessionManager {
   }
 
   public get accessToken(): string | null {
+    this.refreshTokenIfNeeded();
     return this.userSession
       ? this.userSession.getAccessToken().getJwtToken()
       : null;
   }
 
   public get refreshToken(): string | null {
+    this.refreshTokenIfNeeded();
     return this.userSession
       ? this.userSession.getRefreshToken().getToken()
       : null;
   }
 
   public get idToken(): string | null {
+    this.refreshTokenIfNeeded();
     return this.userSession
       ? this.userSession.getIdToken().getJwtToken()
       : null;
+  }
+
+  private refreshTokenIfNeeded() {
+    if (!this.isValidToken()) {
+      const user = new CognitoUser({
+        Username: localStorage.getItem("email") || "",
+        Pool: userPool,
+      });
+
+      user.getSession(
+        (err: Error | null, session: CognitoUserSession | null) => {
+          if (!session) return;
+          if (err || !session.isValid()) {
+            // If session is expired, attempt to refresh it
+            user.refreshSession(
+              session.getRefreshToken(),
+              (err, newSession) => {
+                if (err) {
+                  console.error("Refresh failed", err);
+                } else {
+                  this.userSession = newSession;
+                }
+              },
+            );
+          } else {
+            // Session is valid, proceed normally
+            this.userSession = session;
+          }
+        },
+      );
+    }
   }
 
   private loadFromStorage() {
