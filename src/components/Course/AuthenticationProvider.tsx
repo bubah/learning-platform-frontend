@@ -17,7 +17,7 @@ type AuthProviderProps = React.PropsWithChildren<object>;
 
 export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,13 +33,17 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
       navigate("/login");
       return;
     }
-    setEmail(loginCredentials.username);
-    localStorage.setItem("email", loginCredentials.username);
+    loadUserEmail(loginCredentials);
     oauthManager.login(loginCredentials, location, (locationString: string) => {
       setUser(oauthManager.getLoggedInUser());
       navigate(locationString);
     });
   };
+
+  function loadUserEmail(loginCredentials: LoginCredentials) {
+    setEmail(loginCredentials.username);
+    localStorage.setItem("email", loginCredentials.username);
+  }
 
   const logout = () => {
     oauthManager.logout(() => {
@@ -53,8 +57,7 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
       navigate("/login");
       return;
     }
-    setEmail(loginCredentials.username);
-    localStorage.setItem("email", loginCredentials.username);
+    loadUserEmail(loginCredentials);
     oauthManager.signUp(loginCredentials, () => {
       navigate("/account-verify");
     });

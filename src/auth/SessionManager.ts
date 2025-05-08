@@ -12,6 +12,7 @@ import { userPool } from "./cognitoConfig";
 import axios from "axios";
 import { UserDTO } from "../types/dtos";
 import { Location } from "react-router-dom";
+import { COGNITO_ERRORS, HTTP_HEADERS, LOCAL_STORAGE_KEYS } from "../constants";
 
 class SessionManager {
   private static _instance: SessionManager;
@@ -45,7 +46,7 @@ class SessionManager {
         this.updateLocalStorage();
         const accessToken = session.getAccessToken().getJwtToken();
         const idToken = session.getIdToken().getJwtToken();
-        console.log("IdToken", idToken);
+        console.log(LOCAL_STORAGE_KEYS.ID_TOKEN, idToken);
 
         const userDTO: UserDTO = {
           email: session.getIdToken().payload.email,
@@ -55,8 +56,6 @@ class SessionManager {
             : "LEARNER",
         };
 
-        console.log("UserDTO", userDTO);
-
         axios.post("http://localhost:8080/login", userDTO, {
           headers: {
             Authorization: `Bearer ${idToken}`,
@@ -64,7 +63,7 @@ class SessionManager {
         });
 
         if (accessToken) {
-          axios.defaults.headers.common["Authorization"] =
+          axios.defaults.headers.common[HTTP_HEADERS.AUTHORIZATION] =
             `Bearer ${accessToken}`;
         }
 
@@ -73,7 +72,9 @@ class SessionManager {
         }
       })
       .catch((error: Error) => {
-        if (error.name === "UserNotConfirmedException") {
+        const { USER_NOT_CONFIRMED } = COGNITO_ERRORS;
+
+        if (error.name === USER_NOT_CONFIRMED) {
           if (navigate) {
             navigate("/account-verify");
           }
@@ -97,12 +98,12 @@ class SessionManager {
   public logout(callback?: () => void) {
     if (this.userSession) {
       this.userSession = null;
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("idToken");
-      localStorage.removeItem("refreshToken");
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.ID_TOKEN);
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN);
       userPool.getCurrentUser()?.signOut();
     }
-    delete axios.defaults.headers.common["Authorization"];
+    delete axios.defaults.headers.common[HTTP_HEADERS.AUTHORIZATION];
     if (callback) {
       callback();
     }
@@ -173,9 +174,9 @@ class SessionManager {
   }
 
   private loadFromStorage() {
-    const accessToken = localStorage.getItem("accessToken");
-    const idToken = localStorage.getItem("idToken");
-    const refreshToken = localStorage.getItem("refreshToken");
+    const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
+    const idToken = localStorage.getItem(LOCAL_STORAGE_KEYS.ID_TOKEN);
+    const refreshToken = localStorage.getItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN);
 
     if (accessToken && idToken && refreshToken) {
       this.userSession = new CognitoUserSession({
@@ -215,15 +216,15 @@ class SessionManager {
   private updateLocalStorage() {
     if (this.userSession) {
       localStorage.setItem(
-        "accessToken",
+        LOCAL_STORAGE_KEYS.ACCESS_TOKEN,
         this.userSession.getAccessToken().getJwtToken(),
       );
       localStorage.setItem(
-        "idToken",
+        LOCAL_STORAGE_KEYS.ID_TOKEN,
         this.userSession.getIdToken().getJwtToken(),
       );
       localStorage.setItem(
-        "refreshToken",
+        LOCAL_STORAGE_KEYS.REFRESH_TOKEN,
         this.userSession.getRefreshToken().getToken(),
       );
     }
