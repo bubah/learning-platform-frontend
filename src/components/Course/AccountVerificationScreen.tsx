@@ -101,7 +101,8 @@ const handleResendCode = async () => {
     await resendConfirmationCode(); 
     setSuccessMessage("A new code has been sent to your email.");
   } catch (err) {
-    setError("Failed to resend verification code. Try again later.", err);
+    setError("Failed to resend verification code. Try again later.");
+    console.error("Error during resend code:", err);
   } finally {
     setLoading(false);
   }

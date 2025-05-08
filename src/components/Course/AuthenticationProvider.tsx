@@ -1,4 +1,4 @@
-import { CognitoUserSession } from "amazon-cognito-identity-js";
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import oauthManager from "../../auth/SessionManager";
@@ -14,7 +14,7 @@ export const useAuth = () => {
   return context;
 };
 
-type AuthProviderProps = React.PropsWithChildren<{}>;
+type AuthProviderProps = React.PropsWithChildren<object>;
 
 export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
