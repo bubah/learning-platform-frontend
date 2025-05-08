@@ -18,23 +18,29 @@ type AuthProviderProps = React.PropsWithChildren<{}>;
 
 export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const[email,setEmail] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
+
   useEffect(() => {
     setUser(oauthManager.getLoggedInUser());
     setLoading(false);
+    setEmail(localStorage.getItem("email") || "");
   }, []);
 
-  const login = (user: LoginCredentials) => {
-    if (!user) {
+  const login = (loginCredentials: LoginCredentials) => {
+    if (!loginCredentials) {
       navigate("/login");
       return;
     }
-    oauthManager.login(user, location, (locationString: string) => {
+    setEmail(loginCredentials.username);
+    localStorage.setItem("email", loginCredentials.username);
+    oauthManager.login(loginCredentials, location, (locationString: string) => {
       setUser(oauthManager.getLoggedInUser());
       navigate(locationString);
+
     });
   };
 
@@ -45,19 +51,21 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
     });
   };
 
-  const signUp = (user: LoginCredentials) => {
-    if (!user) {
+  const signUp = (loginCredentials: LoginCredentials) => {
+    if (!loginCredentials) {
       navigate("/login");
       return;
     }
-    oauthManager.signUp(user, () => {
+    setEmail(loginCredentials.username);
+    localStorage.setItem("email", loginCredentials.username);
+    oauthManager.signUp(loginCredentials, () => {
       navigate("/account-verify");
     });
   };
 
   return (
     <AuthContext.Provider
-      value={{ signUp, user, authLoading: loading, login, logout }}
+      value={{ signUp, user, email, authLoading: loading, login, logout }}
     >
       {children}
     </AuthContext.Provider>

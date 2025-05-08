@@ -28,6 +28,7 @@ class SessionManager {
     public login(loginCredentials: LoginCredentials, location: Location<any>, navigate?: (locationString: string) => void) {
         this.fetchUserSession(loginCredentials)
         .then((session: CognitoUserSession) => {
+            
             console.log("Login successful", session);
             this.userSession = session;
             this.updateLocalStorage();
@@ -53,11 +54,15 @@ class SessionManager {
                 axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
             }
 
-            navigate && navigate(location.state?.from?.pathname || "/");
+            if(navigate){
+                navigate(location.state?.from?.pathname || "/");
+            } 
         })
         .catch((error: Error) => {
             if(error.name === "UserNotConfirmedException") {
-                navigate && navigate("/account-verify");
+                if(navigate){
+                    navigate("/account-verify");
+                }
             }
 
             // TODO: Handle other error cases

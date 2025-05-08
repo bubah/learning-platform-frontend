@@ -11,6 +11,7 @@ export type AuthContextType = {
   login: (user: LoginCredentials) => void;
   signUp: (user: LoginCredentials) => void;
   logout: () => void;
+  email:string;
 };
 
 export type Course = {

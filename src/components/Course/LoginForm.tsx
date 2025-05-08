@@ -22,6 +22,7 @@ const LoginForm = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    
 
     const email = data.get("email")?.toString().trim() || "";
     const password = data.get("password")?.toString().trim() || "";
