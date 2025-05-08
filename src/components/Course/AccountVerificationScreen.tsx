@@ -35,7 +35,6 @@ const VerificationComponent = () => {
 
       if (response.success) {
         setSuccess(true);
-
         login({ username: email, password: password });
       } else {
         setError("Invalid code. Please try again.");
@@ -105,8 +104,6 @@ const VerificationComponent = () => {
       setLoading(false);
     }
   };
-
-  console.log("Email:", email);
 
   return (
     <Box sx={{ width: "100%", maxWidth: 400, margin: "auto", padding: 3 }}>
