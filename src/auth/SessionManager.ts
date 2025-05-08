@@ -28,7 +28,7 @@ class SessionManager {
     public login(loginCredentials: LoginCredentials, location: Location<any>, navigate?: (locationString: string) => void) {
         this.fetchUserSession(loginCredentials)
         .then((session: CognitoUserSession) => {
-            
+
             console.log("Login successful", session);
             this.userSession = session;
             this.updateLocalStorage();
@@ -39,7 +39,7 @@ class SessionManager {
             const userDTO: UserDTO = {
                 email: session.getIdToken().payload.email,
                 username: session.getIdToken().payload.email,
-                role: session.getIdToken().payload["cognito:groups"] ? session.getIdToken().payload["cognito:groups"][0] : "LEARNER",
+                role: session.getIdToken().payload["cognito:groups"] ? session.getIdToken().payload["cognito:groups"][0]?.toUpperCase() : "LEARNER",
             }
 
             console.log("UserDTO", userDTO);
