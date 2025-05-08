@@ -1,14 +1,14 @@
-import React, { useState } from "react";
 import {
-  Container,
   Box,
-  Typography,
-  TextField,
   Button,
-  FormControlLabel,
   Checkbox,
+  Container,
+  FormControlLabel,
   Link,
+  TextField,
+  Typography,
 } from "@mui/material";
+import React, { useState } from "react";
 import { useAuth } from "./AuthenticationProvider";
 
 const LoginForm = () => {
@@ -47,10 +47,7 @@ const LoginForm = () => {
         remember: data.get("remember"),
       });
 
-      login({
-        username: email,
-        password: password,
-      });
+      login({ username: email, password });
     }
   };
 
@@ -81,7 +78,6 @@ const LoginForm = () => {
         </Button>
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          {/* Email Field */}
           <TextField
             margin="normal"
             required
@@ -94,7 +90,6 @@ const LoginForm = () => {
             error={Boolean(errors.email)}
             helperText={errors.email}
           />
-
           <TextField
             margin="normal"
             required
@@ -107,12 +102,10 @@ const LoginForm = () => {
             error={Boolean(errors.password)}
             helperText={errors.password}
           />
-
           <FormControlLabel
             control={<Checkbox name="remember" color="primary" />}
             label="Remember me"
           />
-
           <Button
             type="submit"
             fullWidth

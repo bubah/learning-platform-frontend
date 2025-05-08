@@ -1,43 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AuthContextType, LoginCredentials } from "../../types/types";
-import axios from "axios";
+import oauthManager from "../../auth/SessionManager";
+import { AuthContextType, LoginCredentials, User } from "../../types/types";
 
-const credentials = [
-  {
-    username: "hrazak",
-    password: "123",
-    role: "student",
-  },
-  {
-    username: "bubahc",
-    password: "123",
-    role: "teacher",
-  },
-];
-
-function getLoginStatus(): LoginCredentials | null {
-  const userCreds: LoginCredentials | null = JSON.parse(
-    localStorage.getItem("authenticatedUser") || "{}"
-  );
-
-  return (
-    credentials.find(
-      (crendential) =>
-        crendential.username === userCreds?.username &&
-        crendential.password === userCreds?.password
-    ) || null
-  );
-}
-
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  authLoading: false,
-  login: (user: LoginCredentials) => {
-    console.log(user);
-  },
-  logout: () => {},
-});
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -47,48 +13,57 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthenticationProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [user, setUser] = useState<LoginCredentials | null>(null);
+type AuthProviderProps = React.PropsWithChildren<object>;
+
+export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    const user = getLoginStatus();
-    setUser(user);
+    setUser(oauthManager.getLoggedInUser());
     setLoading(false);
+    setEmail(localStorage.getItem("email") || "");
   }, []);
 
-  const login = (user: LoginCredentials) => {
-    if (!user) {
+  const login = (loginCredentials: LoginCredentials) => {
+    if (!loginCredentials) {
       navigate("/login");
       return;
     }
-
-    setUser(user);
-    localStorage.setItem("authenticatedUser", JSON.stringify(user));
-    const redirectUrl = location.state?.from?.pathname || "/";
-    navigate(redirectUrl);
+    setEmail(loginCredentials.username);
+    localStorage.setItem("email", loginCredentials.username);
+    oauthManager.login(loginCredentials, location, (locationString: string) => {
+      setUser(oauthManager.getLoggedInUser());
+      navigate(locationString);
+    });
   };
 
   const logout = () => {
-    console.log("logging out");
-    setUser(null);
-    localStorage.removeItem("authenticatedUser");
-    navigate("/login");
+    oauthManager.logout(() => {
+      navigate("/login");
+      setUser(null);
+    });
   };
 
-  const token = localStorage.getItem("authenticatedUser"); // Retrieve the token
-  if (token) {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  }
+  const signUp = (loginCredentials: LoginCredentials) => {
+    if (!loginCredentials) {
+      navigate("/login");
+      return;
+    }
+    setEmail(loginCredentials.username);
+    localStorage.setItem("email", loginCredentials.username);
+    oauthManager.signUp(loginCredentials, () => {
+      navigate("/account-verify");
+    });
+  };
 
   return (
-    <AuthContext.Provider value={{ user, authLoading: loading, login, logout }}>
+    <AuthContext.Provider
+      value={{ signUp, user, email, authLoading: loading, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
