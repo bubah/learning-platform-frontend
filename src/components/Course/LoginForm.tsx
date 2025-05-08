@@ -71,7 +71,6 @@ const LoginForm = () => {
           Sign in
         </Typography>
 
-        {/* Third-party sign-in */}
         <Button
           fullWidth
           variant="outlined"
@@ -96,7 +95,6 @@ const LoginForm = () => {
             helperText={errors.email}
           />
 
-          {/* Password Field */}
           <TextField
             margin="normal"
             required
@@ -110,13 +108,11 @@ const LoginForm = () => {
             helperText={errors.password}
           />
 
-          {/* Remember Me */}
           <FormControlLabel
             control={<Checkbox name="remember" color="primary" />}
             label="Remember me"
           />
 
-          {/* Submit Button */}
           <Button
             type="submit"
             fullWidth
@@ -126,7 +122,6 @@ const LoginForm = () => {
             Sign In
           </Button>
 
-          {/* Forgot Password and Sign Up */}
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Link href="#" variant="body2">
               Forgot password?

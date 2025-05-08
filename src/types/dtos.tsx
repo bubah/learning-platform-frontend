@@ -27,7 +27,6 @@ export type CourseDTO = {
   id?: string;
   title: string;
   description?: string;
-  // order: number;
   lectures?: LectureDTO[];
   category: string;
 };

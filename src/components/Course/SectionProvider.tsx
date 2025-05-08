@@ -18,13 +18,15 @@ export const useSection = () => {
   return context;
 };
 
+type SectionProviderProps = {
+  children: ReactNode;
+  section: Section;
+};
+
 export const SectionProvider = ({
   children,
   section,
-}: {
-  children: ReactNode;
-  section: Section;
-}) => {
+}: SectionProviderProps) => {
   const { saveSection, deleteSection } = useCourse();
 
   const onSaveSection = (section: Section) => {

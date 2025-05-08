@@ -32,9 +32,9 @@ export type Section = {
   lectureId?: string;
   title: string;
   description: string;
+  order: number;
   content?: {
     path?: string;
     type?: string;
   };
-  order: number;
 };

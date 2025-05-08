@@ -16,16 +16,15 @@ import { useSortable } from "@dnd-kit/sortable";
 import { useSection } from "./SectionProvider";
 
 export const SectionComponent = memo(() => {
-  const {section} = useSection();
+  const { section } = useSection();
   const { title, description, id } = section;
   const { attributes, listeners } = useSortable({ id: id || "" });
+  const { onDeleteSection } = useSection();
 
   const [sectionState] = useState<{
     title: string;
     description: string;
   }>({ title, description });
-
-  const { onDeleteSection } = useSection();
 
   const handleSaveV2 = (value: string) => {
     console.log("Printing value", value);

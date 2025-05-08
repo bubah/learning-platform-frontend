@@ -24,15 +24,16 @@ const pages = ["My Courses", "Pricing", "Blog"];
 export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const { user, logout } = useAuth();
   const learningProgress = 50;
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     console.log(event.currentTarget);
     console.log(user);
-
     setAnchorElUser(event.currentTarget);
   };
 
@@ -43,8 +44,6 @@ export const NavBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  const { user, logout } = useAuth();
 
   const settings = [
     {

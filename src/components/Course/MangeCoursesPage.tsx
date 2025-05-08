@@ -29,7 +29,6 @@ function TabPanel(props: TabPanelProps) {
 
 export default function CourseManagementScreen() {
   const [value, setValue] = useState(0);
-
   const { isLoading } = useCourse();
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
