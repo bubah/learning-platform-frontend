@@ -39,19 +39,10 @@ export const CourseList = () => {
       .post<CourseDTO>("/courses", requestBody)
       .then((res) => {
         const { data } = res;
-        const {
-          data: { lectures },
-        } = res;
-        const {
-          data: {
-            lectures: { sections },
-          },
-        } = res;
-
         const lecturesList: Lecture[] =
-          data.lectures?.map((lecture: any) => {
+          data.lectures?.map((lecture: Lecture) => {
             const sectionsList: Section[] =
-              lecture.sections?.map((section: any) => ({
+              lecture.sections?.map((section: Section) => ({
                 id: section.id,
                 title: section.title,
                 description: section.description,
