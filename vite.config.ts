@@ -4,7 +4,7 @@ import polyfillNode from "rollup-plugin-node-polyfills";
 
 // https://vite.dev/config/
 export default defineConfig({
-  // base: '/frontend/main/latest/',
+  base: "/frontend/main/latest/",
   plugins: [react()],
   define: {
     global: "window",
