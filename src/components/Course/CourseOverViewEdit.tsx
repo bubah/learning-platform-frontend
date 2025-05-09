@@ -1,7 +1,7 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { useCourse } from "./CourseProvider";
-import axios from "axios";
+import { httpClient } from "../../client/httpClient";
 
 export const CourseOverViewEdit = () => {
   const { course } = useCourse();
@@ -25,13 +25,12 @@ export const CourseOverViewEdit = () => {
     e.preventDefault();
     console.log("handle submit fire ", formData);
     const requestBody = formData;
-    axios
-      .patch(`http://localhost:8080/courses/${course?.id}`, requestBody)
+    httpClient
+      .patch(`/courses/${course?.id}`, requestBody)
       .then((res) => res.data)
       .catch((error) => console.log(error));
   };
 
-  console.log("course :", course);
   return (
     <Box
       component="form"

@@ -44,6 +44,11 @@ export class HttpClient {
     return this.instance.delete<T>(url, mergedConfig);
   }
 
+  patch<T>(url: string, data?: unknown, config?: AxiosRequestConfig) {
+    const mergedConfig = this.mergeHeaders(config);
+    return this.instance.patch<T>(url, data, mergedConfig);
+  }
+
   private mergeHeaders(config?: AxiosRequestConfig): AxiosRequestConfig {
     const mergedHeaders = {
       ...config?.headers,

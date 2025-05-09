@@ -7,17 +7,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Course } from "../../types/types";
 import { CourseDTO } from "../../types/dtos";
+import { httpClient } from "../../client/httpClient";
+import {
+  convertToCourse,
+  convertToCourses,
+} from "../../helpers/incoming-request";
 
 export const CourseList = () => {
-  // ************ include loading functionality to show axios request to add new course is being processed. ****************
-
   const [courses, setCourses] = useState<Course[] | []>([]);
-  const [displayAddNewCourse, setDisplayAddNewCourse] =
-    useState<boolean>(false);
+  const [displayAddNewCourse, setDisplayAddNewCourse] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,17 +29,17 @@ export const CourseList = () => {
 
   useEffect(() => {
     // setCourses([mockCourse, mockCourse]);
-    axios.get(`http://localhost:8080/courses`).then((res) => {
-      const { data } = res;
-      setCourses(data);
+    httpClient.get<CourseDTO[]>("/courses").then((res) => {
+      setCourses(convertToCourses(res.data));
     });
   }, []);
 
   const createNewCourse = (requestBody: CourseDTO) => {
-    axios
-      .post("http://localhost:8080/courses", requestBody)
+    httpClient
+      .post<CourseDTO>("/courses", requestBody)
       .then((res) => {
-        setCourses((prevCourses) => [...prevCourses, res.data]);
+        const course = convertToCourse(res.data);
+        setCourses((prevCourses) => [...prevCourses, course]);
       })
       .catch((error) => {
         console.log(error);
@@ -57,8 +58,8 @@ export const CourseList = () => {
 
     e.stopPropagation();
 
-    axios
-      .delete(`http://localhost:8080/courses/${id}`)
+    httpClient
+      .delete(`/courses/${id}`)
       .then((res) => console.log(res.data))
       .catch((error) => {
         console.log(error);

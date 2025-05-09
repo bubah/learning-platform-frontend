@@ -11,15 +11,17 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 import { ReactNode, useState } from "react";
+import { httpClient } from "../../client/httpClient";
+import { convertToLecture } from "../../helpers/incoming-request";
+import { LectureDTO } from "../../types/dtos";
 import { Section } from "../../types/types";
 import { AddLectureComponent } from "./AddLectureComponent";
 import { useCourse } from "./CourseProvider";
 import { useLecture } from "./LectureProvider";
 import UpdateAttributeFeild from "./UpdateAttributeFied";
 
-export const LectureComponent = ({children}: {children: ReactNode}) => {
+export const LectureComponent = ({ children }: { children: ReactNode }) => {
   const { deleteLecture, saveSection } = useCourse();
   const [displayAddSection, setDisplayAddSection] = useState(false);
 
@@ -38,22 +40,22 @@ export const LectureComponent = ({children}: {children: ReactNode}) => {
   const updateTitle = (value: string) => {
     console.log("Updating title to: ", value);
     const requestBody = { title: value };
-    axios
-      .put(`http://localhost:8080/lectures/${lecture.id}`, requestBody)
+    httpClient
+      .put<LectureDTO>(`/lectures/${lecture.id}`, requestBody)
       .then((res) => {
-        const { data } = res;
-        setLectureTitle(data.title);
+        const { title } = convertToLecture(res.data);
+        setLectureTitle(title);
       });
   };
 
   const updateDescription = (value: string) => {
     console.log("Updating description to: ", value);
     const requestBody = { description: value };
-    axios
-      .put(`http://localhost:8080/lectures/${lecture.id}`, requestBody)
-      .then((res: any) => {
-        const { data } = res;
-        setLectureDescription(data.description);
+    httpClient
+      .put<LectureDTO>(`/lectures/${lecture.id}`, requestBody)
+      .then((res) => {
+        const { description } = convertToLecture(res.data);
+        setLectureDescription(description);
       });
   };
 
@@ -67,7 +69,7 @@ export const LectureComponent = ({children}: {children: ReactNode}) => {
         <Box
           sx={{
             display: "flex",
-            alignItems: "center", // ✅ Vertically center items
+            alignItems: "center", // ✅ Vertically center itemsg
             justifyContent: "flex-start", // ✅ Align items to the start (left)
             width: "100%",
             gap: 1, // ✅ Adds space between the icon and text

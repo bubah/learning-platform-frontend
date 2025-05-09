@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   createContext,
   ReactNode,
@@ -7,8 +6,19 @@ import {
   useState,
 } from "react";
 import { useParams } from "react-router-dom";
-import { LectureDTO, ReorderResourceDTO } from "../../types/dtos";
+import {
+  CourseDTO,
+  LectureDTO,
+  ReorderResourceDTO,
+  SectionDTO,
+} from "../../types/dtos";
 import { Course, Lecture, Section } from "../../types/types";
+import { httpClient } from "../../client/httpClient";
+import {
+  convertToCourse,
+  convertToLecture,
+  convertToSection,
+} from "../../helpers/incoming-request";
 
 type CourseContextType = {
   course: Course | undefined;
@@ -18,12 +28,12 @@ type CourseContextType = {
   deleteSection: (id: string) => void;
   reorderLectures: (
     pristineLecture: Lecture[],
-    updatedLecture: Lecture[]
+    updatedLecture: Lecture[],
   ) => void;
   reorderSections: (
     pristineSection: Section[],
     updatedSection: Section[],
-    lectureId: string
+    lectureId: string,
   ) => void;
   isLoading: boolean;
 };
@@ -59,12 +69,13 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
       order: course?.lectures.length || 0,
     };
 
-    axios
-      .post("http://localhost:8080/lectures", lectureDTO)
+    httpClient
+      .post<LectureDTO>("/lectures", lectureDTO)
       .then((res) => {
+        const updatedLecture = convertToLecture(res.data);
         setCourse((prevCourse) => ({
           ...prevCourse!,
-          lectures: [...prevCourse!.lectures, res.data],
+          lectures: [...prevCourse!.lectures, updatedLecture],
         }));
       })
       .catch((error) => console.log(error));
@@ -79,7 +90,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
       lectures: lectures?.filter((lecture) => lecture.id !== id) || [],
     }));
 
-    axios.delete(`http://localhost:8080/lectures/${id}`).catch((error) => {
+    httpClient.delete(`/lectures/${id}`).catch((error) => {
       setCourse(pristineCourse);
       console.log(error);
     });
@@ -89,8 +100,8 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     const pristineCourse = course;
     const lectures = course?.lectures;
 
-    axios
-      .post("http://localhost:8080/sections", {
+    httpClient
+      .post<SectionDTO>("/sections", {
         title: section.title,
         description: section.description,
         order:
@@ -100,7 +111,6 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
         content: "place holder",
       })
       .then((res) => {
-        console.log(res);
         setCourse((prevCourse) => ({
           ...prevCourse!,
           lectures: [
@@ -108,7 +118,10 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
               return lecture.id === res.data.lectureId
                 ? {
                     ...lecture,
-                    sections: [...(lecture.sections || []), res.data],
+                    sections: [
+                      ...(lecture.sections || []),
+                      convertToSection(res.data),
+                    ],
                   }
                 : lecture;
             }),
@@ -135,25 +148,22 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
         })) || [],
     }));
 
-    axios.delete(`http://localhost:8080/sections/${id}`).catch((error) => {
+    httpClient.delete(`/sections/${id}`).catch((error) => {
       setCourse(pristineCourse);
       console.log(error);
     });
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/courses/${id}`).then((res) => {
-      const { data } = res;
-      setCourse(data);
+    httpClient.get<CourseDTO>(`/courses/${id}`).then((res) => {
+      setCourse(convertToCourse(res.data));
       setIsLoading(false);
     });
   }, []);
 
-  // console.log("course Provider", course);
-
   const reorderLectures = (
     pristineLectures: Lecture[],
-    updatedLectures: Lecture[]
+    updatedLectures: Lecture[],
   ) => {
     const requestBody: ReorderResourceDTO = {
       lectures: toLectureDTO(updatedLectures),
@@ -164,12 +174,8 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
       lectures: updatedLectures,
     }));
 
-    axios
-      .post(`http://localhost:8080/lecture-reorder/${course?.id}`, requestBody)
-      .then((res) => {
-        const { lectures } = res.data;
-        console.log(lectures);
-      })
+    httpClient
+      .post<CourseDTO>(`/lecture-reorder/${course?.id}`, requestBody)
       .catch((error) => {
         console.log(error);
         setCourse((prevCourse) => ({
@@ -182,7 +188,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
   const reorderSections = (
     pristineSections: Section[],
     updatedSections: Section[],
-    lectureId: string
+    lectureId: string,
   ) => {
     const requestBody: ReorderResourceDTO = {
       sections: toSectionDTO(updatedSections),
@@ -195,15 +201,8 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
           : lecture;
       }),
     }));
-    axios
-      .post(
-        `http://localhost:8080/section-reorder/${lectureId}`,
-        requestBody
-      )
-      .then((res) => {
-        const { sections } = res.data;
-        console.log(sections);
-      })
+    httpClient
+      .post<LectureDTO>(`/section-reorder/${lectureId}`, requestBody)
       .catch((error) => {
         console.log(error);
         setCourse((prevCourse) => ({
