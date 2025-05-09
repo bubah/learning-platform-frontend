@@ -36,11 +36,11 @@ class SessionManager {
         this.userSession = session;
         this.updateLocalStorage();
 
-        callBack.onSuccess;
+        callBack.onSuccess();
       })
       .catch((error: Error) => {
         if (error.name === COGNITO_ERRORS.USER_NOT_CONFIRMED) {
-          callBack.onFailure;
+          callBack.onFailure();
         }
 
         // TODO: Handle other error cases
@@ -92,11 +92,11 @@ class SessionManager {
       (err: Error | null | undefined) => {
         if (err) {
           console.error("Sign up failed", err);
-          callback.onFailure;
+          callback.onFailure();
           return;
         }
 
-        callback.onSuccess;
+        callback.onSuccess();
       },
     );
   }
