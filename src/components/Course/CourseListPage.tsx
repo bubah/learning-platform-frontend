@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Course, Lecture, Section } from "../../types/types";
+import { Course } from "../../types/types";
 import { CourseDTO } from "../../types/dtos";
 import { httpClient } from "../../client/httpClient";
 import {
