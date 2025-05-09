@@ -5,9 +5,6 @@ import { AuthContextType, LoginCredentials, User } from "../../types/types";
 import { httpClient } from "../../client/httpClient";
 import { UserDTO } from "../../types/dtos";
 
-// Import vite env vars
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
