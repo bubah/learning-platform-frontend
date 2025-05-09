@@ -7,10 +7,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Course } from "../../types/types";
+import { Course, Lecture, Section } from "../../types/types";
 import { CourseDTO } from "../../types/dtos";
+import { httpClient } from "../../client/httpClient";
 
 export const CourseList = () => {
   // ************ include loading functionality to show axios request to add new course is being processed. ****************
@@ -28,17 +28,54 @@ export const CourseList = () => {
 
   useEffect(() => {
     // setCourses([mockCourse, mockCourse]);
-    axios.get(`http://localhost:8080/courses`).then((res) => {
+    httpClient.get<Course[]>("/courses").then((res) => {
       const { data } = res;
       setCourses(data);
     });
   }, []);
 
   const createNewCourse = (requestBody: CourseDTO) => {
-    axios
-      .post("http://localhost:8080/courses", requestBody)
+    httpClient
+      .post<CourseDTO>("/courses", requestBody)
       .then((res) => {
-        setCourses((prevCourses) => [...prevCourses, res.data]);
+        const { data } = res;
+        const {
+          data: { lectures },
+        } = res;
+        const {
+          data: {
+            lectures: { sections },
+          },
+        } = res;
+
+        const lecturesList: Lecture[] =
+          data.lectures?.map((lecture: any) => {
+            const sectionsList: Section[] =
+              lecture.sections?.map((section: any) => ({
+                id: section.id,
+                title: section.title,
+                description: section.description,
+                order: section.order,
+              })) || [];
+
+            return {
+              id: lecture.id,
+              title: lecture.title,
+              description: lecture.description,
+              sections: sectionsList,
+              order: lecture.order,
+            };
+          }) || [];
+
+        const course: Course = {
+          id: data.id,
+          title: data.title,
+          description: data.description,
+          category: data.category,
+          lectures: lecturesList,
+        };
+
+        setCourses((prevCourses) => [...prevCourses, course]);
       })
       .catch((error) => {
         console.log(error);
@@ -57,8 +94,8 @@ export const CourseList = () => {
 
     e.stopPropagation();
 
-    axios
-      .delete(`http://localhost:8080/courses/${id}`)
+    httpClient
+      .delete(`/courses/${id}`)
       .then((res) => console.log(res.data))
       .catch((error) => {
         console.log(error);

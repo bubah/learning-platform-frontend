@@ -14,8 +14,8 @@ export type AuthContextType = {
 };
 
 export type Course = {
-  id: string | null;
-  description: string;
+  id?: string;
+  description?: string;
   title: string;
   lectures: Lecture[];
   category: string;
