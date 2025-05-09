@@ -6,9 +6,19 @@ import {
   useState,
 } from "react";
 import { useParams } from "react-router-dom";
-import { LectureDTO, ReorderResourceDTO, SectionDTO } from "../../types/dtos";
+import {
+  CourseDTO,
+  LectureDTO,
+  ReorderResourceDTO,
+  SectionDTO,
+} from "../../types/dtos";
 import { Course, Lecture, Section } from "../../types/types";
 import { httpClient } from "../../client/httpClient";
+import {
+  convertToCourse,
+  convertToLecture,
+  convertToSection,
+} from "../../helpers/incoming-request";
 
 type CourseContextType = {
   course: Course | undefined;
@@ -62,9 +72,10 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     httpClient
       .post<LectureDTO>("/lectures", lectureDTO)
       .then((res) => {
+        const updatedLecture = convertToLecture(res.data);
         setCourse((prevCourse) => ({
           ...prevCourse!,
-          lectures: [...prevCourse!.lectures, res.data],
+          lectures: [...prevCourse!.lectures, updatedLecture],
         }));
       })
       .catch((error) => console.log(error));
@@ -100,7 +111,6 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
         content: "place holder",
       })
       .then((res) => {
-        console.log(res);
         setCourse((prevCourse) => ({
           ...prevCourse!,
           lectures: [
@@ -108,7 +118,10 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
               return lecture.id === res.data.lectureId
                 ? {
                     ...lecture,
-                    sections: [...(lecture.sections || []), res.data],
+                    sections: [
+                      ...(lecture.sections || []),
+                      convertToSection(res.data),
+                    ],
                   }
                 : lecture;
             }),
@@ -142,14 +155,11 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    httpClient.get<Course>(`/courses/${id}`).then((res) => {
-      const { data } = res;
-      setCourse(data);
+    httpClient.get<CourseDTO>(`/courses/${id}`).then((res) => {
+      setCourse(convertToCourse(res.data));
       setIsLoading(false);
     });
   }, []);
-
-  // console.log("course Provider", course);
 
   const reorderLectures = (
     pristineLectures: Lecture[],
@@ -165,11 +175,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     }));
 
     httpClient
-      .post<Course>(`/lecture-reorder/${course?.id}`, requestBody)
-      .then((res) => {
-        const { lectures } = res.data;
-        console.log(lectures);
-      })
+      .post<CourseDTO>(`/lecture-reorder/${course?.id}`, requestBody)
       .catch((error) => {
         console.log(error);
         setCourse((prevCourse) => ({
@@ -196,11 +202,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
       }),
     }));
     httpClient
-      .post<Lecture>(`/section-reorder/${lectureId}`, requestBody)
-      .then((res) => {
-        const { sections } = res.data;
-        console.log(sections);
-      })
+      .post<LectureDTO>(`/section-reorder/${lectureId}`, requestBody)
       .catch((error) => {
         console.log(error);
         setCourse((prevCourse) => ({

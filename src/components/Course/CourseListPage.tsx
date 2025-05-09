@@ -11,13 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { Course, Lecture, Section } from "../../types/types";
 import { CourseDTO } from "../../types/dtos";
 import { httpClient } from "../../client/httpClient";
+import {
+  convertToCourse,
+  convertToCourses,
+} from "../../helpers/incoming-request";
 
 export const CourseList = () => {
-  // ************ include loading functionality to show axios request to add new course is being processed. ****************
-
   const [courses, setCourses] = useState<Course[] | []>([]);
-  const [displayAddNewCourse, setDisplayAddNewCourse] =
-    useState<boolean>(false);
+  const [displayAddNewCourse, setDisplayAddNewCourse] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,9 +29,8 @@ export const CourseList = () => {
 
   useEffect(() => {
     // setCourses([mockCourse, mockCourse]);
-    httpClient.get<Course[]>("/courses").then((res) => {
-      const { data } = res;
-      setCourses(data);
+    httpClient.get<CourseDTO[]>("/courses").then((res) => {
+      setCourses(convertToCourses(res.data));
     });
   }, []);
 
@@ -38,34 +38,7 @@ export const CourseList = () => {
     httpClient
       .post<CourseDTO>("/courses", requestBody)
       .then((res) => {
-        const { data } = res;
-        const lecturesList: Lecture[] =
-          data.lectures?.map((lecture: Lecture) => {
-            const sectionsList: Section[] =
-              lecture.sections?.map((section: Section) => ({
-                id: section.id,
-                title: section.title,
-                description: section.description,
-                order: section.order,
-              })) || [];
-
-            return {
-              id: lecture.id,
-              title: lecture.title,
-              description: lecture.description,
-              sections: sectionsList,
-              order: lecture.order,
-            };
-          }) || [];
-
-        const course: Course = {
-          id: data.id,
-          title: data.title,
-          description: data.description,
-          category: data.category,
-          lectures: lecturesList,
-        };
-
+        const course = convertToCourse(res.data);
         setCourses((prevCourses) => [...prevCourses, course]);
       })
       .catch((error) => {

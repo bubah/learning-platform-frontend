@@ -31,7 +31,6 @@ export const CourseOverViewEdit = () => {
       .catch((error) => console.log(error));
   };
 
-  console.log("course :", course);
   return (
     <Box
       component="form"
