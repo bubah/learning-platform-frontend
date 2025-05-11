@@ -8,8 +8,8 @@ import {
   Box,
   Grid,
 } from "@mui/material";
-import { CognitoUser, userPool } from "../../auth/cognitoConfig";
-import { useAuth } from "./AuthenticationProvider";
+import { CognitoUser, userPool } from "../../features/auth/cognitoConfig";
+import { useAuth } from "../../hooks/AuthenticationProvider";
 
 const VerificationComponent = () => {
   const [code, setCode] = useState("");

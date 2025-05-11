@@ -7,8 +7,8 @@ import {
   CognitoUserAttribute,
   CognitoUserSession,
 } from "amazon-cognito-identity-js";
-import { COGNITO_ERRORS, LOCAL_STORAGE_KEYS } from "../constants";
-import { LoginCredentials, User } from "../types/types";
+import { COGNITO_ERRORS, LOCAL_STORAGE_KEYS } from "../../constants";
+import { LoginCredentials, User } from "../../types/types";
 import { userPool } from "./cognitoConfig";
 
 class SessionManager {

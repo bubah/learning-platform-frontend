@@ -1,6 +1,6 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { useAuth } from "./AuthenticationProvider";
+import { useAuth } from "../../hooks/AuthenticationProvider";
 
 const SignUp = () => {
   const { signUp } = useAuth();

@@ -12,14 +12,14 @@ import {
   Typography,
 } from "@mui/material";
 import { ReactNode, useState } from "react";
-import { httpClient } from "../../client/httpClient";
-import { convertToLecture } from "../../helpers/incoming-request";
+import { AddLectureComponent } from "./AddLectureComponent";
+import { httpClient } from "../../clients/httpClient";
+import { useCourse } from "../../hooks/CourseProvider";
+import { useLecture } from "../../hooks/LectureProvider";
 import { LectureDTO } from "../../types/dtos";
 import { Section } from "../../types/types";
-import { AddLectureComponent } from "./AddLectureComponent";
-import { useCourse } from "./CourseProvider";
-import { useLecture } from "./LectureProvider";
-import UpdateAttributeFeild from "./UpdateAttributeFied";
+import { convertToLecture } from "../../utils/incoming-request";
+import UpdateAttributeFeild from "../shared/UpdateAttributeFied";
 
 export const LectureComponent = ({ children }: { children: ReactNode }) => {
   const { deleteLecture, saveSection } = useCourse();

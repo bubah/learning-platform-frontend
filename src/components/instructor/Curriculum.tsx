@@ -2,15 +2,15 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
+import { useCourse } from "../../hooks/CourseProvider";
+import { LectureProvider } from "../../hooks/LectureProvider";
+import { SectionProvider, useSection } from "../../hooks/SectionProvider";
 import { Lecture } from "../../types/types";
 import { AddLectureComponent } from "./AddLectureComponent";
-import { useCourse } from "./CourseProvider";
 import { DragAndDropList } from "./DragAndDropList";
 import { LectureComponent } from "./LectureComponent";
-import { LectureProvider } from "./LectureProvider";
 import { SectionComponent } from "./SectionComponent";
 import { SectionDragAndDropList } from "./SectionDragAndDropList";
-import { SectionProvider, useSection } from "./SectionProvider";
 
 export const Curriculum = () => {
   const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);
@@ -22,7 +22,7 @@ export const Curriculum = () => {
   };
 
   const sortedLectures = [...(course?.lectures || [])].sort(
-    (a, b) => a.order - b.order
+    (a, b) => a.order - b.order,
   );
 
   return (
@@ -40,7 +40,7 @@ export const Curriculum = () => {
       <DragAndDropList>
         {sortedLectures.map((lecture) => {
           const sortedSections = [...(lecture?.sections || [])].sort(
-            (a, b) => a.order - b.order
+            (a, b) => a.order - b.order,
           );
           return (
             <LectureProvider key={lecture.id} lecture={lecture}>

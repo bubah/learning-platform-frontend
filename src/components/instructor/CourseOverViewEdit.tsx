@@ -1,7 +1,7 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useState } from "react";
-import { useCourse } from "./CourseProvider";
-import { httpClient } from "../../client/httpClient";
+import { httpClient } from "../../clients/httpClient";
+import { useCourse } from "../../hooks/CourseProvider";
 
 export const CourseOverViewEdit = () => {
   const { course } = useCourse();

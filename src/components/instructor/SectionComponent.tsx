@@ -10,10 +10,10 @@ import {
 import { useState } from "react";
 
 import { memo } from "react";
-import UpdateAttributeFeild from "./UpdateAttributeFied";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { useSortable } from "@dnd-kit/sortable";
-import { useSection } from "./SectionProvider";
+import { useSection } from "../../hooks/SectionProvider";
+import UpdateAttributeFeild from "../shared/UpdateAttributeFied";
 
 export const SectionComponent = memo(() => {
   const { section } = useSection();
