@@ -1,9 +1,9 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
-import { Curriculum } from "./Curriculum";
-import { EditCourse } from "./EditCourse";
-import { useCourse } from "./CourseProvider";
-import { CourseOverViewEdit } from "./CourseOverViewEdit";
+import { CourseOverViewEdit } from "../../components/instructor/CourseOverViewEdit";
+import { Curriculum } from "../../components/instructor/Curriculum";
+import { EditCourse } from "../../components/instructor/EditCourse";
+import { useCourse } from "../../hooks/CourseProvider";
 
 interface TabPanelProps {
   children?: React.ReactNode;

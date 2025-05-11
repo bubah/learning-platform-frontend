@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "./AuthenticationProvider";
+import { useAuth } from "../../hooks/AuthenticationProvider";
 import { CircularProgress } from "@mui/material";
 
 interface ProtectedRouteProps {

@@ -1,7 +1,7 @@
 // src/api/HttpClient.ts
 
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import sessionManager from "../auth/SessionManager";
+import sessionManager from "../features/auth/SessionManager";
 
 export class HttpClient {
   private readonly instance: AxiosInstance;

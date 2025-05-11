@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { AuthenticationProvider } from "./components/Course/AuthenticationProvider";
-import { CourseList } from "./components/Course/CourseListPage";
-import { CoursePage } from "./components/Course/CoursePage";
-import CourseManagementScreen from "./components/Course/MangeCoursesPage";
-import { ProtectedRoute } from "./components/Course/ProtectedRoute";
-import { NavBar } from "./components/NavBar";
+import { AuthenticationProvider } from "./hooks/AuthenticationProvider";
+import { NavBar } from "./layouts/NavBar";
 import { Card, Typography } from "@mui/material";
-import LoginScreen from "./components/Course/LoginScreen";
-import VerificationComponent from "./components/Course/AccountVerificationScreen";
+import VerificationComponent from "./pages/auth/AccountVerificationScreen";
+import { CoursePage } from "./components/shared/CoursePage";
+import { ProtectedRoute } from "./components/shared/ProtectedRoute";
+import LoginScreen from "./pages/auth/LoginScreen";
+import { CourseList } from "./pages/instructor/CourseListPage";
+import CourseManagementScreen from "./pages/instructor/MangeCoursesPage";
 
 function App() {
   return (

@@ -18,7 +18,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "./Course/AuthenticationProvider";
+import { useAuth } from "../hooks/AuthenticationProvider";
 const pages = ["My Courses", "Pricing", "Blog"];
 
 export const NavBar = () => {

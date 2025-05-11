@@ -11,14 +11,14 @@ import {
   LectureDTO,
   ReorderResourceDTO,
   SectionDTO,
-} from "../../types/dtos";
-import { Course, Lecture, Section } from "../../types/types";
-import { httpClient } from "../../client/httpClient";
+} from "../types/dtos";
+import { Course, Lecture, Section } from "../types/types";
+import { httpClient } from "../clients/httpClient";
 import {
   convertToCourse,
   convertToLecture,
   convertToSection,
-} from "../../helpers/incoming-request";
+} from "../utils/incoming-request";
 
 type CourseContextType = {
   course: Course | undefined;

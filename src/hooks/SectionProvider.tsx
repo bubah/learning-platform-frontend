@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext } from "react";
+import { Section } from "../types/types";
 import { useCourse } from "./CourseProvider";
-import { Section } from "../../types/types";
 
 type SectionContextType = {
   section: Section;

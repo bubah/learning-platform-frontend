@@ -8,13 +8,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Course } from "../../types/types";
+import { httpClient } from "../../clients/httpClient";
 import { CourseDTO } from "../../types/dtos";
-import { httpClient } from "../../client/httpClient";
+import { Course } from "../../types/types";
 import {
-  convertToCourse,
   convertToCourses,
-} from "../../helpers/incoming-request";
+  convertToCourse,
+} from "../../utils/incoming-request";
 
 export const CourseList = () => {
   const [courses, setCourses] = useState<Course[] | []>([]);

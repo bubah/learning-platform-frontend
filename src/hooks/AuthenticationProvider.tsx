@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import oauthManager from "../../auth/SessionManager";
-import { AuthContextType, LoginCredentials, User } from "../../types/types";
-import { httpClient } from "../../client/httpClient";
-import { UserDTO } from "../../types/dtos";
+import oauthManager from "../features/auth/SessionManager";
+import { AuthContextType, LoginCredentials, User } from "../types/types";
+import { httpClient } from "../clients/httpClient";
+import { UserDTO } from "../types/dtos";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

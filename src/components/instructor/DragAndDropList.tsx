@@ -4,8 +4,8 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { useCourse } from "../../hooks/CourseProvider";
 import { Lecture } from "../../types/types";
-import { useCourse } from "./CourseProvider";
 
 export const DragAndDropList = ({
   children,

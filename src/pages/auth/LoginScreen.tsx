@@ -1,7 +1,7 @@
 import { useState } from "react";
-import LoginForm from "./LoginForm";
-import SignUp from "./SignUp";
 import { Button } from "@mui/material";
+import LoginForm from "../../components/shared/LoginForm";
+import SignUp from "../../components/shared/SignUp";
 
 const LoginScreen = () => {
   const [authView, setAuthView] = useState("login");

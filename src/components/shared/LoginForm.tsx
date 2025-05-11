@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useAuth } from "./AuthenticationProvider";
+import { useAuth } from "../../hooks/AuthenticationProvider";
 
 const LoginForm = () => {
   const { login } = useAuth();

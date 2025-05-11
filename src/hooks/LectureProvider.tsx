@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext } from "react";
-import { Lecture } from "../../types/types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Lecture } from "../types/types";
 
 type LectureContextType = {
   lecture: Lecture;

@@ -2,14 +2,18 @@ import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
-  verticalListSortingStrategy
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ReactNode, useEffect, useState } from "react";
+import { useCourse } from "../../hooks/CourseProvider";
+import { useLecture } from "../../hooks/LectureProvider";
 import { Section } from "../../types/types";
-import { useCourse } from "./CourseProvider";
-import { useLecture } from "./LectureProvider";
 
-export const SectionDragAndDropList = ({children}: {children: ReactNode}) => {
+export const SectionDragAndDropList = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const { reorderSections } = useCourse();
   const { lecture } = useLecture();
   const [sections, setSections] = useState<Section[] | []>(
