@@ -1,6 +1,6 @@
 import { Box, Button, Card, TextField } from "@mui/material";
 import { useState } from "react";
-import { Lecture, Section } from "../../../types/types";
+import { Lecture, Section } from "../../types/types";
 
 export const AddLectureComponent = <T extends Lecture | Section>({
   onCancel,
