@@ -19,13 +19,24 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/AuthenticationProvider";
-const pages = ["My Courses", "Pricing", "Blog"];
+
+const studentPages = ["My Courses", "Profile", "Settings"];
+const instructorPages = ["Curriculum", "DashBoard", "Settings"];
+const defaultPages = ["Popular Courses", "Pricing", "About Us", "Contact Us"];
+
+const pagesMap = {
+  learner: studentPages,
+  instructor: instructorPages,
+  default: defaultPages,
+};
 
 export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { user, logout } = useAuth();
   const learningProgress = 50;
+
+  const role = user?.role?.toLowerCase() as keyof typeof pagesMap;
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -114,7 +125,7 @@ export const NavBar = () => {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
+              {pagesMap[role || "default"].map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: "center" }}>{page}</Typography>
                 </MenuItem>
@@ -141,14 +152,16 @@ export const NavBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-              to="/courses"
-              component={Link}
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              My Courses
-            </Button>
+            {pagesMap[role || "default"].map((page) => (
+              <Button
+                to="/courses"
+                component={Link}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                {page}
+              </Button>
+            ))}
           </Box>
           <Box sx={{ flexGrow: 5 }}>
             <Autocomplete
@@ -208,7 +221,7 @@ export const NavBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            {user ? (
+            {user !== null ? (
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

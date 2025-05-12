@@ -1,29 +1,27 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import { AuthenticationProvider } from "./hooks/AuthenticationProvider";
 import { NavBar } from "./layouts/NavBar";
-import { Card, Typography } from "@mui/material";
-import VerificationComponent from "./pages/auth/AccountVerificationScreen";
-import { CoursePage } from "./components/shared/CoursePage";
-import { ProtectedRoute } from "./components/shared/ProtectedRoute";
-import LoginScreen from "./pages/auth/LoginScreen";
-import { CourseList } from "./pages/instructor/CourseListPage";
-import CourseManagementScreen from "./pages/instructor/MangeCoursesPage";
+import { RouteWrapper } from "./components/RouteWrapper"; // Adjust the path as needed
 
 function App() {
   return (
     <BrowserRouter>
       <AuthenticationProvider>
         <NavBar />
-        <Routes>
-          <Route
+        <PresistentRoutes />
+        <RouteWrapper />
+
+        {/* <Routes> */}
+        {/* {RouteWrapper()} */}
+        {/* <Route
             path="/"
             element={
               <Card>
                 <Typography>LANDING PAGE</Typography>
               </Card>
             }
-          />
+            />
           <Route path="/account-verify" element={<VerificationComponent />} />
           <Route path="/login" element={<LoginScreen />} />
 
@@ -34,7 +32,7 @@ function App() {
                 <CourseList />
               </ProtectedRoute>
             }
-          />
+            />
           <Route
             path="/courses/:id"
             element={
@@ -42,7 +40,7 @@ function App() {
                 <CoursePage />
               </ProtectedRoute>
             }
-          />
+            />
           <Route
             path="/manage/course/:id"
             element={
@@ -50,8 +48,8 @@ function App() {
                 <CourseManagementScreen />
               </ProtectedRoute>
             }
-          />
-        </Routes>
+            /> */}
+        {/* </Routes> */}
       </AuthenticationProvider>
     </BrowserRouter>
   );
