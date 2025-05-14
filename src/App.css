@@ -1,3 +1,38 @@
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@import "swiper/css/autoplay";
+
+/* Button wrapper → size + shape */
+.swiper-button-next,
+.swiper-button-prev {
+  background-color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  top: 50% !important;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Pseudo element → arrow size */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 20px !important;
+  font-weight: 2000 !important; /* 👈 🔥 THIS controls arrow size */
+  color: limegreen;
+}
+
+.swiper {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 #root {
   /* max-width: 1280px; */
   margin: 0 auto;

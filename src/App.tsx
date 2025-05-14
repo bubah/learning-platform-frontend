@@ -2,17 +2,14 @@ import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import { AuthenticationProvider } from "./hooks/AuthenticationProvider";
 import { NavBar } from "./layouts/NavBar";
-
-import PresistentRoutes from "./components/routes/PresistentRoutes";
-import RouteWrapper from "./components/routes/RouteWrapper";
+import AppRoutes from "./components/routes/AppRoutes";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthenticationProvider>
         <NavBar />
-        <PresistentRoutes />
-        <RouteWrapper />
+        <AppRoutes />
       </AuthenticationProvider>
     </BrowserRouter>
   );
