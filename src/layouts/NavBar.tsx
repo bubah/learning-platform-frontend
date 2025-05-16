@@ -19,13 +19,24 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/AuthenticationProvider";
-const pages = ["My Courses", "Pricing", "Blog"];
+
+const studentPages = ["My Courses", "Profile", "Settings"];
+const instructorPages = ["Curriculum", "DashBoard", "Settings"];
+const defaultPages = ["Popular Courses", "Pricing", "About Us", "Contact Us"];
+
+const pagesMap = {
+  learner: studentPages,
+  instructor: instructorPages,
+  default: defaultPages,
+};
 
 export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { user, logout } = useAuth();
   const learningProgress = 50;
+
+  const role = user?.role?.toLowerCase() as keyof typeof pagesMap;
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -65,10 +76,33 @@ export const NavBar = () => {
   ];
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: "black", // custom dark tone
+        color: "limegreen", // custom light tone
+        boxShadow: "0px 2px 4px rgba(0,0,0,0.3)", // subtle shadow
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <AdbIcon
+            sx={{
+              display: { xs: "none", md: "flex" },
+              mr: 1,
+              color: "limegreen",
+              border: "2px solid transparent",
+              borderRadius: "8px",
+              transition: "all 0.3s ease",
+              px: 2,
+              py: 1,
+              "&:hover": {
+                border: "2px solid #228B22", // dark lime border
+                backgroundColor: "rgba(34, 139, 34, 0.1)", // subtle solid background
+                color: "#32CD32", // bright lime icon on hover
+              },
+            }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -80,8 +114,32 @@ export const NavBar = () => {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: "limegreen",
               textDecoration: "none",
+              position: "relative",
+              px: 2,
+              py: 1,
+              transition: "color 0.3s ease",
+
+              // underline bar (hidden by default)
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                width: 0,
+                height: "2px",
+                left: 0,
+                bottom: 0,
+                backgroundColor: "limegreen",
+                transition: "width 0.3s ease",
+              },
+
+              "&:hover": {
+                color: "#32CD32", // brighter lime on hover
+              },
+
+              "&:hover::after": {
+                width: "100%", // 🔥 underline slides across
+              },
             }}
           >
             LEARNING PLATFORM
@@ -114,9 +172,11 @@ export const NavBar = () => {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
+              {pagesMap[role || "default"].map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                  <Typography sx={{ textAlign: "center", color: "limegreen" }}>
+                    {page}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -141,16 +201,53 @@ export const NavBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-              to="/courses"
-              component={Link}
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              My Courses
-            </Button>
+            {pagesMap[role || "default"].map((page) => (
+              <Button
+                to="/courses"
+                component={Link}
+                onClick={handleCloseNavMenu}
+                sx={{
+                  position: "relative",
+                  my: 2,
+                  px: 2,
+                  py: 1,
+                  color: "limegreen",
+                  display: "block",
+                  textTransform: "none",
+                  fontWeight: 500,
+                  borderRadius: 0,
+                  backgroundColor: "transparent",
+                  border: "none",
+                  boxShadow: "none",
+                  transition: "color 0.3s ease",
+
+                  // underline bar (hidden by default)
+                  "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    width: 0,
+                    height: "2px",
+                    left: 0,
+                    bottom: 0,
+                    backgroundColor: "limegreen",
+                    transition: "width 0.3s ease",
+                  },
+
+                  "&:hover": {
+                    color: "#32CD32", // optional brighter lime on hover
+                    fontWeight: 600, // optional slightly bolder on hover
+                  },
+
+                  "&:hover::after": {
+                    width: "100%", // 🔥 the bar slides across the full button
+                  },
+                }}
+              >
+                {page}
+              </Button>
+            ))}
           </Box>
-          <Box sx={{ flexGrow: 5 }}>
+          <Box sx={{ flexGrow: 1, mx: 2 }}>
             <Autocomplete
               freeSolo
               id="free-solo-2-demo"
@@ -171,44 +268,48 @@ export const NavBar = () => {
               )}
             />
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              margin: 3,
-              alignItems: "center",
-              position: "relative",
-            }}
-          >
-            <CircularProgress
-              variant="determinate"
-              color="inherit"
-              value={learningProgress}
-              sx={{ margin: 1 }}
-            />
+
+          {user !== null && (
             <Box
               sx={{
-                top: 0,
-                left: 13,
-                bottom: 0,
-                right: 0,
-                position: "absolute",
                 display: "flex",
+                margin: 3,
                 alignItems: "center",
-                justifyContent: "center",
-                width: "fit-content",
+                position: "relative",
               }}
             >
-              <Typography
-                variant="caption"
-                component="div"
-                sx={{ color: "text.secondary", fontSize: "0.75rem" }}
-              >{`${Math.round(learningProgress)}%`}</Typography>
+              <CircularProgress
+                variant="determinate"
+                color="inherit"
+                value={learningProgress}
+                sx={{ margin: 1 }}
+              />
+
+              <Box
+                sx={{
+                  top: 0,
+                  left: 13,
+                  bottom: 0,
+                  right: 0,
+                  position: "absolute",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "fit-content",
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  component="div"
+                  sx={{ color: "text.secondary", fontSize: "0.75rem" }}
+                >{`${Math.round(learningProgress)}%`}</Typography>
+              </Box>
+              <Typography>Your Progress</Typography>
             </Box>
-            <Typography>Your Progress</Typography>
-          </Box>
+          )}
 
           <Box sx={{ flexGrow: 0 }}>
-            {user ? (
+            {user !== null ? (
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -238,7 +339,7 @@ export const NavBar = () => {
                     <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
                       <Typography
                         onClick={setting.action}
-                        sx={{ textAlign: "center" }}
+                        sx={{ textAlign: "center", color: "limegreen" }}
                       >
                         {setting.name}
                       </Typography>
@@ -247,7 +348,36 @@ export const NavBar = () => {
                 </Menu>
               </>
             ) : (
-              <Button>Sign up</Button>
+              <Button
+                component={Link}
+                to="/sign-up"
+                sx={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                  px: 3,
+                  py: 1.5,
+                  backgroundColor: "#fff",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  border: "2px solid transparent",
+                  color: "limegreen",
+                  fontWeight: 700, // 🔥 upgraded from 500 to 700
+                  fontSize: "1rem", // 🔥 slight bump from default (~0.875rem)
+                  letterSpacing: "0.5px", // 🔥 subtle premium feel
+                  textTransform: "none",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    border: "2px solid #228B22",
+                    backgroundColor: "rgba(34, 139, 34, 0.1)",
+                    color: "#32CD32",
+                    fontWeight: 800, // 🔥 heavier bold on hover
+                  },
+                }}
+              >
+                {user ? "" : "Sign up"}
+              </Button>
             )}
           </Box>
         </Toolbar>
