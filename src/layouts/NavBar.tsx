@@ -10,7 +10,6 @@ import {
   Button,
   Tooltip,
   Avatar,
-  CircularProgress,
   Autocomplete,
   TextField,
 } from "@mui/material";
@@ -35,7 +34,6 @@ export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { user, logout } = useAuth();
-  const learningProgress = 50;
 
   const role = user?.role?.toLowerCase() as keyof typeof pagesMap;
 
@@ -297,53 +295,6 @@ export const NavBar = () => {
               {page}
             </Button>
           ))}
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              justifyContent: "flex-end",
-              minWidth: "0px",
-            }}
-          >
-            {user !== null && (
-              <Box
-                sx={{
-                  display: "flex",
-                  margin: 3,
-                  alignItems: "center",
-                  position: "relative",
-                }}
-              >
-                <CircularProgress
-                  variant="determinate"
-                  color="inherit"
-                  value={learningProgress}
-                  sx={{ margin: 1 }}
-                />
-
-                <Box
-                  sx={{
-                    top: 0,
-                    left: 13,
-                    bottom: 0,
-                    right: 0,
-                    position: "absolute",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "fit-content",
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    component="div"
-                    sx={{ color: "text.secondary", fontSize: "0.75rem" }}
-                  >{`${Math.round(learningProgress)}%`}</Typography>
-                </Box>
-                <Typography>Your Progress</Typography>
-              </Box>
-            )}
-          </Box>
 
           <Box
             sx={{
@@ -396,6 +347,38 @@ export const NavBar = () => {
                     </MenuItem>
                   ))}
                 </Menu>
+
+                <Button
+                  onClick={logout}
+                  sx={{
+                    height: "40px",
+                    whiteSpace: "nowrap", // ✅ Prevents text from wrapping
+                    minWidth: "100px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    px: 3,
+                    py: 1.5,
+                    backgroundColor: "#fff",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                    color: "#0B3D2E",
+                    fontWeight: 700, // 🔥 upgraded from 500 to 700
+                    fontSize: "1rem", // 🔥 slight bump from default (~0.875rem)
+                    letterSpacing: "0.5px", // 🔥 subtle premium feel
+                    textTransform: "none",
+                    transition: "all 0.3s ease",
+                    mx: 3,
+                    "&:hover": {
+                      border: "3px solid #D4AF37",
+                      backgroundColor: "rgba(34, 139, 34, 0.1)",
+                      color: "#fff",
+                      fontWeight: 800, // 🔥 heavier bold on hover
+                    },
+                  }}
+                >
+                  {user ? "LOGOUT" : ""}
+                </Button>
               </>
             ) : (
               <>
