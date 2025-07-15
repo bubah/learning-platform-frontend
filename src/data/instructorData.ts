@@ -1,0 +1,46 @@
+export const instructors = [
+  {
+    name: "Shaykh Ayman",
+    expertise: "Tajweed & Quranic Recitation",
+    experience: "15 years",
+    image: "src/assets/lp_instructor_1.jpg",
+    courses: ["Intro to Tajweed", "Advanced Recitation", "Makharij Mastery"],
+    rating: 4.8,
+    comment: "A master of tajweed and an excellent teacher.",
+  },
+  {
+    name: "Dr. Bubah Conteh",
+    expertise: "Quranic Tafsir",
+    experience: "12 years",
+    image: "src/assets/instructor_bubah.jpeg",
+    courses: ["Surah Yaseen Tafsir", "Tafsir of Juz Amma", "Thematic Tafsir"],
+    rating: 4.9,
+    comment: "His explanations are incredibly insightful!",
+  },
+  {
+    name: "Ustadh Hassan Razak",
+    expertise: "Hadith & Sunnah",
+    experience: "10 years",
+    image: "src/assets/pl_instuctor_razak.jpg",
+    courses: [
+      "40 Hadith of Nawawi",
+      "Hadith Terminology",
+      "Understanding Sunnah",
+    ],
+    rating: 4.7,
+    comment: "Brings hadith to life with real-world examples.",
+  },
+  {
+    name: "Professor Nadim Al-Faruqi",
+    expertise: "Islamic History",
+    experience: "20 years",
+    image: "src/assets/pl_instructor_3.jpg",
+    courses: [
+      "Golden Age of Islam",
+      "Muslim Civilizations",
+      "History of the Caliphate",
+    ],
+    rating: 5.0,
+    comment: "Makes history engaging and meaningful.",
+  },
+];

@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { ImageCarousel } from "../../components/shared/ImageCarousel";
 import { FeaturedCourses } from "../../components/shared/FeaturedCourses";
 import { BrowseCourses } from "../../components/shared/BrowseCourses";
+import { InstructorsSection } from "../../components/shared/InstructorsSection";
 
 const LandingPage = () => {
   const slides = [
@@ -49,6 +50,7 @@ const LandingPage = () => {
       <ImageCarousel slides={slides} />
       <FeaturedCourses />
       <BrowseCourses />
+      <InstructorsSection />
     </Box>
   );
 };
