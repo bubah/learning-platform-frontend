@@ -15,7 +15,7 @@ export const CourseCategoryTabs = ({
     <Box sx={{ borderBottom: 1, borderColor: "divider", overflowX: "auto" }}>
       <Tabs
         value={activeCategory}
-        onChange={(_e, newValue) => setActiveCategory(newValue)}
+        onChange={(_, newValue) => setActiveCategory(newValue)}
         textColor="primary"
         indicatorColor="primary"
         variant="scrollable"
