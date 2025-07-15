@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { ImageCarousel } from "../../components/shared/ImageCarousel";
+import { FeaturedCourses } from "../../components/shared/FeaturedCourses";
 
 const LandingPage = () => {
   const slides = [
@@ -9,6 +10,7 @@ const LandingPage = () => {
       heading: "Learn About Your Deen",
       subheading:
         "Build knowlege of FIQ,  build your logical thinking with MANTIQ, and learn your islamic history from world-class teachers.",
+
       buttons: [
         { label: "SIGN UP", route: "/sign-up" },
         { label: "LOG IN", route: "/login" },
@@ -44,6 +46,7 @@ const LandingPage = () => {
   return (
     <Box sx={{ width: "100%" }}>
       <ImageCarousel slides={slides} />
+      <FeaturedCourses />
     </Box>
   );
 };
