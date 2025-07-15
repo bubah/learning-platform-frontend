@@ -3,17 +3,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import Hero from "./Hero";
-import { SlideContent } from "./SlideContent";
-
-interface CarouselSlide {
-  src: string;
-  alt?: string;
-  content?: React.ReactNode;
-}
+import Slide, { SlideProps } from "./Slide";
 
 interface ImageCarouselProps {
-  slides: CarouselSlide[];
+  slides: SlideProps[];
 }
 
 export const ImageCarousel = ({ slides }: ImageCarouselProps) => {
@@ -27,30 +20,9 @@ export const ImageCarousel = ({ slides }: ImageCarouselProps) => {
         autoplay={{ delay: 3500, disableOnInteraction: false }}
         loop
       >
-        {/* HERO as first slide */}
-        <SwiperSlide>
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textAlign: "center",
-            }}
-          >
-            <Hero />
-          </Box>
-        </SwiperSlide>
-
-        {/* Your image slides */}
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <SlideContent
-              imageSrc={slide.src}
-              altText={slide.alt}
-              content={slide.content}
-            />
+            <Slide {...slide} />
           </SwiperSlide>
         ))}
       </Swiper>
