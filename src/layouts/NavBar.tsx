@@ -94,7 +94,7 @@ export const NavBar = () => {
           <StarIcon
             sx={{
               color: "#FFD700", // bright gold
-              fontSize: 28,
+              fontSize: 8,
             }}
           />
 
