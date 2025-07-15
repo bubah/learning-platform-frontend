@@ -7,7 +7,7 @@ import { InstructorsSection } from "../../components/shared/InstructorsSection";
 const LandingPage = () => {
   const slides = [
     {
-      imageSrc: "/src/assets/lp_hero_5.jpg",
+      imageSrc: "/assets/lp_hero_5.jpg",
       altText: "lerners perspective",
       heading: "Learn About Your Deen",
       subheading:
@@ -20,14 +20,14 @@ const LandingPage = () => {
       contentPosition: "center" as const,
     },
     {
-      imageSrc: "src/assets/lp_hero_2.jpg",
+      imageSrc: "/assets/lp_hero_2.jpg",
       altText: "muslims sisterhood",
       heading: "Collaborate with common goals",
       subheading: "Meet and strive towards ILM with liked minded individuals.",
       contentPosition: "center" as const,
     },
     {
-      imageSrc: "/src/assets/lp_hero_8.jpg",
+      imageSrc: "/assets/lp_hero_8.jpg",
       altText: "Instructor",
       heading: "Become an Instructor",
       subheading: "Share your knowledge with learners worldwide.",
@@ -37,7 +37,7 @@ const LandingPage = () => {
       contentPosition: "center" as const,
     },
     {
-      imageSrc: "/src/assets/lp_hero_1.jpg",
+      imageSrc: "/assets/lp_hero_1.jpg",
       altText: "Global community",
       heading: "Join our global community",
       subheading: "Connect, collaborate, and grow together.",
