@@ -434,7 +434,7 @@ export const NavBar = () => {
 
                 <Button
                   component={Link}
-                  to="/sign-up"
+                  to="/login"
                   sx={{
                     height: "40px",
                     justifyContent: "center",
