@@ -15,10 +15,11 @@ import {
   TextField,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/AuthenticationProvider";
+import StarIcon from "@mui/icons-material/Star";
+import NightsStayIcon from "@mui/icons-material/NightsStay";
 
 const studentPages = ["My Courses", "Profile", "Settings"];
 const instructorPages = ["Curriculum", "DashBoard", "Settings"];
@@ -79,30 +80,26 @@ export const NavBar = () => {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "black", // custom dark tone
-        color: "limegreen", // custom light tone
-        boxShadow: "0px 2px 4px rgba(0,0,0,0.3)", // subtle shadow
+        backgroundColor: "#0B3D2E", // deep green
+        color: "#FFD700", // gold text
+        boxShadow: "0px 2px 4px rgba(0,0,0,0.5)",
       }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon
+          <NightsStayIcon
             sx={{
-              display: { xs: "none", md: "flex" },
-              mr: 1,
-              color: "limegreen",
-              border: "2px solid transparent",
-              borderRadius: "8px",
-              transition: "all 0.3s ease",
-              px: 2,
-              py: 1,
-              "&:hover": {
-                border: "2px solid #228B22", // dark lime border
-                backgroundColor: "rgba(34, 139, 34, 0.1)", // subtle solid background
-                color: "#32CD32", // bright lime icon on hover
-              },
+              color: "#C0C0C0", // bright silver
+              fontSize: 28,
             }}
           />
+          <StarIcon
+            sx={{
+              color: "#FFD700", // bright gold
+              fontSize: 28,
+            }}
+          />
+
           <Typography
             variant="h6"
             noWrap
@@ -111,10 +108,11 @@ export const NavBar = () => {
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
+              flexGrow: 1.5,
+              minWidth: "350px",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "limegreen",
+              color: "#fff",
               textDecoration: "none",
               position: "relative",
               px: 2,
@@ -129,12 +127,15 @@ export const NavBar = () => {
                 height: "2px",
                 left: 0,
                 bottom: 0,
-                backgroundColor: "limegreen",
+                backgroundColor: "#D4AF37",
                 transition: "width 0.3s ease",
               },
 
               "&:hover": {
-                color: "#32CD32", // brighter lime on hover
+                color: "#D4AF37", // rich gold hover
+                "&::after": {
+                  backgroundColor: "#D4AF37", // gold underline
+                },
               },
 
               "&:hover::after": {
@@ -142,7 +143,7 @@ export const NavBar = () => {
               },
             }}
           >
-            LEARNING PLATFORM
+            WISDOM BEYONG WALLS
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -174,14 +175,22 @@ export const NavBar = () => {
             >
               {pagesMap[role || "default"].map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center", color: "limegreen" }}>
+                  <Typography
+                    sx={{
+                      textAlign: "center",
+                      color: "#fff",
+                      "&:hover": {
+                        color: "#D4AF37",
+                      },
+                    }}
+                  >
                     {page}
                   </Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+
           <Typography
             variant="h5"
             noWrap
@@ -198,117 +207,152 @@ export const NavBar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            WBW
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pagesMap[role || "default"].map((page) => (
-              <Button
-                to="/courses"
-                component={Link}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  position: "relative",
-                  my: 2,
-                  px: 2,
-                  py: 1,
-                  color: "limegreen",
-                  display: "block",
-                  textTransform: "none",
-                  fontWeight: 500,
-                  borderRadius: 0,
-                  backgroundColor: "transparent",
-                  border: "none",
-                  boxShadow: "none",
-                  transition: "color 0.3s ease",
 
-                  // underline bar (hidden by default)
-                  "&::after": {
-                    content: '""',
-                    position: "absolute",
-                    width: 0,
-                    height: "2px",
-                    left: 0,
-                    bottom: 0,
-                    backgroundColor: "limegreen",
-                    transition: "width 0.3s ease",
-                  },
-
-                  "&:hover": {
-                    color: "#32CD32", // optional brighter lime on hover
-                    fontWeight: 600, // optional slightly bolder on hover
-                  },
-
-                  "&:hover::after": {
-                    width: "100%", // 🔥 the bar slides across the full button
-                  },
-                }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-          <Box sx={{ flexGrow: 1, mx: 2 }}>
-            <Autocomplete
-              freeSolo
-              id="free-solo-2-demo"
-              sx={{ backgroundColor: "white", borderRadius: 2 }}
-              disableClearable
-              options={top100Films.map((option) => option.title)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Search input"
-                  slotProps={{
-                    input: {
-                      ...params.InputProps,
-                      type: "search",
-                    },
-                  }}
-                />
-              )}
-            />
-          </Box>
-
-          {user !== null && (
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "center",
+              mx: 2,
+            }}
+          >
             <Box
+              sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}
+            >
+              <Autocomplete
+                // fullWidth
+                id="free-solo-2-demo"
+                sx={{
+                  backgroundColor: "white",
+                  borderRadius: 2,
+                  minWidth: "400px",
+                }}
+                disableClearable
+                options={top100Films.map((option) => option.title)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Search input"
+                    fullWidth
+                    slotProps={{
+                      input: {
+                        ...params.InputProps,
+                        type: "search",
+                      },
+                    }}
+                  />
+                )}
+              />
+            </Box>
+          </Box>
+
+          {pagesMap[role || "default"].map((page) => (
+            <Button
+              to="/courses"
+              component={Link}
+              onClick={handleCloseNavMenu}
               sx={{
-                display: "flex",
-                margin: 3,
-                alignItems: "center",
                 position: "relative",
+                my: 2,
+                px: 2,
+                py: 1,
+                color: "#fff",
+                display: "block",
+                textTransform: "none",
+                fontWeight: 500,
+                borderRadius: 0,
+                backgroundColor: "transparent",
+                border: "none",
+                boxShadow: "none",
+                transition: "color 0.3s ease",
+                fontSize: "20px",
+                whiteSpace: "nowrap",
+
+                // underline bar (hidden by default)
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  width: 0,
+                  height: "2px",
+                  left: 0,
+                  bottom: 0,
+                  backgroundColor: "#D4AF37",
+                  transition: "width 0.3s ease",
+                },
+
+                "&:hover": {
+                  color: "#D4AF37", // rich gold hover
+                  "&::after": {
+                    backgroundColor: "#D4AF37", // gold underline
+                  },
+                },
+
+                "&:hover::after": {
+                  width: "100%", // 🔥 the bar slides across the full button
+                },
               }}
             >
-              <CircularProgress
-                variant="determinate"
-                color="inherit"
-                value={learningProgress}
-                sx={{ margin: 1 }}
-              />
-
+              {page}
+            </Button>
+          ))}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "flex-end",
+              minWidth: "0px",
+            }}
+          >
+            {user !== null && (
               <Box
                 sx={{
-                  top: 0,
-                  left: 13,
-                  bottom: 0,
-                  right: 0,
-                  position: "absolute",
                   display: "flex",
+                  margin: 3,
                   alignItems: "center",
-                  justifyContent: "center",
-                  width: "fit-content",
+                  position: "relative",
                 }}
               >
-                <Typography
-                  variant="caption"
-                  component="div"
-                  sx={{ color: "text.secondary", fontSize: "0.75rem" }}
-                >{`${Math.round(learningProgress)}%`}</Typography>
-              </Box>
-              <Typography>Your Progress</Typography>
-            </Box>
-          )}
+                <CircularProgress
+                  variant="determinate"
+                  color="inherit"
+                  value={learningProgress}
+                  sx={{ margin: 1 }}
+                />
 
-          <Box sx={{ flexGrow: 0 }}>
+                <Box
+                  sx={{
+                    top: 0,
+                    left: 13,
+                    bottom: 0,
+                    right: 0,
+                    position: "absolute",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "fit-content",
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    component="div"
+                    sx={{ color: "text.secondary", fontSize: "0.75rem" }}
+                  >{`${Math.round(learningProgress)}%`}</Typography>
+                </Box>
+                <Typography>Your Progress</Typography>
+              </Box>
+            )}
+          </Box>
+
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "flex-end",
+              minWidth: "200px",
+            }}
+          >
             {user !== null ? (
               <>
                 <Tooltip title="Open settings">
@@ -339,7 +383,13 @@ export const NavBar = () => {
                     <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
                       <Typography
                         onClick={setting.action}
-                        sx={{ textAlign: "center", color: "limegreen" }}
+                        sx={{
+                          textAlign: "center",
+                          color: "#fff",
+                          "&:hover": {
+                            color: "#D4AF37",
+                          },
+                        }}
                       >
                         {setting.name}
                       </Typography>
@@ -348,36 +398,70 @@ export const NavBar = () => {
                 </Menu>
               </>
             ) : (
-              <Button
-                component={Link}
-                to="/sign-up"
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  gap: "0.5rem",
-                  px: 3,
-                  py: 1.5,
-                  backgroundColor: "#fff",
-                  borderRadius: "8px",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                  border: "2px solid transparent",
-                  color: "limegreen",
-                  fontWeight: 700, // 🔥 upgraded from 500 to 700
-                  fontSize: "1rem", // 🔥 slight bump from default (~0.875rem)
-                  letterSpacing: "0.5px", // 🔥 subtle premium feel
-                  textTransform: "none",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    border: "2px solid #228B22",
-                    backgroundColor: "rgba(34, 139, 34, 0.1)",
-                    color: "#32CD32",
-                    fontWeight: 800, // 🔥 heavier bold on hover
-                  },
-                }}
-              >
-                {user ? "" : "Sign up"}
-              </Button>
+              <>
+                <Button
+                  component={Link}
+                  to="/sign-up"
+                  sx={{
+                    height: "40px",
+                    whiteSpace: "nowrap", // ✅ Prevents text from wrapping
+                    minWidth: "100px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    px: 3,
+                    py: 1.5,
+                    backgroundColor: "#fff",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                    color: "#0B3D2E",
+                    fontWeight: 700, // 🔥 upgraded from 500 to 700
+                    fontSize: "1rem", // 🔥 slight bump from default (~0.875rem)
+                    letterSpacing: "0.5px", // 🔥 subtle premium feel
+                    textTransform: "none",
+                    transition: "all 0.3s ease",
+                    mx: 3,
+                    "&:hover": {
+                      border: "3px solid #D4AF37",
+                      backgroundColor: "rgba(34, 139, 34, 0.1)",
+                      color: "#fff",
+                      fontWeight: 800, // 🔥 heavier bold on hover
+                    },
+                  }}
+                >
+                  {user ? "" : "SIGN UP"}
+                </Button>
+
+                <Button
+                  component={Link}
+                  to="/sign-up"
+                  sx={{
+                    height: "40px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    px: 3,
+                    py: 1.5,
+                    backgroundColor: "#fff",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                    color: "#0B3D2E",
+                    fontWeight: 700, // 🔥 upgraded from 500 to 700
+                    fontSize: "1rem", // 🔥 slight bump from default (~0.875rem)
+                    letterSpacing: "0.5px", // 🔥 subtle premium feel
+                    textTransform: "none",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      border: "3px solid #D4AF37",
+                      backgroundColor: "rgba(34, 139, 34, 0.1)",
+                      color: "#fff",
+                      fontWeight: 800, // 🔥 heavier bold on hover
+                    },
+                  }}
+                >
+                  {user ? "" : "LOGIN"}
+                </Button>
+              </>
             )}
           </Box>
         </Toolbar>
