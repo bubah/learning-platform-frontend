@@ -47,7 +47,7 @@ const featuredCourses = [
 export const FeaturedCourses = () => {
   return (
     <Container maxWidth="xl">
-      <Box sx={{ p: 4, backgroundColor: "#f9f9f9" }}>
+      <Box sx={{ p: 4, backgroundColor: "#f9f9f9", textAlign: "left" }}>
         <Typography variant="h4" fontWeight="bold" mb={4}>
           Featured Courses
         </Typography>
