@@ -65,3 +65,41 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.gold-banner {
+  height: 100px;
+  width: 100%;
+  background: #d4af37; /* rich darker gold */
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gold-banner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  animation: shimmerEvery10s 10s infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmerEvery10s {
+  0% {
+    left: -100%;
+  }
+  85% {
+    left: -100%; /* wait */
+  }
+  95% {
+    left: 100%; /* slow shimmer */
+  }
+  100% {
+    left: 100%;
+  }
+}
