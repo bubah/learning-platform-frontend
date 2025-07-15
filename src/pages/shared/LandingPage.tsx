@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { ImageCarousel } from "../../components/shared/ImageCarousel";
 import { FeaturedCourses } from "../../components/shared/FeaturedCourses";
 
