@@ -15,7 +15,7 @@ const featuredCourses = [
   {
     title: "Foundations of Islamic Fiqh",
     instructor: "Shaykh Ahmad al-Tirmidhi",
-    image: "src/assets/lp_fc_fiq.jpg", // swap with real later
+    image: "/assets/lp_fc_fiq.jpg", // swap with real later
     description:
       "Understand the principles of Islamic jurisprudence through Hanafi methodology, with real-life case studies.",
     duration: "15h",
@@ -25,7 +25,7 @@ const featuredCourses = [
   {
     title: "Intro to Mantiq: Islamic Logic",
     instructor: "Ustadh Farid ibn Yusuf",
-    image: "src/assets/lp_fc_logic.jpg", // swap with relevant image
+    image: "/assets/lp_fc_logic.jpg", // swap with relevant image
     description:
       "Explore classical logic as taught in traditional Islamic madaris. Ideal for students of 'Aalim programs.",
     duration: "10h",
@@ -35,7 +35,7 @@ const featuredCourses = [
   {
     title: "A Journey Through Islamic History",
     instructor: "Dr. Layla Siddiq",
-    image: "src/assets/lp_fc_history.jpg", // replace with themed asset
+    image: "/assets/lp_fc_history.jpg", // replace with themed asset
     description:
       "Travel from the era of the Prophet ﷺ to the Ottoman Caliphate, understanding key events and personalities.",
     duration: "20h",
