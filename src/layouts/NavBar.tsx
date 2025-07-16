@@ -137,7 +137,7 @@ export const NavBar = () => {
               },
 
               "&:hover::after": {
-                width: "82%", // 🔥 underline slides across
+                width: "100%", // 🔥 underline slides across
               },
             }}
           >
