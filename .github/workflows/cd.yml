@@ -44,3 +44,5 @@ jobs:
           --delete --cache-control "max-age=0,no-cache,no-store,must-revalidate"
           aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }}/frontend/main/latest/ \
           --delete --cache-control "max-age=0,no-cache,no-store,must-revalidate"
+          aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }}/ \
+          --delete --cache-control "max-age=0,no-cache,no-store,must-revalidate"
