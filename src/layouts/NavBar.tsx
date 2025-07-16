@@ -137,11 +137,11 @@ export const NavBar = () => {
               },
 
               "&:hover::after": {
-                width: "100%", // 🔥 underline slides across
+                width: "82%", // 🔥 underline slides across
               },
             }}
           >
-            WISDOM BEYONG WALLS
+            WISDOM BEYOND WALLS
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -220,7 +220,6 @@ export const NavBar = () => {
               sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}
             >
               <Autocomplete
-                // fullWidth
                 id="free-solo-2-demo"
                 sx={{
                   backgroundColor: "white",
@@ -331,14 +330,23 @@ export const NavBar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                    <MenuItem
+                      key={setting.name}
+                      onClick={handleCloseUserMenu}
+                      sx={{
+                        backgroundColor: "#fff",
+                        "&:hover": {
+                          backgroundColor: "#D4AF37",
+                        },
+                      }}
+                    >
                       <Typography
                         onClick={setting.action}
                         sx={{
                           textAlign: "center",
-                          color: "#fff",
+                          color: "#0B3D2E",
                           "&:hover": {
-                            color: "#D4AF37",
+                            color: "#fff",
                           },
                         }}
                       >
