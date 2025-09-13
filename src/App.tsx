@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthenticationProvider>
-        <GoldBanner />
+        {/* <GoldBanner /> */}
         <NavBar />
         <AppRoutes />
         <Footer />
