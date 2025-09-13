@@ -23,11 +23,13 @@ import NightsStayIcon from "@mui/icons-material/NightsStay";
 const studentPages = ["My Courses", "Profile", "Settings"];
 const instructorPages = ["Curriculum", "DashBoard", "Settings"];
 const defaultPages = ["Popular Courses", "Pricing", "About Us", "Contact Us"];
+const adminPages = ["Admin Panel", "User Management", "Reports"];
 
 const pagesMap = {
   learner: studentPages,
   instructor: instructorPages,
   default: defaultPages,
+  admin: adminPages,
 };
 
 export const NavBar = () => {
