@@ -34,7 +34,7 @@ export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { user, logout } = useAuth();
-
+  console.log("User in NavBar:", user);
   const role = user?.role?.toLowerCase() as keyof typeof pagesMap;
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -171,7 +171,7 @@ export const NavBar = () => {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pagesMap[role || "default"].map((page) => (
+              {(pagesMap[role] ?? pagesMap.default).map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography
                     sx={{
