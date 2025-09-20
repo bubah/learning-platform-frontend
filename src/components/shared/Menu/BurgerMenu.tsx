@@ -1,11 +1,12 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import { Box, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
-import theme from "../../../theme/theme";
+import { useNavigation } from "../../../hooks/NavigationProvider";
 
 export default function BurgerMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const { navItems } = useNavigation();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -34,8 +35,11 @@ export default function BurgerMenu() {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>Option 1</MenuItem>
-        <MenuItem onClick={handleClose}>Option 2</MenuItem>
+        {navItems.map((item: any) => (
+          <MenuItem key={item} onClick={handleClose}>
+            {item}
+          </MenuItem>
+        ))}
       </Menu>
     </>
   );

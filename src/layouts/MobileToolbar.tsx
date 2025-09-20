@@ -4,17 +4,7 @@ import SearchComponent from "../components/shared/SearchComponent";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
-
-const StyledToolbarContainer = styled("div")(({ theme }) => ({
-  display: "flex",
-  justifyContent: "space-between  ",
-  alignItems: "center",
-  padding: theme.spacing(1),
-  backgroundColor: theme.palette.background.default,
-  boxShadow: theme.shadows[4],
-  width: "100%",
-  gap: theme.spacing(2), // Add this line for spacing between children
-}));
+import { StyledToolbarContainer } from "../styles/tool-bar";
 
 const MobileToolbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -24,7 +14,7 @@ const MobileToolbar = () => {
   };
 
   return (
-    <StyledToolbarContainer>
+    <StyledToolbarContainer isMobile={true}>
       <BurgerMenu />
       <Typography>Wisdom Beyond Walls</Typography>
       {!searchOpen && <SearchIcon onClick={handleClick} />}
