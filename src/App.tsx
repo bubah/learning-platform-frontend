@@ -5,6 +5,8 @@ import { AuthenticationProvider } from "./hooks/AuthenticationProvider";
 import { NavigationProvider } from "./hooks/NavigationProvider";
 import { NavBar } from "./layouts/Navbar/NavBar";
 import AppRoutes from "./components/routes/AppRoutes";
+import { GoldBanner } from "./components/shared/GoldBanner";
+import Footer from "./components/shared/Footer";
 
 // Theme provider
 const theme = createTheme({
@@ -66,12 +68,12 @@ function App() {
     <BrowserRouter>
       <AuthenticationProvider>
         <ThemeProvider theme={theme}>
-          {/* <GoldBanner /> */}
+          <GoldBanner />
           <NavigationProvider>
             <NavBar />
           </NavigationProvider>
           <AppRoutes />
-          {/* <Footer /> */}
+          <Footer />
         </ThemeProvider>
       </AuthenticationProvider>
     </BrowserRouter>

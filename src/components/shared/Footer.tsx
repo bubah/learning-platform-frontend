@@ -1,44 +1,37 @@
-import { Box, Container, Typography, Link as MuiLink } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Link as MuiLink,
+  styled,
+} from "@mui/material";
 import NightsStayIcon from "@mui/icons-material/NightsStay";
 import StarIcon from "@mui/icons-material/Star";
+import LogoComponent from "./LogoComponent";
+
+const StyledFooter = styled(Box)(({ theme }) => ({
+  width: "100%",
+  backgroundColor: theme.palette.info.main,
+  color: "#fff",
+  padding: theme.spacing(2),
+  paddingBottom: "16px",
+  marginTop: "auto",
+}));
 
 const Footer = () => {
   return (
-    <Box
-      sx={{
-        width: "100%",
-        backgroundColor: "#0B3D2E",
-        color: "#fff",
-        py: 4,
-        mt: "auto",
-      }}
-    >
-      <Container maxWidth="xl">
+    <StyledFooter>
+      <Box maxWidth="xl">
         {/* 🔹 First Row: Logo and Title */}
         <Box display="flex" alignItems="center" gap={1} mb={4}>
-          <NightsStayIcon
-            sx={{
-              color: "#C0C0C0", // bright silver
-              fontSize: 28,
-            }}
-          />
-
-          <Typography variant="h6" fontWeight="bold">
-            Wisdom Beyond Walls
-          </Typography>
-          <StarIcon
-            sx={{
-              color: "#FFD700", // bright gold
-              fontSize: 8,
-            }}
-          />
+          <LogoComponent />
         </Box>
 
         {/* 🔹 Second Row: Columns */}
         <Box
           display="flex"
-          flexDirection={{ xs: "column", sm: "row" }}
-          justifyContent="space-between"
+          // flexDirection={{ xs: "column", sm: "row" }}
+          // justifyContent="space-between"
           gap={4}
         >
           {/* Column 1 */}
@@ -96,8 +89,8 @@ const Footer = () => {
             © 2025 Wisdom Beyond Walls. All rights reserved.
           </Typography>
         </Box>
-      </Container>
-    </Box>
+      </Box>
+    </StyledFooter>
   );
 };
 

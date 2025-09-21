@@ -1,9 +1,17 @@
+import { Box, Typography } from "@mui/material";
+
 export const GoldBanner = () => {
   return (
-    <div className="gold-banner">
-      <span style={{ color: "white", fontSize: "30px" }}>
+    <Box
+      sx={{
+        backgroundColor: (theme) => theme.palette.secondary.main,
+        textAlign: "center",
+        padding: "10px",
+      }}
+    >
+      <Typography color="white">
         FLASH SALE | 50% OFF ANY 1 COURSE FOR FIRST TIME USERS
-      </span>
-    </div>
+      </Typography>
+    </Box>
   );
 };

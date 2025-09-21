@@ -16,7 +16,7 @@ export default function LogoComponent() {
       }}
     >
       <SynagogueIcon fontSize="large" />
-      <Typography>WISDEOM BEYOND WALLS</Typography>
+      <Typography textAlign={"center"}>WISDEOM BEYOND WALLS</Typography>
     </Box>
   );
 }

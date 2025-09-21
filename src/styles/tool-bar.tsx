@@ -16,7 +16,7 @@ const StyledToolbarContainer = styled(Box)<StyledToolbarContainerProps>(
         : "space-between"
       : "space-between",
     alignItems: "center",
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
     backgroundColor: theme.palette.info.main,
     boxShadow: theme.shadows[4],
     width: "100%",
