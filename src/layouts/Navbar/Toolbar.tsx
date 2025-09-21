@@ -1,10 +1,10 @@
 import { Box, Button, Link, styled, Typography } from "@mui/material";
-import SearchComponent from "../components/shared/SearchComponent";
-import { StyledToolbarContainer } from "../styles/tool-bar";
-import { useNavigation } from "../hooks/NavigationProvider";
+import SearchComponent from "../../components/shared/SearchComponent";
+import { StyledToolbarContainer } from "../../styles/tool-bar";
+import { useNavigation } from "../../hooks/NavigationProvider";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SynagogueIcon from "@mui/icons-material/Synagogue";
-import LogoComponent from "../components/shared/LogoComponent";
+import LogoComponent from "../../components/shared/LogoComponent";
 
 export default function Toolbar() {
   const { navItems } = useNavigation();

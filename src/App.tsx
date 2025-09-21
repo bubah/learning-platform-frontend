@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import { AuthenticationProvider } from "./hooks/AuthenticationProvider";
 import { NavigationProvider } from "./hooks/NavigationProvider";
-import { NavBar } from "./layouts/NavBar";
+import { NavBar } from "./layouts/Navbar/NavBar";
 import AppRoutes from "./components/routes/AppRoutes";
 
 // Theme provider
