@@ -1,11 +1,10 @@
+import { createTheme, ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import { AuthenticationProvider } from "./hooks/AuthenticationProvider";
+import { NavigationProvider } from "./hooks/NavigationProvider";
 import { NavBar } from "./layouts/NavBar";
 import AppRoutes from "./components/routes/AppRoutes";
-import Footer from "./components/shared/Footer";
-import { createTheme, ThemeProvider } from "@mui/material";
-import { NavigationProvider } from "./hooks/NavigationProvider";
 
 // Theme provider
 const theme = createTheme({
@@ -71,7 +70,7 @@ function App() {
           <NavigationProvider>
             <NavBar />
           </NavigationProvider>
-          {/* <AppRoutes /> */}
+          <AppRoutes />
           {/* <Footer /> */}
         </ThemeProvider>
       </AuthenticationProvider>

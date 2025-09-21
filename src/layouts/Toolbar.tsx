@@ -1,4 +1,4 @@
-import { Box, Button, styled, Typography } from "@mui/material";
+import { Box, Button, Link, styled, Typography } from "@mui/material";
 import SearchComponent from "../components/shared/SearchComponent";
 import { StyledToolbarContainer } from "../styles/tool-bar";
 import { useNavigation } from "../hooks/NavigationProvider";
@@ -19,13 +19,23 @@ export default function Toolbar() {
         ))}
       </Box>
       <SearchComponent />
-      <Box display="flex" gap={2} alignItems="center">
+      <Box display="flex" gap={2} alignItems="center" minWidth={230}>
         <ShoppingCartIcon sx={{ cursor: "pointer" }} />
         <Box display="flex" gap={1}>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            href={"/login"}
+          >
             Log In
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button
+            variant="contained"
+            color="secondary"
+            component={Link}
+            href={"/sign-up"}
+          >
             Sign Up
           </Button>
         </Box>
