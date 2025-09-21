@@ -1,31 +1,38 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import { Box, Menu, MenuItem } from "@mui/material";
+import {
+  Box,
+  Dialog,
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import { useState } from "react";
 import { useNavigation } from "../../../hooks/NavigationProvider";
 
 export default function BurgerMenu() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const [open, setOpen] = useState(false);
   const { navItems } = useNavigation();
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = () => {
+    setOpen(true);
   };
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpen(false);
   };
 
   return (
     <>
       <Box
         component="button"
-        onClick={handleClick}
+        onClick={() => handleClick()}
         style={{ background: "none", border: "none", padding: 0 }}
       >
         <MenuIcon sx={{ color: "white" }} />
       </Box>
-      <Menu
+      <Drawer
         open={open}
-        anchorEl={anchorEl}
         onClose={handleClose}
         slotProps={{
           paper: {
@@ -35,12 +42,32 @@ export default function BurgerMenu() {
           },
         }}
       >
-        {navItems.map((item: any) => (
-          <MenuItem key={item} onClick={handleClose}>
-            {item}
-          </MenuItem>
-        ))}
-      </Menu>
+        <Box width={250} role="presentation" onClick={handleClose}>
+          <List>
+            {navItems.map((item: any) => (
+              <ListItem
+                key={item}
+                onClick={handleClose}
+                component="a"
+                href="/"
+                sx={{
+                  cursor: "pointer",
+                  textTransform: "capitalize",
+                  textDecoration: "none",
+                  color: "black",
+                }}
+              >
+                {item}
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            <ListItem onClick={handleClose}>Login</ListItem>
+            <ListItem onClick={handleClose}>Sign Up</ListItem>
+          </List>
+        </Box>
+      </Drawer>
     </>
   );
 }

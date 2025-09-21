@@ -6,7 +6,7 @@ export default function LogoComponent() {
     <Box
       display="flex"
       alignItems="center"
-      gap={1}
+      gap={2}
       component={Link}
       href="/"
       sx={{

@@ -1,11 +1,10 @@
-import { styled, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import SearchIcon from "@mui/icons-material/Search";
+import { useState } from "react";
+import LogoComponent from "../../components/shared/LogoComponent";
 import BurgerMenu from "../../components/shared/Menu/BurgerMenu";
 import SearchComponent from "../../components/shared/SearchComponent";
-import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
 import { StyledToolbarContainer } from "../../styles/tool-bar";
-import LogoComponent from "../../components/shared/LogoComponent";
 
 const MobileToolbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -16,11 +15,18 @@ const MobileToolbar = () => {
 
   return (
     <StyledToolbarContainer isMobile={true} searchOpen={searchOpen}>
-      {!searchOpen && <BurgerMenu />}
-      {!searchOpen && <LogoComponent />}
-      {!searchOpen && <SearchIcon onClick={handleClick} />}
-      {searchOpen && <SearchComponent />}
-      {searchOpen && <CloseIcon onClick={handleClick} />}
+      {searchOpen ? (
+        <>
+          <SearchComponent />
+          <CloseIcon onClick={handleClick} />
+        </>
+      ) : (
+        <>
+          <BurgerMenu />
+          <LogoComponent />
+          <SearchIcon onClick={handleClick} />
+        </>
+      )}
     </StyledToolbarContainer>
   );
 };
