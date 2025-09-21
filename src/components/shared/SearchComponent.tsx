@@ -16,7 +16,12 @@ export default function SearchComponent() {
     <Autocomplete
       disableClearable
       options={top100Films.map((option) => option.title)}
-      sx={{ width: 300, backgroundColor: "white", borderRadius: 1 }}
+      sx={{
+        minWidth: 300,
+        width: "800px",
+        backgroundColor: "white",
+        borderRadius: 1,
+      }}
       renderInput={(params) => (
         <TextField
           {...params}

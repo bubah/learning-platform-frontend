@@ -21,7 +21,7 @@ export default function BurgerMenu() {
         onClick={handleClick}
         style={{ background: "none", border: "none", padding: 0 }}
       >
-        <MenuIcon />
+        <MenuIcon sx={{ color: "white" }} />
       </Box>
       <Menu
         open={open}
