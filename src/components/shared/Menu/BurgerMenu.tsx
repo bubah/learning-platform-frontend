@@ -1,25 +1,35 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  Box,
-  Dialog,
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import { Box, Divider, Drawer, List, ListItem } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/AuthenticationProvider";
 import { useNavigation } from "../../../hooks/NavigationProvider";
 
 export default function BurgerMenu() {
   const [open, setOpen] = useState(false);
   const { navItems } = useNavigation();
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
   const handleClick = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const onLogout = () => {
+    handleClose();
+    logout();
+  };
+
+  const onLogin = () => {
+    handleClose();
+    navigate("/login");
+  };
+
+  const onSignUp = () => {
+    handleClose();
+    navigate("/sign-up");
   };
 
   return (
@@ -62,10 +72,17 @@ export default function BurgerMenu() {
             ))}
           </List>
           <Divider />
-          <List>
-            <ListItem onClick={handleClose}>Login</ListItem>
-            <ListItem onClick={handleClose}>Sign Up</ListItem>
-          </List>
+
+          {user ? (
+            <List>
+              <ListItem onClick={onLogout}>Log Out</ListItem>
+            </List>
+          ) : (
+            <List>
+              <ListItem onClick={onLogin}>Login</ListItem>
+              <ListItem onClick={onSignUp}>Sign Up</ListItem>
+            </List>
+          )}
         </Box>
       </Drawer>
     </>

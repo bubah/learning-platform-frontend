@@ -3,11 +3,12 @@ import SearchComponent from "../../components/shared/SearchComponent";
 import { StyledToolbarContainer } from "../../styles/tool-bar";
 import { useNavigation } from "../../hooks/NavigationProvider";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import SynagogueIcon from "@mui/icons-material/Synagogue";
 import LogoComponent from "../../components/shared/LogoComponent";
+import { useAuth } from "../../hooks/AuthenticationProvider";
 
 export default function Toolbar() {
   const { navItems } = useNavigation();
+  const { user, logout } = useAuth();
   return (
     <StyledToolbarContainer isMobile={false} searchOpen={false}>
       <LogoComponent />
@@ -19,26 +20,45 @@ export default function Toolbar() {
         ))}
       </Box>
       <SearchComponent />
-      <Box display="flex" gap={2} alignItems="center" minWidth={230}>
+      <Box
+        display="flex"
+        gap={2}
+        alignItems="center"
+        justifyContent="flex-end"
+        minWidth={220}
+      >
         <ShoppingCartIcon sx={{ cursor: "pointer" }} />
-        <Box display="flex" gap={1}>
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            href={"/login"}
-          >
-            Log In
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            component={Link}
-            href={"/sign-up"}
-          >
-            Sign Up
-          </Button>
-        </Box>
+        {!user ? (
+          <Box display="flex" gap={1}>
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              href={"/login"}
+            >
+              Log In
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              component={Link}
+              href={"/sign-up"}
+            >
+              Sign Up
+            </Button>
+          </Box>
+        ) : (
+          <Box display="flex" gap={1}>
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              onClick={logout}
+            >
+              Log Out
+            </Button>
+          </Box>
+        )}
       </Box>
     </StyledToolbarContainer>
   );
