@@ -10,12 +10,14 @@ import {
 import { COGNITO_ERRORS, LOCAL_STORAGE_KEYS } from "../../constants";
 import { LoginCredentials, User } from "../../types/types";
 import { userPool } from "./cognitoConfig";
+import { jwtDecode } from "jwt-decode";
 
 class SessionManager {
   private static _instance: SessionManager;
   private userSession: CognitoUserSession | null = null;
 
   private constructor() {
+    console.log("Initializing SessionManager...");
     this.loadFromStorage();
   }
 
@@ -102,7 +104,8 @@ class SessionManager {
   }
 
   public isValidToken(): boolean {
-    return this.userSession !== null && this.userSession.isValid();
+    console.log("Checking token validity...", this.userSession);
+    return !this.isTokenExpired(this.accessToken || "");
   }
 
   public getUserSession(): CognitoUserSession | null {
@@ -143,33 +146,33 @@ class SessionManager {
   }
 
   private refreshTokenIfNeeded() {
-    if (!this.isValidToken()) {
-      const user = new CognitoUser({
-        Username: localStorage.getItem("email") || "",
-        Pool: userPool,
-      });
+    const user = new CognitoUser({
+      Username: localStorage.getItem("email") || "",
+      Pool: userPool,
+    });
 
-      user.getSession(
-        (err: Error | null, session: CognitoUserSession | null) => {
-          if (!session) return;
-          if (err || !session.isValid()) {
-            // If session is expired, attempt to refresh it
-            user.refreshSession(
-              session.getRefreshToken(),
-              (err, newSession) => {
-                if (err) {
-                  console.error("Refresh failed", err);
-                } else {
-                  this.userSession = newSession;
-                }
-              },
-            );
-          } else {
-            // Session is valid, proceed normally
-            this.userSession = session;
-          }
-        },
-      );
+    user.refreshSession(
+      this.userSession?.getRefreshToken()!,
+      (err, session) => {
+        if (err) {
+          console.error("Session refresh failed", err);
+          this.logout();
+          return;
+        }
+        console.log("Session refreshed successfully", session);
+        this.userSession = session;
+        this.updateLocalStorage();
+      },
+    );
+  }
+
+  private isTokenExpired(token: string): boolean {
+    try {
+      const decoded: { exp: number } = jwtDecode(token);
+      const now = Math.floor(Date.now() / 1000);
+      return decoded.exp < now;
+    } catch {
+      return true; // if decode fails, treat as expired
     }
   }
 
@@ -179,11 +182,17 @@ class SessionManager {
     const refreshToken = localStorage.getItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN);
 
     if (accessToken && idToken && refreshToken) {
+      console.log("Loading session from storage...");
       this.userSession = new CognitoUserSession({
         IdToken: new CognitoIdToken({ IdToken: idToken }),
         AccessToken: new CognitoAccessToken({ AccessToken: accessToken }),
         RefreshToken: new CognitoRefreshToken({ RefreshToken: refreshToken }),
       });
+
+      if (this.isTokenExpired(accessToken)) {
+        console.log("Stored session is invalid or expired.");
+        this.refreshTokenIfNeeded();
+      }
     }
   }
 

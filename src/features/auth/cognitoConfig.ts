@@ -10,5 +10,9 @@ const poolData = {
 };
 
 const userPool = new CognitoUserPool(poolData);
+const cognitoUser = new CognitoUser({
+  Username: localStorage.getItem("email") || "",
+  Pool: userPool,
+});
 
 export { userPool, CognitoUser, AuthenticationDetails };

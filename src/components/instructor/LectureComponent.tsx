@@ -80,7 +80,13 @@ export const LectureComponent = ({ children }: { children: ReactNode }) => {
               <DragIndicatorIcon />
             </IconButton>
           </Box>
-          <Typography component="span">{lectureTitle || "---"}</Typography>
+          <Typography component="span" variant="h6">
+            {lectureTitle || "---"}
+          </Typography>{" "}
+          --
+          <Typography component="span">
+            {lectureDescription || "---"}
+          </Typography>
         </Box>
       </AccordionSummary>
       <AccordionDetails>
@@ -90,7 +96,7 @@ export const LectureComponent = ({ children }: { children: ReactNode }) => {
         >
           <Box display={"flex"} justifyContent={"space-between"}>
             <Box flexGrow={1}>
-              <UpdateAttributeFeild
+              {/* <UpdateAttributeFeild
                 attributeValue={lectureTitle}
                 handleUpdate={updateTitle}
                 label="Title"
@@ -100,7 +106,7 @@ export const LectureComponent = ({ children }: { children: ReactNode }) => {
                 attributeValue={lectureDescription}
                 handleUpdate={updateDescription}
                 label="Description"
-              />
+              /> */}
             </Box>
           </Box>
           <Box sx={{ textAlign: "center", marginTop: 2 }}>

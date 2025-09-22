@@ -33,9 +33,12 @@ export const Curriculum = () => {
         padding: "2rem",
         display: "flex",
         flexDirection: "column",
+        gap: 2,
       }}
     >
-      <Typography color="black">Curriculum</Typography>
+      <Typography color="black" variant="h3">
+        Course: {course?.title}
+      </Typography>
 
       <DragAndDropList>
         {sortedLectures.map((lecture) => {
