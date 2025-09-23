@@ -1,4 +1,5 @@
 // components/routes/InstructorsRoute.tsx
+import { CourseProvider } from "../../hooks/CourseProvider";
 import { CourseList } from "../../pages/instructor/CourseListPage";
 import CourseManagementScreen from "../../pages/instructor/MangeCoursesPage";
 import { CoursePage } from "../shared/CoursePage";
@@ -11,8 +12,16 @@ interface Props {
 const InstructorsRoute = ({ page }: Props) => {
   const pageMap = {
     courses: <CourseList />,
-    "course-detail": <CoursePage />,
-    "manage-course": <CourseManagementScreen />,
+    "course-detail": (
+      <CourseProvider>
+        <CoursePage />
+      </CourseProvider>
+    ),
+    "manage-course": (
+      <CourseProvider>
+        <CourseManagementScreen />
+      </CourseProvider>
+    ),
   };
 
   return <ProtectedRoute>{pageMap[page]}</ProtectedRoute>;

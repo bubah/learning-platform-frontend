@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import LoginForm from "../../components/shared/LoginForm";
 import SignUp from "../../components/shared/SignUp";
 import { useLocation } from "react-router-dom";
@@ -21,12 +21,12 @@ const LoginScreen = () => {
   };
 
   return (
-    <>
+    <Box sx={{ padding: 4, textAlign: "center" }}>
       <Button onClick={handleToggleAuthView}>
         {authView === "login" ? "Sign Up" : "Login"}
       </Button>
       {authView === "login" ? <LoginForm /> : <SignUp />}
-    </>
+    </Box>
   );
 };
 
