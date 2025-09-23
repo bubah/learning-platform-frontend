@@ -15,6 +15,7 @@ import {
   convertToCourses,
   convertToCourse,
 } from "../../utils/incoming-request";
+import theme from "../../theme/theme";
 
 export const CourseList = () => {
   const [courses, setCourses] = useState<Course[] | []>([]);
@@ -28,7 +29,6 @@ export const CourseList = () => {
   };
 
   useEffect(() => {
-    // setCourses([mockCourse, mockCourse]);
     httpClient.get<CourseDTO[]>("/courses").then((res) => {
       setCourses(convertToCourses(res.data));
     });
@@ -68,27 +68,36 @@ export const CourseList = () => {
   };
 
   return (
-    <Box sx={{ margin: 10 }}>
-      <Box display="flex" width="100%">
+    <Box sx={{ margin: 10, display: "flex", flexDirection: "column", gap: 2 }}>
+      <Box display="flex">
+        <Typography variant="h1">Courses</Typography>
+      </Box>
+      <Box display="flex" justifyContent="flex-end">
         <Button
           onClick={() => setDisplayAddNewCourse(true)}
+          color="primary"
+          variant="contained"
           sx={{
-            margin: "auto",
-            marginRight: "0",
-            backgroundColor: "blue",
-            color: "white",
+            backgroundColor: (theme) => theme.palette.primary.main,
           }}
         >
-          <Typography>Add Course</Typography>
+          New Course
         </Button>
       </Box>
-      <Box>
+      <Box display={"flex"} flexDirection="column" gap={2} marginTop={5}>
         {courses.map((course, index) => (
           <Card
             onClick={() => handleCourseClick(course)}
             key={index}
             variant="outlined"
-            sx={{ marginBottom: 5, display: "flex", cursor: "pointer" }}
+            sx={{
+              display: "flex",
+              cursor: "pointer",
+              backgroundColor: (theme) => theme.palette.background.default,
+              borderRadius: 0,
+              padding: 1,
+              gap: 2,
+            }}
           >
             <Box>
               <CardMedia
@@ -99,14 +108,16 @@ export const CourseList = () => {
               />
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography>{course.title}</Typography>
+              <Typography variant="h6">{course.title}</Typography>
             </Box>
             <Box sx={{ flex: 1 }}>
               <Typography>Meta Data</Typography>
             </Box>
             <Button
               onClick={(e) => deleteCourse(e, course.id!)}
-              sx={{ color: "white", backgroundColor: "red" }}
+              color="primary"
+              variant="contained"
+              sx={{ backgroundColor: (theme) => theme.palette.error.main }}
             >
               Delete
             </Button>

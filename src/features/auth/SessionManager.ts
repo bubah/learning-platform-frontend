@@ -141,7 +141,9 @@ class SessionManager {
       .getJwtToken();
 
     if (!accessToken || !this.isTokenExpired(accessToken)) {
-      console.log("No access token available for refresh check.");
+      console.log(
+        "Skipping token refresh, No access token or valid access token available.",
+      );
       return;
     }
 
