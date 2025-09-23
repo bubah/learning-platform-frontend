@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, Card, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { httpClient } from "../../clients/httpClient";
 import { useCourse } from "../../hooks/CourseProvider";
@@ -32,18 +32,19 @@ export const CourseOverViewEdit = () => {
   };
 
   return (
-    <Box
+    <Card
       component="form"
       onSubmit={handleSubmit}
       sx={{
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        width: "300px",
+        width: "100",
         margin: "auto",
         padding: 3,
         border: "1px solid #ccc",
         borderRadius: "8px",
+        backgroundColor: (theme) => theme.palette.background.default,
       }}
     >
       {/* Title Input */}
@@ -77,10 +78,18 @@ export const CourseOverViewEdit = () => {
         onChange={(e) => handleChange(e)}
       />
 
+      <Typography variant="h5" color="textSecondary">
+        Course Image
+      </Typography>
+      <Card
+        sx={{ padding: 2, border: "1px dashed #ccc", width: 200, height: 200 }}
+      ></Card>
+      <input type="file" name="courseImage" accept="image/*" />
+
       {/* Submit Button */}
       <Button type="submit" variant="contained" color="primary">
         Submit
       </Button>
-    </Box>
+    </Card>
   );
 };

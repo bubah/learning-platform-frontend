@@ -36,7 +36,7 @@ export default function CourseManagementScreen() {
   };
 
   return (
-    <Box display={"flex"} sx={{ display: "flex", paddingLeft: 2 }}>
+    <Box sx={{ display: "flex", paddingLeft: 2 }}>
       <Tabs
         aria-label="Vertical tabs"
         orientation="vertical"
@@ -47,11 +47,12 @@ export default function CourseManagementScreen() {
           height: "100vh",
           borderRight: 1,
           borderColor: "divider",
+          alignItems: "flex-start",
         }}
       >
-        <Tab label="Course Overview" />
-        <Tab label="Edit Course" />
-        <Tab label="Curriculum" />
+        <Tab label="Course Overview" sx={{ alignItems: "flex-start" }} />
+        <Tab label="Edit Course" sx={{ alignItems: "flex-start" }} />
+        <Tab label="Curriculum" sx={{ alignItems: "flex-start" }} />
       </Tabs>
       {!isLoading && (
         <Box sx={{ flexGrow: 1 }}>
