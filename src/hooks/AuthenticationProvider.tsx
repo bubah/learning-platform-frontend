@@ -25,9 +25,10 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
   const location = useLocation();
 
   useEffect(() => {
-    setUser(oauthManager.getLoggedInUser());
+    const currentUser = oauthManager.getLoggedInUser();
+    setUser(currentUser);
     setLoading(false);
-    setEmail(localStorage.getItem("email") || "");
+    setEmail(currentUser?.email || "");
   }, []);
 
   const login = (loginCredentials: LoginCredentials) => {
@@ -35,7 +36,6 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
       navigate("/login");
       return;
     }
-    loadUserEmail(loginCredentials);
     oauthManager.login(loginCredentials, {
       onSuccess: loginSuccess,
       onFailure: () => {
@@ -43,11 +43,6 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
       },
     });
   };
-
-  function loadUserEmail(loginCredentials: LoginCredentials) {
-    setEmail(loginCredentials.username);
-    localStorage.setItem("email", loginCredentials.username);
-  }
 
   const logout = () => {
     oauthManager.logout(() => {
@@ -61,7 +56,6 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
       navigate("/login");
       return;
     }
-    loadUserEmail(loginCredentials);
     oauthManager.signUp(loginCredentials, {
       onSuccess: () => {
         navigate("/account-verify");

@@ -36,8 +36,6 @@ class SessionManager {
       .then((session: CognitoUserSession) => {
         console.log("Login successful", session);
         this.userSession = session;
-        this.updateLocalStorage();
-
         callBack.onSuccess();
       })
       .catch((error: Error) => {
@@ -63,9 +61,6 @@ class SessionManager {
   public logout(callback?: () => void) {
     if (this.userSession) {
       this.userSession = null;
-      localStorage.removeItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
-      localStorage.removeItem(LOCAL_STORAGE_KEYS.ID_TOKEN);
-      localStorage.removeItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN);
       userPool.getCurrentUser()?.signOut();
     }
     if (callback) {
@@ -131,13 +126,6 @@ class SessionManager {
       : null;
   }
 
-  public get refreshToken(): string | null {
-    this.refreshTokenIfNeeded();
-    return this.userSession
-      ? this.userSession.getRefreshToken().getToken()
-      : null;
-  }
-
   public get idToken(): string | null {
     this.refreshTokenIfNeeded();
     return this.userSession
@@ -146,24 +134,37 @@ class SessionManager {
   }
 
   private refreshTokenIfNeeded() {
-    const user = new CognitoUser({
-      Username: localStorage.getItem("email") || "",
-      Pool: userPool,
-    });
+    const accessToken = userPool
+      .getCurrentUser()
+      ?.getSignInUserSession()
+      ?.getAccessToken()
+      .getJwtToken();
 
-    user.refreshSession(
-      this.userSession?.getRefreshToken()!,
-      (err, session) => {
-        if (err) {
-          console.error("Session refresh failed", err);
-          this.logout();
-          return;
-        }
-        console.log("Session refreshed successfully", session);
-        this.userSession = session;
-        this.updateLocalStorage();
-      },
-    );
+    if (!accessToken || !this.isTokenExpired(accessToken)) {
+      console.log("No access token available for refresh check.");
+      return;
+    }
+
+    this.refreshSession();
+  }
+
+  private refreshSession() {
+    const user = userPool.getCurrentUser();
+
+    if (!user || !this.userSession) {
+      console.log("No user or session available for token refresh.");
+      return;
+    }
+
+    user.refreshSession(this.userSession.getRefreshToken(), (err, session) => {
+      if (err) {
+        console.error("Session refresh failed", err);
+        this.logout();
+        return;
+      }
+      console.log("Session refreshed successfully", session);
+      this.userSession = session;
+    });
   }
 
   private isTokenExpired(token: string): boolean {
@@ -177,23 +178,29 @@ class SessionManager {
   }
 
   private loadFromStorage() {
-    const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
-    const idToken = localStorage.getItem(LOCAL_STORAGE_KEYS.ID_TOKEN);
-    const refreshToken = localStorage.getItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN);
+    const user = userPool.getCurrentUser();
 
-    if (accessToken && idToken && refreshToken) {
-      console.log("Loading session from storage...");
-      this.userSession = new CognitoUserSession({
-        IdToken: new CognitoIdToken({ IdToken: idToken }),
-        AccessToken: new CognitoAccessToken({ AccessToken: accessToken }),
-        RefreshToken: new CognitoRefreshToken({ RefreshToken: refreshToken }),
-      });
-
-      if (this.isTokenExpired(accessToken)) {
-        console.log("Stored session is invalid or expired.");
-        this.refreshTokenIfNeeded();
-      }
+    if (!user) {
+      console.log("No user found in storage.");
+      return;
     }
+
+    user.getSession((err: Error | null, session: CognitoUserSession) => {
+      if (err) {
+        console.log("No valid session found in storage.");
+        return;
+      }
+
+      this.userSession = session;
+
+      if (this.isTokenExpired(session.getAccessToken().getJwtToken())) {
+        console.log("Stored session is invalid or expired.");
+        this.refreshSession();
+        return;
+      }
+
+      console.log("Loaded session from storage:", session);
+    });
   }
 
   private async fetchUserSession(
