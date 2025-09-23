@@ -1,4 +1,4 @@
-import { Box, Button, Card, TextField, Typography } from "@mui/material";
+import { Button, Card, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { httpClient } from "../../clients/httpClient";
 import { useCourse } from "../../hooks/CourseProvider";

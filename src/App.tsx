@@ -1,15 +1,13 @@
-import { createTheme, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
 import "./App.css";
+import AppRoutes from "./components/routes/AppRoutes";
+import Footer from "./components/shared/Footer";
+import { GoldBanner } from "./components/shared/GoldBanner";
 import { AuthenticationProvider } from "./hooks/AuthenticationProvider";
 import { NavigationProvider } from "./hooks/NavigationProvider";
 import { NavBar } from "./layouts/Navbar/NavBar";
-import AppRoutes from "./components/routes/AppRoutes";
-import { GoldBanner } from "./components/shared/GoldBanner";
-import Footer from "./components/shared/Footer";
 import theme from "./theme/theme";
-
-// Theme provider
 
 function App() {
   return (

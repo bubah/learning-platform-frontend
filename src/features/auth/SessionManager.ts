@@ -1,16 +1,13 @@
 import {
   AuthenticationDetails,
-  CognitoAccessToken,
-  CognitoIdToken,
-  CognitoRefreshToken,
   CognitoUser,
   CognitoUserAttribute,
   CognitoUserSession,
 } from "amazon-cognito-identity-js";
+import { jwtDecode } from "jwt-decode";
 import { COGNITO_ERRORS, LOCAL_STORAGE_KEYS } from "../../constants";
 import { LoginCredentials, User } from "../../types/types";
 import { userPool } from "./cognitoConfig";
-import { jwtDecode } from "jwt-decode";
 
 class SessionManager {
   private static _instance: SessionManager;

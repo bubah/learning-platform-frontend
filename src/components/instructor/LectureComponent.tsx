@@ -12,13 +12,13 @@ import {
   Typography,
 } from "@mui/material";
 import { ReactNode, useState } from "react";
-import { AddLectureComponent } from "./AddLectureComponent";
 import { httpClient } from "../../clients/httpClient";
 import { useCourse } from "../../hooks/CourseProvider";
 import { useLecture } from "../../hooks/LectureProvider";
 import { LectureDTO } from "../../types/dtos";
 import { Section } from "../../types/types";
 import { convertToLecture } from "../../utils/incoming-request";
+import { AddLectureComponent } from "./AddLectureComponent";
 import UpdateAttributeFeild from "../shared/UpdateAttributeFied";
 
 export const LectureComponent = ({ children }: { children: ReactNode }) => {
@@ -96,7 +96,7 @@ export const LectureComponent = ({ children }: { children: ReactNode }) => {
         >
           <Box display={"flex"} justifyContent={"space-between"}>
             <Box flexGrow={1}>
-              {/* <UpdateAttributeFeild
+              <UpdateAttributeFeild
                 attributeValue={lectureTitle}
                 handleUpdate={updateTitle}
                 label="Title"
@@ -106,7 +106,7 @@ export const LectureComponent = ({ children }: { children: ReactNode }) => {
                 attributeValue={lectureDescription}
                 handleUpdate={updateDescription}
                 label="Description"
-              /> */}
+              />
             </Box>
           </Box>
           <Box sx={{ textAlign: "center", marginTop: 2 }}>

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -7,15 +6,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { httpClient } from "../../clients/httpClient";
 import { CourseDTO } from "../../types/dtos";
 import { Course } from "../../types/types";
 import {
-  convertToCourses,
   convertToCourse,
+  convertToCourses,
 } from "../../utils/incoming-request";
-import theme from "../../theme/theme";
 
 export const CourseList = () => {
   const [courses, setCourses] = useState<Course[] | []>([]);

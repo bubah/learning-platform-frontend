@@ -1,12 +1,4 @@
-import {
-  Box,
-  Container,
-  Typography,
-  Link as MuiLink,
-  styled,
-} from "@mui/material";
-import NightsStayIcon from "@mui/icons-material/NightsStay";
-import StarIcon from "@mui/icons-material/Star";
+import { Box, Link as MuiLink, styled, Typography } from "@mui/material";
 import LogoComponent from "./LogoComponent";
 
 const StyledFooter = styled(Box)(({ theme }) => ({
