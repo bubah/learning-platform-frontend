@@ -5,7 +5,7 @@ import {
   CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import { jwtDecode } from "jwt-decode";
-import { COGNITO_ERRORS, LOCAL_STORAGE_KEYS } from "../../constants";
+import { COGNITO_ERRORS } from "../../constants";
 import { LoginCredentials, User } from "../../types/types";
 import { userPool } from "./cognitoConfig";
 
