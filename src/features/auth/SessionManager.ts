@@ -227,23 +227,6 @@ class SessionManager {
       });
     });
   }
-
-  private updateLocalStorage() {
-    if (this.userSession) {
-      localStorage.setItem(
-        LOCAL_STORAGE_KEYS.ACCESS_TOKEN,
-        this.userSession.getAccessToken().getJwtToken(),
-      );
-      localStorage.setItem(
-        LOCAL_STORAGE_KEYS.ID_TOKEN,
-        this.userSession.getIdToken().getJwtToken(),
-      );
-      localStorage.setItem(
-        LOCAL_STORAGE_KEYS.REFRESH_TOKEN,
-        this.userSession.getRefreshToken().getToken(),
-      );
-    }
-  }
 }
 
 export default SessionManager.getInstance();
