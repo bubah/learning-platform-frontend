@@ -92,9 +92,14 @@ export const LectureComponent = ({ children }: { children: ReactNode }) => {
       <AccordionDetails>
         <Card
           variant="outlined"
-          sx={{ padding: "1rem", textAlign: "left", marginBottom: 5 }}
+          sx={{
+            padding: "1rem",
+            textAlign: "left",
+            marginBottom: 5,
+            border: "none",
+          }}
         >
-          <Box display={"flex"} justifyContent={"space-between"}>
+          {/* <Box display={"flex"} justifyContent={"space-between"}>
             <Box flexGrow={1}>
               <UpdateAttributeFeild
                 attributeValue={lectureTitle}
@@ -108,7 +113,7 @@ export const LectureComponent = ({ children }: { children: ReactNode }) => {
                 label="Description"
               />
             </Box>
-          </Box>
+          </Box> */}
           <Box sx={{ textAlign: "center", marginTop: 2 }}>
             {children}
             <Box sx={{ marginTop: 2 }}>

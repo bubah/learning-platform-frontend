@@ -5,6 +5,7 @@ import {
   CardMedia,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useRef, useState } from "react";
 import { httpClient } from "../../clients/httpClient";
@@ -15,6 +16,7 @@ export const CourseOverViewEdit = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     course?.imageUrl || null,
   );
+  const isMobile = useMediaQuery("(max-width:900px)");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -116,7 +118,7 @@ export const CourseOverViewEdit = () => {
       <Typography variant="h5" color="textSecondary">
         Course Image
       </Typography>
-      <Box display={"flex"} flexDirection="row" gap={2}>
+      <Box display={"flex"} flexDirection={isMobile ? "column" : "row"} gap={2}>
         <Box>
           <Card
             sx={{

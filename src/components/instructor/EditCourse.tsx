@@ -42,19 +42,28 @@ export const EditCourse = () => {
   return (
     <Box
       sx={{
-        justifyContent: "center",
-        margin: "auto",
-        padding: "2rem",
         display: "flex",
         flexDirection: "column",
+        gap: 2,
+        maxWidth: 800,
+        margin: "auto",
+        padding: 3,
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        backgroundColor: (theme) => theme.palette.background.default,
       }}
     >
-      <Typography color="black">Edit Course</Typography>
+      {/* <Typography color="black" variant="h4">
+        Edit Course
+      </Typography> */}
 
-      <Card variant="outlined" sx={{ padding: "1rem", textAlign: "left" }}>
+      <Box sx={{ textAlign: "left" }}>
         <Grid container spacing={2}>
-          <Grid size={{ xs: 12 }}>
-            <Typography fontWeight="bold">
+          <Grid
+            size={{ xs: 12 }}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          >
+            <Typography variant="h5" color="textSecondary">
               What are the learning objectives of this course?
             </Typography>
 
@@ -76,18 +85,20 @@ export const EditCourse = () => {
                   newObjectives[index] = e.target.value;
                   setObjectives(newObjectives);
                 }}
-                sx={{ marginBottom: "1rem" }}
               />
             ))}
             <Typography
               onClick={() => setObjectiveCounts(objectiveCounts + 1)}
-              sx={{ cursor: "pointer", color: "blue" }}
+              sx={{ cursor: "pointer" }}
             >
               + add objective
             </Typography>
           </Grid>
-          <Grid size={{ xs: 12 }}>
-            <Typography fontWeight="bold">
+          <Grid
+            size={{ xs: 12 }}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          >
+            <Typography variant="h5" color="textSecondary">
               What are the prerequisites for this course?
             </Typography>
             {Array.from({ length: prerequisiteCounts }).map((_, index) => (
@@ -113,13 +124,16 @@ export const EditCourse = () => {
             ))}
             <Typography
               onClick={() => setPrerequisiteCounts(prerequisiteCounts + 1)}
-              sx={{ cursor: "pointer", color: "blue" }}
+              sx={{ cursor: "pointer" }}
             >
               + add course prerequisite
             </Typography>
           </Grid>
-          <Grid size={{ xs: 12 }}>
-            <Typography fontWeight="bold">
+          <Grid
+            size={{ xs: 12 }}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          >
+            <Typography variant="h5" color="textSecondary">
               Who is this course intended for?
             </Typography>
             {Array.from({ length: intendedForCounts }).map((_, index) => (
@@ -145,7 +159,7 @@ export const EditCourse = () => {
             ))}
             <Typography
               onClick={() => setIntendedForCounts(intendedForCounts + 1)}
-              sx={{ cursor: "pointer", color: "blue" }}
+              sx={{ cursor: "pointer" }}
             >
               + add intended audience
             </Typography>
@@ -154,7 +168,7 @@ export const EditCourse = () => {
         <Button variant="contained" onClick={handleSave}>
           Save
         </Button>
-      </Card>
+      </Box>
     </Box>
   );
 };
