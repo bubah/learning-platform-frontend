@@ -12,14 +12,10 @@ import {
   Typography,
 } from "@mui/material";
 import { ReactNode, useState } from "react";
-import { httpClient } from "../../clients/httpClient";
 import { useCourse } from "../../hooks/CourseProvider";
 import { useLecture } from "../../hooks/LectureProvider";
-import { LectureDTO } from "../../types/dtos";
 import { Section } from "../../types/types";
-import { convertToLecture } from "../../utils/incoming-request";
 import { AddLectureComponent } from "./AddLectureComponent";
-import UpdateAttributeFeild from "../shared/UpdateAttributeFied";
 
 export const LectureComponent = ({ children }: { children: ReactNode }) => {
   const { deleteLecture, saveSection } = useCourse();
@@ -32,32 +28,30 @@ export const LectureComponent = ({ children }: { children: ReactNode }) => {
 
   const { lecture } = useLecture();
   const { attributes, listeners } = useSortable({ id: lecture.id || "" });
-  const [lectureTitle, setLectureTitle] = useState<string>(lecture.title);
-  const [lectureDescription, setLectureDescription] = useState<string>(
-    lecture.description,
-  );
+  const [lectureTitle] = useState<string>(lecture.title);
+  const [lectureDescription] = useState<string>(lecture.description);
 
-  const updateTitle = (value: string) => {
-    console.log("Updating title to: ", value);
-    const requestBody = { title: value };
-    httpClient
-      .put<LectureDTO>(`/lectures/${lecture.id}`, requestBody)
-      .then((res) => {
-        const { title } = convertToLecture(res.data);
-        setLectureTitle(title);
-      });
-  };
+  // const updateTitle = (value: string) => {
+  //   console.log("Updating title to: ", value);
+  //   const requestBody = { title: value };
+  //   httpClient
+  //     .put<LectureDTO>(`/lectures/${lecture.id}`, requestBody)
+  //     .then((res) => {
+  //       const { title } = convertToLecture(res.data);
+  //       setLectureTitle(title);
+  //     });
+  // };
 
-  const updateDescription = (value: string) => {
-    console.log("Updating description to: ", value);
-    const requestBody = { description: value };
-    httpClient
-      .put<LectureDTO>(`/lectures/${lecture.id}`, requestBody)
-      .then((res) => {
-        const { description } = convertToLecture(res.data);
-        setLectureDescription(description);
-      });
-  };
+  // const updateDescription = (value: string) => {
+  //   console.log("Updating description to: ", value);
+  //   const requestBody = { description: value };
+  //   httpClient
+  //     .put<LectureDTO>(`/lectures/${lecture.id}`, requestBody)
+  //     .then((res) => {
+  //       const { description } = convertToLecture(res.data);
+  //       setLectureDescription(description);
+  //     });
+  // };
 
   return (
     <Accordion>
