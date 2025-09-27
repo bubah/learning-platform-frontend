@@ -163,7 +163,6 @@ export const CourseOverViewEdit = () => {
         </Box>
       </Box>
 
-      {/* Submit Button */}
       <Button type="submit" variant="contained" color="primary">
         Submit
       </Button>
