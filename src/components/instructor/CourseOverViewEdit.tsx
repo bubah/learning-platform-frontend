@@ -9,7 +9,6 @@ import {
 import { useRef, useState } from "react";
 import { httpClient } from "../../clients/httpClient";
 import { useCourse } from "../../hooks/CourseProvider";
-import { set } from "video.js/dist/types/tech/middleware";
 
 export const CourseOverViewEdit = () => {
   const { course } = useCourse();
@@ -58,6 +57,8 @@ export const CourseOverViewEdit = () => {
       .then((res) => res.data)
       .catch((error) => console.log(error));
   };
+
+  console.log("selected file", selectedFile);
 
   return (
     <Card

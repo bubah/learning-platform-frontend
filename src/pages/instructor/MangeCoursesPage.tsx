@@ -1,18 +1,10 @@
-import {
-  Box,
-  Button,
-  Menu,
-  MenuItem,
-  Tab,
-  Tabs,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Tab, Tabs, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { CourseOverViewEdit } from "../../components/instructor/CourseOverViewEdit";
 import { Curriculum } from "../../components/instructor/Curriculum";
+import DropDownMenu from "../../components/instructor/DropDownMenu";
 import { EditCourse } from "../../components/instructor/EditCourse";
 import { useCourse } from "../../hooks/CourseProvider";
-import DropDownMenu from "../../components/instructor/DropDownMenu";
 
 interface TabPanelProps {
   children?: React.ReactNode;
