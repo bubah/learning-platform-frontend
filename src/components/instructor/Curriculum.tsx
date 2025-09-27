@@ -28,12 +28,15 @@ export const Curriculum = () => {
   return (
     <Box
       sx={{
-        justifyContent: "center",
-        margin: "auto",
-        padding: "2rem",
         display: "flex",
         flexDirection: "column",
         gap: 2,
+        maxWidth: 800,
+        margin: "auto",
+        padding: 3,
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        backgroundColor: (theme) => theme.palette.background.default,
       }}
     >
       <Typography color="black" variant="h3">
@@ -62,7 +65,9 @@ export const Curriculum = () => {
       </DragAndDropList>
 
       <Box sx={{ textAlign: "center", marginTop: 2 }}>
-        <Button onClick={() => setDisplayAddLecture(true)}>Add Lecture</Button>
+        <Button onClick={() => setDisplayAddLecture(true)} variant="outlined">
+          + Add Lecture
+        </Button>
       </Box>
 
       {displayAddLecture && (
