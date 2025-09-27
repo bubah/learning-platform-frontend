@@ -19,6 +19,7 @@ export type Course = {
   title: string;
   lectures: Lecture[];
   category: string;
+  imageUrl?: string;
 };
 
 export type Lecture = {
