@@ -23,6 +23,7 @@ export type SectionDTO = {
   description: string;
   order: number;
   lectureId?: string;
+  content?: string;
 };
 
 export type CourseDTO = {
