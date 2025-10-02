@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { completedPart, Section } from "../types/types";
 
 type FileMetadata = {
@@ -49,37 +43,34 @@ const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB
 const ResumeUploadProvider = ({
   children,
   section,
-}: {
-  children: ReactNode;
-  section: Section;
-}) => {
+}: ResumeUploadProviderProps) => {
   const [resumable, setResumable] = useState<FileMetadata | null>(
     getFileMetadata(section.id || "", null),
   );
 
-  const storeFileMetadata = ({
-    file,
-    sectionId,
-    uploadId,
-    uploadedParts,
-  }: {
-    file: File;
-    sectionId: string;
-    uploadId: string;
-    uploadedParts: completedPart[];
-  }) => {
-    // call backend to store file metadata and get uploadId
-    localStorage.setItem(
-      `upload-metadata-${sectionId}`,
-      JSON.stringify({
-        fileName: file.name,
-        fileSize: file.size,
-        lastModified: file.lastModified,
-        uploadId,
-        uploadedParts,
-      }),
-    );
-  };
+  // const storeFileMetadata = ({
+  //   file,
+  //   sectionId,
+  //   uploadId,
+  //   uploadedParts,
+  // }: {
+  //   file: File;
+  //   sectionId: string;
+  //   uploadId: string;
+  //   uploadedParts: completedPart[];
+  // }) => {
+  //   // call backend to store file metadata and get uploadId
+  //   localStorage.setItem(
+  //     `upload-metadata-${sectionId}`,
+  //     JSON.stringify({
+  //       fileName: file.name,
+  //       fileSize: file.size,
+  //       lastModified: file.lastModified,
+  //       uploadId,
+  //       uploadedParts,
+  //     })
+  //   );
+  // };
 
   const clearFileMetadata = ({
     sectionId,
@@ -89,6 +80,7 @@ const ResumeUploadProvider = ({
     uploadId: string;
   }) => {
     localStorage.removeItem(`upload-metadata-${sectionId}`);
+    console.log("uploadid", uploadId);
   };
 
   const addFileCompletedPart = ({

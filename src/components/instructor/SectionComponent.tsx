@@ -6,7 +6,7 @@ import {
   CardContent,
   IconButton,
 } from "@mui/material";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { useSortable } from "@dnd-kit/sortable";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";

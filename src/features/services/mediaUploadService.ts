@@ -8,7 +8,7 @@ import {
   UploadMediaInitRequestDTO,
   UploadMediaInitResponseDTO,
 } from "../../types/dtos";
-import { completedPart, Section } from "../../types/types";
+import { completedPart } from "../../types/types";
 
 class MediaUploadService {
   private static instance: MediaUploadService;
@@ -76,7 +76,6 @@ class MediaUploadService {
       key,
       uploadId,
       completedParts,
-      type,
     });
 
     if (status === "sucess") {
@@ -173,12 +172,10 @@ class MediaUploadService {
     key,
     uploadId,
     completedParts,
-    type,
   }: {
     key: string;
     uploadId: string;
     completedParts: completedPart[];
-    type: string;
   }): Promise<string> {
     return new Promise((resolve) => {
       const complete = async () => {

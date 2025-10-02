@@ -1,15 +1,14 @@
 import { Box, Button } from "@mui/material";
-import { useState, useRef } from "react";
-import { useResumeUpload } from "../../hooks/ResumeUploadProvider";
+import { useRef, useState } from "react";
 import mediaUploadService from "../../features/services/mediaUploadService";
+import { useResumeUpload } from "../../hooks/ResumeUploadProvider";
 import { useSection } from "../../hooks/SectionProvider";
 import { completedPart } from "../../types/types";
 
 const VideoUploadInput = () => {
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { canResumeUpload, missingParts, addFileCompletedPart } =
-    useResumeUpload();
+  const { canResumeUpload, addFileCompletedPart } = useResumeUpload();
   const { section } = useSection();
 
   const handleFileSelect = () => {
