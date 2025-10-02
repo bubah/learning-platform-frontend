@@ -29,12 +29,12 @@ export class HttpClient {
     return this.instance.get<T>(url, mergedConfig);
   }
 
-  post<T>(url: string, data?: unknown, config?: AxiosRequestConfig) {
+  post<T, G>(url: string, data?: G, config?: AxiosRequestConfig) {
     const mergedConfig = this.mergeHeaders(config);
     return this.instance.post<T>(url, data, mergedConfig);
   }
 
-  put<T>(url: string, data?: unknown, config?: AxiosRequestConfig) {
+  put<T, G>(url: string, data?: G, config?: AxiosRequestConfig) {
     const mergedConfig = this.mergeHeaders(config);
     return this.instance.put<T>(url, data, mergedConfig);
   }
@@ -44,7 +44,7 @@ export class HttpClient {
     return this.instance.delete<T>(url, mergedConfig);
   }
 
-  patch<T>(url: string, data?: unknown, config?: AxiosRequestConfig) {
+  patch<T, G>(url: string, data?: G, config?: AxiosRequestConfig) {
     const mergedConfig = this.mergeHeaders(config);
     return this.instance.patch<T>(url, data, mergedConfig);
   }

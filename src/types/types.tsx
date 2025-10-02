@@ -48,3 +48,8 @@ export type User = {
   id?: string;
   username?: string;
 };
+
+export type completedPart = {
+  eTag: string;
+  partNumber: number;
+};

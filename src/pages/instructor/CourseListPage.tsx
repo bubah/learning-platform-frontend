@@ -35,7 +35,7 @@ export const CourseList = () => {
 
   const createNewCourse = (requestBody: CourseDTO) => {
     httpClient
-      .post<CourseDTO>("/courses", requestBody)
+      .post<CourseDTO, CourseDTO>("/courses", requestBody)
       .then((res) => {
         const course = convertToCourse(res.data);
         setCourses((prevCourses) => [...prevCourses, course]);

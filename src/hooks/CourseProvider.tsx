@@ -70,7 +70,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     };
 
     httpClient
-      .post<LectureDTO>("/lectures", lectureDTO)
+      .post<LectureDTO, LectureDTO>("/lectures", lectureDTO)
       .then((res) => {
         const updatedLecture = convertToLecture(res.data);
         setCourse((prevCourse) => ({
@@ -101,7 +101,8 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     const lectures = course?.lectures;
 
     httpClient
-      .post<SectionDTO>("/sections", {
+      .post<SectionDTO, SectionDTO>("/sections", {
+        id: null,
         title: section.title,
         description: section.description,
         order:
@@ -175,7 +176,10 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
     }));
 
     httpClient
-      .post<CourseDTO>(`/lecture-reorder/${course?.id}`, requestBody)
+      .post<
+        CourseDTO,
+        ReorderResourceDTO
+      >(`/lecture-reorder/${course?.id}`, requestBody)
       .catch((error) => {
         console.log(error);
         setCourse((prevCourse) => ({
@@ -202,7 +206,10 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
       }),
     }));
     httpClient
-      .post<LectureDTO>(`/section-reorder/${lectureId}`, requestBody)
+      .post<
+        LectureDTO,
+        ReorderResourceDTO
+      >(`/section-reorder/${lectureId}`, requestBody)
       .catch((error) => {
         console.log(error);
         setCourse((prevCourse) => ({

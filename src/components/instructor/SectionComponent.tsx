@@ -5,15 +5,16 @@ import {
   CardActions,
   CardContent,
   IconButton,
-  TextField,
 } from "@mui/material";
 import { useState } from "react";
 
-import { memo } from "react";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { useSortable } from "@dnd-kit/sortable";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { memo } from "react";
 import { useSection } from "../../hooks/SectionProvider";
 import UpdateAttributeFeild from "../shared/UpdateAttributeFied";
+import CourseUploadProgress from "./CourseUploadProgress";
+import VideoUploadInput from "./VideoUploadInput";
 
 export const SectionComponent = memo(() => {
   const { section } = useSection();
@@ -34,7 +35,6 @@ export const SectionComponent = memo(() => {
     <Box>
       <Card
         sx={{
-          padding: "1rem",
           textAlign: "left",
           backgroundColor: "#f2f2f2",
           marginBottom: 2,
@@ -62,16 +62,8 @@ export const SectionComponent = memo(() => {
               label="Description"
               handleUpdate={handleSaveV2}
             />
-
-            <TextField
-              type="file"
-              sx={{ display: "block", marginBottom: 2, marginTop: 2 }}
-              slotProps={{
-                htmlInput: {
-                  accept: "video/*",
-                },
-              }}
-            />
+            <VideoUploadInput />
+            <CourseUploadProgress />
             <CardActions>
               <Button size="small" variant="outlined" onClick={() => {}}>
                 cancel
