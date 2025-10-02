@@ -1,4 +1,5 @@
 import { AxiosResponse } from "axios";
+import { completedPart } from "./types";
 
 export type GetContractResponse = AxiosResponse<CourseDTO, any>;
 
@@ -37,4 +38,34 @@ export type UserDTO = {
   email: string;
   username: string;
   role: string;
+};
+
+export type UploadMediaInitRequestDTO = {
+  fileName: string;
+  sectionId: string;
+};
+
+export type UploadMediaInitResponseDTO = {
+  uploadId: string;
+  key: string;
+};
+
+export type GetPresignedUrlsRequestDTO = {
+  key: string;
+  partCount: number;
+  uploadId: string;
+};
+
+export type GetPresingedUrlsResponseDTO = {
+  presignedUrls: string[];
+};
+
+export type UploadMediaCompleteRequestDTO = {
+  completedParts: completedPart[];
+  key: string;
+  uploadId: string;
+};
+
+export type UploadMediaCompleteResponseDTO = {
+  status: string;
 };

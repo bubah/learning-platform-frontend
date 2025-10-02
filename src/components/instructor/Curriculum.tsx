@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Box, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { useCourse } from "../../hooks/CourseProvider";
 import { LectureProvider } from "../../hooks/LectureProvider";
 import { SectionProvider, useSection } from "../../hooks/SectionProvider";
@@ -11,6 +11,7 @@ import { DragAndDropList } from "./DragAndDropList";
 import { LectureComponent } from "./LectureComponent";
 import { SectionComponent } from "./SectionComponent";
 import { SectionDragAndDropList } from "./SectionDragAndDropList";
+import ResumeUploadProvider from "../../hooks/ResumeUploadProvider";
 
 export const Curriculum = () => {
   const [displayAddLecture, setDisplayAddLecture] = useState<boolean>(false);
@@ -53,9 +54,13 @@ export const Curriculum = () => {
               <LectureComponent>
                 <SectionDragAndDropList>
                   {sortedSections?.map((section) => (
-                    <SectionProvider key={section.id} section={section}>
-                      <SortabelSection />
-                    </SectionProvider>
+                    <ResumeUploadProvider key={section.id} section={section}>
+                      <SectionProvider key={section.id} section={section}>
+                        <SortabelSection>
+                          <SectionComponent />
+                        </SortabelSection>
+                      </SectionProvider>
+                    </ResumeUploadProvider>
                   ))}
                 </SectionDragAndDropList>
               </LectureComponent>
@@ -80,7 +85,7 @@ export const Curriculum = () => {
   );
 };
 
-const SortabelSection = () => {
+const SortabelSection = ({ children }: { children: ReactNode }) => {
   const { section } = useSection();
   const { setNodeRef, transform, transition } = useSortable({
     id: section.id || "",
@@ -98,7 +103,7 @@ const SortabelSection = () => {
 
   return (
     <div ref={setNodeRef} style={style}>
-      <SectionComponent />
+      {children}
     </div>
   );
 };
