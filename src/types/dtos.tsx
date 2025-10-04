@@ -23,7 +23,7 @@ export type SectionDTO = {
   description: string;
   order: number;
   lectureId?: string;
-  content?: string;
+  videoUrl?: string;
 };
 
 export type CourseDTO = {

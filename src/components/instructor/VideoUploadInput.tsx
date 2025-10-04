@@ -8,7 +8,12 @@ import { completedPart } from "../../types/types";
 const VideoUploadInput = () => {
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { canResumeUpload, addFileCompletedPart } = useResumeUpload();
+  const {
+    canResumeUpload,
+    addFileCompletedPart,
+    onCompleteUpload,
+    onInitUpload,
+  } = useResumeUpload();
   const { section } = useSection();
 
   const handleFileSelect = () => {
@@ -40,10 +45,13 @@ const VideoUploadInput = () => {
 
     console.log("HandleUploaad: Chunks", chunks);
 
-    const { uploadId, key } = await mediaUploadService.initiateUpload(
-      section.id || "",
-      file.name,
-    );
+    const { uploadId, key } = await mediaUploadService.initiateUpload({
+      sectionId: section.id || "",
+      fileName: file.name,
+      onInitUpload: (uploadId: string) => {
+        onInitUpload(uploadId, file);
+      },
+    });
 
     console.log("After init upload", uploadId, key);
 
@@ -70,6 +78,7 @@ const VideoUploadInput = () => {
 
         onUploadAllChunksComplete: () => {
           console.log("on upload all success");
+          onCompleteUpload();
         },
       },
     });

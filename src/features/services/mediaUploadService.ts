@@ -42,9 +42,20 @@ class MediaUploadService {
       onUploadAllChunksComplete: () => void;
     };
   }): Promise<any> {
-    const presignedUrls = await this.fetchPresignedUrls(key, uploadId, chunks);
-
     const unsettledCompletedParts: Promise<completedPart>[] = [];
+    let presignedUrls: string[] = [];
+    try {
+      presignedUrls = await this.fetchPresignedUrls(key, uploadId, chunks);
+    } catch (error) {
+      console.log(
+        "Fetching presiggned urls failed for uploadId",
+        uploadId,
+        key,
+      );
+      return;
+    }
+
+    if (!presignedUrls.length) return;
 
     chunks.map((chunk, index) =>
       unsettledCompletedParts.push(
@@ -85,10 +96,15 @@ class MediaUploadService {
     console.log("Upload complete status:", status);
   }
 
-  async initiateUpload(
-    sectionId: string,
-    fileName: string,
-  ): Promise<UploadMediaInitResponseDTO> {
+  async initiateUpload({
+    sectionId,
+    fileName,
+    onInitUpload,
+  }: {
+    sectionId: string;
+    fileName: string;
+    onInitUpload: (uploadId: string) => void;
+  }): Promise<UploadMediaInitResponseDTO> {
     return new Promise((resolve) => {
       const upload = async () => {
         const res = await this.httpClient.post<
@@ -98,6 +114,7 @@ class MediaUploadService {
           sectionId,
           fileName,
         });
+        onInitUpload(res.data.uploadId);
         resolve(res.data);
       };
 
@@ -111,6 +128,8 @@ class MediaUploadService {
     chunks: Blob[],
   ): Promise<string[]> {
     return new Promise((resolve) => {
+      if (!chunks.length) resolve([]);
+
       const fetchUrls = async () => {
         const res = await httpClient.post<
           GetPresingedUrlsResponseDTO,

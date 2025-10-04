@@ -109,7 +109,7 @@ export const CourseProvider = ({ children }: { children: ReactNode }) => {
           lectures?.find((lecture) => lecture.id === section.lectureId)
             ?.sections?.length || 0,
         lectureId: section.lectureId,
-        content: "place holder",
+        videoUrl: "place holder",
       })
       .then((res) => {
         setCourse((prevCourse) => ({

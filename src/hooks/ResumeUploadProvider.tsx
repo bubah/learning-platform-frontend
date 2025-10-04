@@ -1,9 +1,17 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { completedPart, Section } from "../types/types";
+import { data } from "react-router-dom";
 
 type FileMetadata = {
   fileName: string;
   fileSize: number;
+  status: "INPROGRESS" | "COMPLETE" | "ABORTED";
   lastModified: number;
   uploadId: string;
   uploadedParts: completedPart[];
@@ -23,7 +31,8 @@ type ResumeUploadContextType = {
     uploadId: string;
     file: File;
   }) => void;
-  clearFileMetadata: (params: { sectionId: string; uploadId: string }) => void;
+  onCompleteUpload: () => void;
+  onInitUpload: (uploadId: string, file: File) => void;
 };
 
 const ResumeUploadContext = createContext<ResumeUploadContextType | null>(null);
@@ -48,39 +57,34 @@ const ResumeUploadProvider = ({
     getFileMetadata(section.id || "", null),
   );
 
-  // const storeFileMetadata = ({
-  //   file,
-  //   sectionId,
-  //   uploadId,
-  //   uploadedParts,
-  // }: {
-  //   file: File;
-  //   sectionId: string;
-  //   uploadId: string;
-  //   uploadedParts: completedPart[];
-  // }) => {
-  //   // call backend to store file metadata and get uploadId
-  //   localStorage.setItem(
-  //     `upload-metadata-${sectionId}`,
-  //     JSON.stringify({
-  //       fileName: file.name,
-  //       fileSize: file.size,
-  //       lastModified: file.lastModified,
-  //       uploadId,
-  //       uploadedParts,
-  //     })
-  //   );
-  // };
+  useEffect(() => {
+    //Sync resumable state with state from backend
+    //setResumable(data)
+    // sync localstorage
+  }, []);
 
-  const clearFileMetadata = ({
-    sectionId,
-    uploadId,
-  }: {
-    sectionId: string;
-    uploadId: string;
-  }) => {
-    localStorage.removeItem(`upload-metadata-${sectionId}`);
-    console.log("uploadid", uploadId);
+  const onInitUpload = (uploadId: string, file: File) => {
+    setResumable((prev) => {
+      if (!prev) {
+        const fileData = {
+          uploadId,
+          fileName: file.name,
+          fileSize: file.size,
+          status: "INPROGRESS",
+          lastModified: file.lastModified,
+          uploadedParts: [],
+        } as FileMetadata;
+        updateLocalStorage(section.id, fileData);
+        return fileData;
+      }
+
+      if (uploadId !== prev.uploadId) return prev;
+      const updatedMetadata = {
+        ...prev,
+      };
+      updateLocalStorage(section.id, updatedMetadata);
+      return updatedMetadata;
+    });
   };
 
   const addFileCompletedPart = ({
@@ -95,52 +99,35 @@ const ResumeUploadProvider = ({
     console.log("Add file compl", file, file.size, file.lastModified);
     setResumable((prev) => {
       if (!prev) {
-        return {
+        const updateMetadata = {
+          uploadId,
           fileName: file.name,
           fileSize: file.size,
-          uploadId,
+          status: "INPROGRESS",
           lastModified: file.lastModified,
           uploadedParts: [completedPart],
-        };
+        } as FileMetadata;
+
+        updateLocalStorage(section.id, updateMetadata);
+        return updateMetadata;
       }
 
       if (uploadId !== prev.uploadId) return prev;
-
-      return {
+      const updatedMetadata = {
         ...prev,
         uploadedParts: [...prev.uploadedParts, completedPart],
       };
+      updateLocalStorage(section.id, updatedMetadata);
+      return updatedMetadata;
     });
   };
 
-  // useEffect(() => {
-  //   const metadata = getFileMetadata(section.id || "", null);
-  //   if (!metadata) return;
-  //   const { fileSize, chunkSize, uploadedParts } = metadata;
-  //   setFileSize(fileSize || 0);
-  //   setChunkSize(chunkSize || 0);
-  //   setUploadedParts(uploadedParts || []);
-  //   setCanResumeUpload(true);
-  // }, [section]);
-
-  // const {
-  //   uploadId,
-  //   uploadedParts,
-  //   fileName,
-  //   chunkSize,
-  //   fileSize,
-  //   lastModified,
-  // } = {
-  //   uploadId: "abc123",
-  //   fileName: "lecture1.mp4",
-  //   fileSize: 52428800,
-  //   lastModified: 1696118400000,
-  //   chunkSize: 5242880,
-  //   uploadedParts: [
-  //     { partNumber: 1, eTag: "etag1" },
-  //     { partNumber: 2, eTag: "etag2" },
-  //   ],
-  // };
+  const onCompleteUpload = () => {
+    setResumable(() => {
+      removeLocalStorage(section.id);
+      return null;
+    });
+  };
 
   // figure out missing parts
   const allParts = resumable
@@ -164,7 +151,8 @@ const ResumeUploadProvider = ({
         missingParts,
         canResumeUpload: !!resumable,
         addFileCompletedPart,
-        clearFileMetadata,
+        onCompleteUpload,
+        onInitUpload,
       }}
     >
       {children}
@@ -173,6 +161,24 @@ const ResumeUploadProvider = ({
 };
 
 export default ResumeUploadProvider;
+
+const updateLocalStorage = (
+  sectionId: string | null,
+  fileMetadata: FileMetadata,
+) => {
+  if (!sectionId) return;
+
+  localStorage.setItem(
+    `upload-metadata-${sectionId}`,
+    JSON.stringify(fileMetadata),
+  );
+};
+
+const removeLocalStorage = (sectionId: string | null) => {
+  if (!sectionId) return;
+
+  localStorage.removeItem(`upload-metadata-${sectionId}`);
+};
 
 // get file metadata from local storage
 const getFileMetadata = (sectionId: string, file: File | null) => {
@@ -186,10 +192,9 @@ const getFileMetadata = (sectionId: string, file: File | null) => {
   if (fileMisMatch(file, metadata)) {
     return null;
   }
-  // const map = new Map<string, FileMetadata>();
-  // map.set(key, JSON.parse(metadata) as FileMetadata);
   return JSON.parse(metadata) as FileMetadata;
 };
+
 function fileMisMatch(file: File | null, metadata: string) {
   if (!file) return false;
   const { fileName, fileSize, lastModified } = JSON.parse(metadata);
